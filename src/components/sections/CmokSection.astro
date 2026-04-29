@@ -2,32 +2,33 @@
 import { apps } from "../../data/apps.ts";
 const app = apps.find((a) => a.id === "cmok")!;
 
-// loop-step labels — 3 steps positioned at 12, 4, 8 o'clock
-const labelRadius = 270;
+// 3 step labels at 12 / 4 / 8 o'clock around the close circle
+const labelRadius = 250;
 const cx = 300;
 const cy = 300;
 const stepPositions = app.loopSteps.map((label, i) => {
-  // start at -90deg (top), 120deg apart
+  const pl = app.loopStepsPl[i];
   const angleDeg = -90 + i * 120;
   const angleRad = (angleDeg * Math.PI) / 180;
   return {
     label,
+    pl,
     x: cx + labelRadius * Math.cos(angleRad),
     y: cy + labelRadius * Math.sin(angleRad),
     angleDeg,
   };
 });
 
-// inner circle of "people" dots (close circle)
-const peopleCount = 14;
-const peopleRadius = 180;
+// inner close-circle of "people" — small, intimate (7 dots)
+const peopleCount = 7;
+const peopleRadius = 150;
 const people = Array.from({ length: peopleCount }, (_, i) => {
   const angleDeg = -90 + (360 / peopleCount) * i;
   const angleRad = (angleDeg * Math.PI) / 180;
   return {
     x: cx + peopleRadius * Math.cos(angleRad),
     y: cy + peopleRadius * Math.sin(angleRad),
-    checkedIn: i % 3 !== 1,
+    delay: (i * 0.4).toFixed(2),
   };
 });
 ---
@@ -39,28 +40,36 @@ const people = Array.from({ length: peopleCount }, (_, i) => {
   <!-- archive bar -->
   <div class="relative border-b border-line py-2.5">
     <div class="mx-auto max-w-[1600px] px-5 sm:px-8 flex items-center justify-between font-mono text-[10px] tracking-[0.28em] uppercase text-cmok/80">
-      <span>▍ Machine 02 / Daily · Safety</span>
-      <span class="hidden md:inline">cadence · once a day / signal · soft / privacy · max</span>
-      <span>CMOK.002 ▌</span>
+      <span>▍ Machine 02 / Daily ritual · Closeness</span>
+      <span class="hidden md:inline">one tap · daily · close circle · soft</span>
+      <span>cmok.002 ▌</span>
     </div>
   </div>
 
   <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8 py-20 sm:py-32">
 
-    <!-- header -->
+    <!-- header: cmok wordmark — LOWERCASE ITALIC SERIF (matches actual brand) -->
     <div class="grid grid-cols-12 gap-4 sm:gap-8 items-end">
-      <h2 class="col-span-12 md:col-span-8 font-display tracking-[-0.02em] leading-[0.82] select-none">
-        <span class="block text-[clamp(5rem,22vw,22rem)] text-cmok">
-          CMOK<span class="text-ink">.</span>
-        </span>
-      </h2>
-      <p class="col-span-12 md:col-span-4 font-display italic text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.05] text-ink md:pb-6">
-        {app.tagline}
-      </p>
+      <div class="col-span-12 md:col-span-8">
+        <h2 class="font-display italic tracking-[-0.04em] leading-[0.85] text-cmok select-none text-[clamp(5rem,22vw,21rem)] lowercase">
+          cmok<span class="text-ink not-italic">.</span>
+        </h2>
+        <p class="mt-2 font-mono text-[11px] tracking-[0.32em] uppercase text-cmok/70">
+          pl. cmok = a peck, a kiss
+        </p>
+      </div>
+      <div class="col-span-12 md:col-span-4 md:pb-4">
+        <p class="font-display italic text-[clamp(1.5rem,2.8vw,2.2rem)] leading-[1.1] text-ink">
+          {app.taglinePl}
+        </p>
+        <p class="mt-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">
+          en · {app.tagline}
+        </p>
+      </div>
     </div>
 
     <!-- intro line -->
-    <p class="mt-4 sm:mt-8 max-w-2xl text-base sm:text-lg text-ink-dim leading-relaxed">
+    <p class="mt-10 sm:mt-14 max-w-2xl text-base sm:text-lg text-ink-dim leading-relaxed">
       <span>{app.intro[0]}</span>
       <span class="block text-ink">{app.intro[1]}</span>
     </p>
@@ -70,100 +79,100 @@ const people = Array.from({ length: peopleCount }, (_, i) => {
 
       <!-- INPUT -->
       <div class="col-span-12 md:col-span-3 flex flex-col justify-between gap-8 md:border-r border-cmok/15 md:pr-6">
-        <div>
+        <div class="space-y-2">
           <p class="callout text-flag mb-4">▍ Input</p>
-          <p class="font-display text-[clamp(2rem,4.5vw,3rem)] leading-[1] text-ink">
-            <span class="text-flag mr-2 align-middle text-2xl">×</span>
-            <span class="line-through decoration-flag/80 decoration-2 italic text-ink-dim">{app.input}</span>
-          </p>
+          {app.input.map((line) => (
+            <p class="font-display text-[clamp(1.6rem,3.5vw,2.4rem)] leading-[1.05] text-ink">
+              <span class="text-flag mr-2 align-middle text-2xl">×</span>
+              <span class="line-through decoration-flag/80 decoration-2 italic text-ink-dim">{line}</span>
+            </p>
+          ))}
         </div>
 
-        <ul class="hidden md:block space-y-1 callout text-ink-faint">
+        <ul class="hidden md:block space-y-1">
           {app.bullets.map((b) => (
-            <li class="flex items-baseline gap-2">
-              <span aria-hidden="true">·</span>
-              <span class="text-ink-dim normal-case tracking-normal font-sans text-sm italic">{b}</span>
-            </li>
+            <li class="text-ink-dim text-sm italic">· {b}</li>
           ))}
         </ul>
       </div>
 
-      <!-- arrow -->
       <div class="hidden md:flex md:col-span-1 items-center justify-center text-cmok/50" aria-hidden="true">
         <span class="text-3xl">→</span>
       </div>
 
-      <!-- LOOP — close circle -->
+      <!-- LOOP — close circle: ONE big breathing dot in center, small dots around -->
       <div class="col-span-12 md:col-span-5 relative flex items-center justify-center">
-        <p class="absolute top-0 left-0 callout text-cmok">▍ Loop · daily</p>
+        <p class="absolute top-0 left-0 callout text-cmok">▍ Loop · once a day</p>
+        <span aria-hidden="true" class="absolute top-0 right-0 stamp text-cmok/80">~ 2 sec</span>
 
         <svg
           viewBox="0 0 600 600"
-          class="w-full h-auto text-cmok mt-8"
+          class="w-full h-auto text-cmok mt-10"
           role="img"
           aria-label={`Loop: ${app.loopSteps.join(" → ")} → repeat`}
         >
           <defs>
-            <radialGradient id="cmok-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="currentColor" stop-opacity="0.20" />
-              <stop offset="60%" stop-color="currentColor" stop-opacity="0.04" />
+            <radialGradient id="cmok-glow-2" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="currentColor" stop-opacity="0.30" />
+              <stop offset="60%" stop-color="currentColor" stop-opacity="0.06" />
               <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
             </radialGradient>
           </defs>
 
-          <circle cx={cx} cy={cy} r="290" fill="url(#cmok-glow)" />
+          <circle cx={cx} cy={cy} r="290" fill="url(#cmok-glow-2)" />
 
-          <!-- outer guide circle (subtle) -->
-          <circle cx={cx} cy={cy} r="240" stroke="currentColor" stroke-opacity="0.18" fill="none" stroke-dasharray="2 6" />
-          <!-- close-circle ring -->
-          <circle cx={cx} cy={cy} r={peopleRadius} stroke="currentColor" stroke-opacity="0.25" fill="none" />
+          <!-- subtle outer guide -->
+          <circle cx={cx} cy={cy} r={labelRadius - 30} stroke="currentColor" stroke-opacity="0.12" fill="none" stroke-dasharray="2 6" />
 
-          <!-- close-circle "people" dots -->
-          <g fill="currentColor">
-            {people.map((p, i) => (
-              p.checkedIn ? (
-                <circle cx={p.x} cy={p.y} r="6" fill="currentColor" fill-opacity="0.85" />
-              ) : (
-                <circle cx={p.x} cy={p.y} r="5" fill="none" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.2" />
-              )
+          <!-- close-circle ring (subtle) -->
+          <circle cx={cx} cy={cy} r={peopleRadius} stroke="currentColor" stroke-opacity="0.20" fill="none" />
+
+          <!-- close-circle "people" dots — small, with their own soft echo -->
+          <g>
+            {people.map((p) => (
+              <Fragment>
+                <circle cx={p.x} cy={p.y} r="22" fill="currentColor" fill-opacity="0.18" style={`transform-origin: ${p.x}px ${p.y}px; animation: pulse-ring 4s ease-out ${p.delay}s infinite;`} />
+                <circle cx={p.x} cy={p.y} r="9" fill="currentColor" />
+              </Fragment>
             ))}
           </g>
 
-          <!-- loop arc indicator (clockwise around the close circle) -->
-          <g stroke="currentColor" fill="none" stroke-opacity="0.55">
-            <path
-              d="M 470 220 A 220 220 0 0 1 380 478"
-              stroke-width="1.4"
-              stroke-dasharray="3 5"
-            />
-            <polygon points="380,478 372,470 384,464" fill="currentColor" fill-opacity="0.8" />
-          </g>
-
-          <!-- step labels with leader lines -->
-          <g font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="0.2em" fill="currentColor" fill-opacity="0.95" style="text-transform: uppercase;">
+          <!-- step labels -->
+          <g font-family="JetBrains Mono, monospace" font-weight="600" font-size="14" letter-spacing="0.2em" fill="currentColor" fill-opacity="0.95" style="text-transform: uppercase;">
             {stepPositions.map((s) => (
-              <text
-                x={s.x}
-                y={s.y}
-                text-anchor={s.angleDeg === -90 ? "middle" : (Math.cos((s.angleDeg * Math.PI) / 180) > 0 ? "start" : "end")}
-                dominant-baseline={s.angleDeg === -90 ? "auto" : "middle"}
-              >{s.label}</text>
+              <Fragment>
+                <text
+                  x={s.x}
+                  y={s.y}
+                  text-anchor={s.angleDeg === -90 ? "middle" : (Math.cos((s.angleDeg * Math.PI) / 180) > 0 ? "start" : "end")}
+                  dominant-baseline={s.angleDeg === -90 ? "auto" : "middle"}
+                >{s.label}</text>
+                <text
+                  x={s.x}
+                  y={s.y + 14}
+                  text-anchor={s.angleDeg === -90 ? "middle" : (Math.cos((s.angleDeg * Math.PI) / 180) > 0 ? "start" : "end")}
+                  font-size="9"
+                  letter-spacing="0.18em"
+                  fill-opacity="0.5"
+                >{s.pl}</text>
+              </Fragment>
             ))}
           </g>
 
-          <!-- TODAY's dot — glowing center -->
-          <circle cx={cx} cy={cy} r="22" fill="currentColor" style="animation: drift 4s ease-in-out infinite;" />
-          <circle cx={cx} cy={cy} r="38" fill="none" stroke="currentColor" stroke-opacity="0.3" style="animation: pulse-ring 3.2s ease-out infinite; transform-origin: 300px 300px;"/>
+          <!-- CENTER: the daily sign — big breathing circle -->
+          <circle cx={cx} cy={cy} r="60" fill="none" stroke="currentColor" stroke-opacity="0.35" style="transform-origin: 300px 300px; animation: pulse-ring 3.6s ease-out infinite;" />
+          <circle cx={cx} cy={cy} r="40" fill="currentColor" style="animation: drift 4s ease-in-out infinite;" />
           <text
             x={cx}
-            y={cy + 60}
+            y={cy + 6}
             text-anchor="middle"
             font-family="JetBrains Mono, monospace"
-            font-size="11"
+            font-weight="700"
+            font-size="13"
             letter-spacing="0.22em"
-            fill="currentColor"
+            fill="var(--color-bg)"
             style="text-transform: uppercase;"
-          >today · ✓</text>
+          >tap</text>
         </svg>
 
         <p class="absolute bottom-0 left-0 right-0 text-center callout text-cmok/70">
@@ -171,7 +180,6 @@ const people = Array.from({ length: peopleCount }, (_, i) => {
         </p>
       </div>
 
-      <!-- arrow -->
       <div class="hidden md:flex md:col-span-1 items-center justify-center text-cmok/50" aria-hidden="true">
         <span class="text-3xl">→</span>
       </div>
@@ -185,10 +193,16 @@ const people = Array.from({ length: peopleCount }, (_, i) => {
           </p>
         </div>
 
-        <span class="inline-flex items-center gap-2 callout text-cmok/70">
-          <span aria-hidden="true" class="block w-8 dim-line text-cmok/40"></span>
-          <span>Open CMOK · soon</span>
-        </span>
+        <a
+          href={app.href!}
+          target="_blank"
+          rel="noopener"
+          class="group inline-flex items-center gap-2 callout text-ink hover:text-cmok transition-colors"
+        >
+          <span aria-hidden="true" class="block w-8 dim-line text-ink-faint group-hover:text-cmok transition-colors"></span>
+          <span>App Store</span>
+          <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">↗</span>
+        </a>
       </div>
     </div>
   </div>

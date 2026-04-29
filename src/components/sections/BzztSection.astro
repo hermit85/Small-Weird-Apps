@@ -2,12 +2,12 @@
 import { apps } from "../../data/apps.ts";
 const app = apps.find((a) => a.id === "bzzt")!;
 
-// Loop steps positioned at compass points around the radar (clockwise from N)
+// loop steps positioned at compass points around the radar (clockwise from N)
 const stepsOnRadar = [
-  { label: app.loopSteps[0], cx: 300, cy: 60,  tx: 300, ty: 38,  anchor: "middle" },  // N
-  { label: app.loopSteps[1], cx: 540, cy: 300, tx: 562, ty: 304, anchor: "start"  },  // E
-  { label: app.loopSteps[2], cx: 300, cy: 540, tx: 300, ty: 568, anchor: "middle" },  // S
-  { label: app.loopSteps[3], cx: 60,  cy: 300, tx: 38,  ty: 304, anchor: "end"    },  // W
+  { label: app.loopSteps[0], pl: app.loopStepsPl[0], cx: 300, cy: 60,  tx: 300, ty: 38,  anchor: "middle" },
+  { label: app.loopSteps[1], pl: app.loopStepsPl[1], cx: 540, cy: 300, tx: 562, ty: 304, anchor: "start"  },
+  { label: app.loopSteps[2], pl: app.loopStepsPl[2], cx: 300, cy: 540, tx: 300, ty: 568, anchor: "middle" },
+  { label: app.loopSteps[3], pl: app.loopStepsPl[3], cx: 60,  cy: 300, tx: 38,  ty: 304, anchor: "end"    },
 ];
 ---
 
@@ -18,70 +18,74 @@ const stepsOnRadar = [
   <!-- archive bar -->
   <div class="relative border-b border-line py-2.5">
     <div class="mx-auto max-w-[1600px] px-5 sm:px-8 flex items-center justify-between font-mono text-[10px] tracking-[0.28em] uppercase text-bzzt/80">
-      <span>▍ Machine 01 / Signal · Dating</span>
-      <span class="hidden md:inline">freq · 2.4 GHz / range · nearby / scan · live</span>
+      <span>▍ Machine 01 / Radar · Proximity</span>
+      <span class="hidden md:inline">anonymous · mutual · 30-minute window</span>
       <span>BZZT.001 ▌</span>
     </div>
   </div>
 
   <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8 py-20 sm:py-32">
 
-    <!-- header: wordmark + tagline -->
+    <!-- header: BZZT wordmark in MONO (matches actual brand wordmark) -->
     <div class="grid grid-cols-12 gap-4 sm:gap-8 items-end">
-      <h2 class="col-span-12 md:col-span-8 font-display tracking-[-0.04em] leading-[0.82] select-none">
-        <span class="block text-[clamp(5rem,22vw,22rem)] text-bzzt">
+      <div class="col-span-12 md:col-span-8">
+        <h2 class="font-mono font-bold tracking-[-0.02em] leading-[0.85] uppercase text-bzzt select-none text-[clamp(4.5rem,18vw,17rem)]">
           BZZT<span class="text-ink">.</span>
-        </span>
-      </h2>
-      <p class="col-span-12 md:col-span-4 font-display italic text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.05] text-ink md:pb-6">
-        {app.tagline}
-      </p>
+        </h2>
+        <p class="mt-2 font-mono text-[11px] tracking-[0.32em] uppercase text-bzzt/70">
+          {app.fullName}
+        </p>
+      </div>
+      <div class="col-span-12 md:col-span-4 md:pb-4">
+        <p class="font-display italic text-[clamp(1.5rem,2.8vw,2.2rem)] leading-[1.1] text-ink">
+          {app.taglinePl}
+        </p>
+        <p class="mt-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">
+          en · {app.tagline}
+        </p>
+      </div>
     </div>
 
     <!-- intro line -->
-    <p class="mt-4 sm:mt-8 text-base sm:text-lg max-w-2xl text-ink-dim leading-relaxed">
+    <p class="mt-10 sm:mt-14 max-w-2xl text-base sm:text-lg text-ink-dim leading-relaxed">
       <span>{app.intro[0]}</span>
       <span class="block text-ink">{app.intro[1]}</span>
     </p>
 
-    <!-- ─── LOOP MACHINE: INPUT → LOOP → OUTPUT ─── -->
+    <!-- ─── LOOP MACHINE ─── -->
     <div class="relative mt-20 sm:mt-32 grid grid-cols-12 gap-4 sm:gap-8 items-stretch">
 
       <!-- INPUT -->
       <div class="col-span-12 md:col-span-3 flex flex-col justify-between gap-8 md:border-r border-bzzt/15 md:pr-6">
-        <div>
+        <div class="space-y-2">
           <p class="callout text-flag mb-4">▍ Input</p>
-          <p class="font-display text-[clamp(2rem,4.5vw,3rem)] leading-[1] text-ink relative">
-            <span class="text-flag mr-2 align-middle text-2xl">×</span>
-            <span class="relative inline-block">
-              <span class="line-through decoration-flag/80 decoration-2 italic text-ink-dim">{app.input}</span>
-            </span>
-          </p>
+          {app.input.map((line) => (
+            <p class="font-display text-[clamp(1.8rem,4vw,2.6rem)] leading-[1] text-ink">
+              <span class="text-flag mr-2 align-middle text-2xl">×</span>
+              <span class="line-through decoration-flag/80 decoration-2 italic text-ink-dim">{line}</span>
+            </p>
+          ))}
         </div>
 
-        <!-- supporting bullets as small marginalia -->
-        <ul class="hidden md:block space-y-1 callout text-ink-faint">
+        <ul class="hidden md:block space-y-1">
           {app.bullets.map((b) => (
-            <li class="flex items-baseline gap-2">
-              <span aria-hidden="true">·</span>
-              <span class="text-ink-dim normal-case tracking-normal font-sans text-sm italic">{b}</span>
-            </li>
+            <li class="text-ink-dim text-sm italic">· {b}</li>
           ))}
         </ul>
       </div>
 
-      <!-- arrow connector (desktop only, decorative) -->
-      <div class="hidden md:flex md:col-span-1 md:order-none items-center justify-center text-bzzt/50" aria-hidden="true">
+      <div class="hidden md:flex md:col-span-1 items-center justify-center text-bzzt/50" aria-hidden="true">
         <span class="text-3xl">→</span>
       </div>
 
       <!-- LOOP -->
       <div class="col-span-12 md:col-span-5 relative flex items-center justify-center">
         <p class="absolute top-0 left-0 callout text-bzzt">▍ Loop · live</p>
+        <span aria-hidden="true" class="absolute top-0 right-0 stamp text-bzzt/80">30 min</span>
 
         <svg
           viewBox="0 0 600 600"
-          class="w-full h-auto text-bzzt mt-8"
+          class="w-full h-auto text-bzzt mt-10"
           role="img"
           aria-label={`Loop: ${app.loopSteps.join(" → ")} → repeat`}
         >
@@ -99,99 +103,73 @@ const stepsOnRadar = [
 
           <circle cx="300" cy="300" r="290" fill="url(#bzzt-glow-3)" />
 
-          <!-- baseline rings -->
           <g stroke="currentColor" fill="none" stroke-opacity="0.18">
             <circle cx="300" cy="300" r="80" />
             <circle cx="300" cy="300" r="160" />
             <circle cx="300" cy="300" r="240" />
           </g>
 
-          <!-- crosshair -->
           <g stroke="currentColor" stroke-opacity="0.16" stroke-dasharray="2 6">
             <line x1="300" y1="60" x2="300" y2="540" />
             <line x1="60" y1="300" x2="540" y2="300" />
           </g>
 
-          <!-- pulse rings -->
           <g stroke="currentColor" fill="none" style="transform-origin: 300px 300px;">
             <circle cx="300" cy="300" r="270" stroke-width="1" style="animation: pulse-ring 3.6s ease-out infinite;"></circle>
             <circle cx="300" cy="300" r="270" stroke-width="1" style="animation: pulse-ring 3.6s ease-out 1.2s infinite;"></circle>
             <circle cx="300" cy="300" r="270" stroke-width="1" style="animation: pulse-ring 3.6s ease-out 2.4s infinite;"></circle>
           </g>
 
-          <!-- sweep -->
           <g style="transform-origin: 300px 300px; animation: spin 7s linear infinite;">
             <path d="M 300 300 L 580 300 A 280 280 0 0 0 440 60 Z" fill="url(#bzzt-sweep-3)" opacity="0.55" />
           </g>
 
-          <!-- circular loop arc with arrow (clockwise) -->
           <g stroke="currentColor" fill="none" stroke-opacity="0.45">
-            <path
-              d="M 460 180 A 220 220 0 0 1 460 420"
-              stroke-width="1.4"
-              stroke-dasharray="3 4"
-            />
+            <path d="M 460 180 A 220 220 0 0 1 460 420" stroke-width="1.4" stroke-dasharray="3 4" />
             <polygon points="460,420 454,408 466,408" fill="currentColor" fill-opacity="0.8" />
           </g>
 
-          <!-- step pings + labels at compass positions -->
           <g>
             {stepsOnRadar.map((s, i) => (
               <Fragment>
-                <circle
-                  cx={s.cx}
-                  cy={s.cy}
-                  r="7"
-                  fill="currentColor"
-                  style={`animation: blink-soft ${2.4 + i * 0.4}s ease-in-out ${i * 0.3}s infinite;`}
-                />
-                <circle
-                  cx={s.cx}
-                  cy={s.cy}
-                  r="14"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-opacity="0.5"
-                />
+                <circle cx={s.cx} cy={s.cy} r="7" fill="currentColor" style={`animation: blink-soft ${2.4 + i * 0.4}s ease-in-out ${i * 0.3}s infinite;`} />
+                <circle cx={s.cx} cy={s.cy} r="14" fill="none" stroke="currentColor" stroke-opacity="0.5" />
                 <text
                   x={s.tx}
                   y={s.ty}
                   text-anchor={s.anchor}
                   font-family="JetBrains Mono, monospace"
-                  font-size="13"
+                  font-size="14"
+                  font-weight="600"
                   letter-spacing="0.2em"
                   fill="currentColor"
-                  fill-opacity="0.9"
+                  fill-opacity="0.95"
                   style="text-transform: uppercase;"
-                >
-                  {s.label}
-                </text>
+                >{s.label}</text>
+                <text
+                  x={s.tx}
+                  y={s.ty + 14}
+                  text-anchor={s.anchor}
+                  font-family="JetBrains Mono, monospace"
+                  font-size="9"
+                  letter-spacing="0.18em"
+                  fill="currentColor"
+                  fill-opacity="0.5"
+                  style="text-transform: uppercase;"
+                >{s.pl}</text>
               </Fragment>
             ))}
           </g>
 
-          <!-- center -->
           <circle cx="300" cy="300" r="8" fill="currentColor" />
           <circle cx="300" cy="300" r="18" fill="none" stroke="currentColor" stroke-opacity="0.7" />
-          <text
-            x="300"
-            y="304"
-            text-anchor="middle"
-            font-family="JetBrains Mono, monospace"
-            font-size="9"
-            letter-spacing="0.22em"
-            fill="var(--color-bg)"
-            style="text-transform: uppercase;"
-          >·</text>
         </svg>
 
-        <!-- step list below the radar (desktop) — readable order -->
         <p class="absolute bottom-0 left-0 right-0 text-center callout text-bzzt/70">
           {app.loopSteps.join(" → ")} → <span class="italic">repeat</span>
         </p>
       </div>
 
-      <!-- arrow connector -->
       <div class="hidden md:flex md:col-span-1 items-center justify-center text-bzzt/50" aria-hidden="true">
         <span class="text-3xl">→</span>
       </div>
@@ -212,7 +190,7 @@ const stepsOnRadar = [
           class="group inline-flex items-center gap-2 callout text-ink hover:text-bzzt transition-colors"
         >
           <span aria-hidden="true" class="block w-8 dim-line text-ink-faint group-hover:text-bzzt transition-colors"></span>
-          <span>Open BZZT</span>
+          <span>App Store</span>
           <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">↗</span>
         </a>
       </div>

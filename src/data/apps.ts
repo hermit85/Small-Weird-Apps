@@ -3,14 +3,28 @@ export type AppId = "bzzt" | "cmok" | "nwd";
 export type AppData = {
   id: AppId;
   loop: string;
-  category: string;
+  /** Brand display name as the wordmark renders it on the publisher page */
   name: string;
+  /** Full / formal product name (used in catalogue + legal) */
+  fullName: string;
+  /** What the app actually is — short, honest framing */
+  category: string;
+  /** Primary brand line — Polish, as the product itself uses it */
+  taglinePl: string;
+  /** English rendering for the publisher page */
   tagline: string;
   intro: string[];
-  input: string;
+  /** What the app pushes back against (rejected pattern) */
+  input: string[];
+  /** Loop steps — Polish (canonical, as the product uses) */
+  loopStepsPl: string[];
+  /** Loop steps — English mapping for the diagram labels */
   loopSteps: string[];
+  /** Short descriptive bullets */
   bullets: string[];
+  /** Final reframed line */
   punchline: string;
+  /** Public link or null when not yet shippable */
   href: string | null;
   hrefLabel: string;
   accent: AppId;
@@ -20,16 +34,19 @@ export const apps: AppData[] = [
   {
     id: "bzzt",
     loop: "01",
-    category: "Dating",
     name: "BZZT",
-    tagline: "Dating as a live signal.",
+    fullName: "BZZT — Zone",
+    category: "Proximity",
+    taglinePl: "Poznaj kogoś obok. Twarzą w twarz.",
+    tagline: "Meet someone nearby. Face to face.",
     intro: [
-      "Most dating apps are built for browsing.",
-      "BZZT is built for noticing someone now.",
+      "Most apps for meeting people are built for browsing.",
+      "BZZT is built for noticing someone now — with a 30-minute window to actually meet.",
     ],
-    input: "profile shopping",
-    loopSteps: ["nearby", "signal", "spark", "hello"],
-    bullets: ["Nearby.", "Mutual.", "Time-sensitive.", "Actually human."],
+    input: ["endless swiping", "profile shopping"],
+    loopStepsPl: ["radar", "sygnał", "iskra", "spotkanie"],
+    loopSteps: ["radar", "signal", "spark", "meet"],
+    bullets: ["Nearby.", "Anonymous until mutual.", "30 minutes.", "Face to face."],
     punchline: "Less swiping. More actual hello.",
     href: "https://apps.apple.com/pl/app/bzzt-zone/id6760717645?l=pl",
     hrefLabel: "Open BZZT",
@@ -38,34 +55,40 @@ export const apps: AppData[] = [
   {
     id: "cmok",
     loop: "02",
-    category: "Safety",
-    name: "CMOK",
-    tagline: "Safety as a daily reassurance loop.",
+    name: "cmok",
+    fullName: "cmok",
+    category: "Daily ritual",
+    taglinePl: "Codzienny znak, że jest OK.",
+    tagline: "A daily sign that everything is OK.",
     intro: [
       "Most safety apps start when something goes wrong.",
-      "CMOK starts earlier — with a small daily sign between people who care.",
+      "cmok starts earlier — with one tap a day, between people who already care.",
     ],
-    input: "panic theatre",
-    loopSteps: ["daily sign", "close circle", "reassurance"],
-    bullets: ["Quiet.", "Private.", "Human."],
+    input: ["panic theatre", "did you call mom?"],
+    loopStepsPl: ["znak", "echo", "spokój"],
+    loopSteps: ["sign", "echo", "reassurance"],
+    bullets: ["One tap.", "No chat.", "Just presence."],
     punchline: "Less panic. More presence.",
-    href: null,
-    hrefLabel: "Open CMOK",
+    href: "https://apps.apple.com/pl/app/cmok/id6762090888",
+    hrefLabel: "Open cmok",
     accent: "cmok",
   },
   {
     id: "nwd",
     loop: "03",
-    category: "Racing",
     name: "NWD",
-    tagline: "Offline racing as a real-world game.",
+    fullName: "New World Disorder",
+    category: "Gravity league",
+    taglinePl: "Wjedź. Zjedź. Wróć na górę.",
+    tagline: "Ride in. Ride down. Come back up.",
     intro: [
       "Riders already race the same trails.",
-      "NWD turns that into a league.",
+      "NWD turns that into a verified, seasonal gravity league.",
     ],
-    input: "training log / event calendar",
-    loopSteps: ["gate", "ride", "time", "rank", "repeat"],
-    bullets: ["Gate.", "Ride.", "Time.", "Rank.", "Repeat."],
+    input: ["training log", "event calendar"],
+    loopStepsPl: ["bramka", "rozpęd", "meta", "tablica", "loop"],
+    loopSteps: ["gate", "descent", "finish", "leaderboard", "repeat"],
+    bullets: ["Official trails.", "GPS-verified.", "Seasonal podiums."],
     punchline: "Not a tracker. A gravity league.",
     href: "https://new-world-disorder.vercel.app/",
     hrefLabel: "Open NWD",

@@ -2,6 +2,20 @@
 import { apps } from "../../data/apps.ts";
 const app = apps.find((a) => a.id === "nwd")!;
 
+// the loop is a downhill arc: start high, drop, finish low, climb back up.
+// 5 stations placed on the descent/ascent profile.
+const stations = app.loopSteps.map((label, i) => {
+  const pl = app.loopStepsPl[i];
+  const xs = [60, 195, 300, 405, 540];
+  const ys = [60, 210, 270, 210, 60];
+  return {
+    label,
+    pl,
+    x: xs[i],
+    y: ys[i],
+  };
+});
+
 const leaderboard = [
   { rank: 1, tag: "MTB.LD7", time: "01:38.42", delta: "leader" },
   { rank: 2, tag: "GATE_K", time: "01:39.07", delta: "+0.65" },
@@ -17,28 +31,36 @@ const leaderboard = [
   <!-- archive bar -->
   <div class="relative border-b border-line py-2.5">
     <div class="mx-auto max-w-[1600px] px-5 sm:px-8 flex items-center justify-between font-mono text-[10px] tracking-[0.28em] uppercase text-nwd/80">
-      <span>▍ Machine 03 / Gate · Racing</span>
-      <span class="hidden md:inline">trail · WAS-001 / gates · armed / mode · league</span>
+      <span>▍ Machine 03 / Gravity · MTB league</span>
+      <span class="hidden md:inline">official trails · GPS verified · seasonal podiums</span>
       <span>NWD.003 ▌</span>
     </div>
   </div>
 
   <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8 py-20 sm:py-32">
 
-    <!-- header -->
+    <!-- header: NWD wordmark — heavyweight serif uppercase tight tracking -->
     <div class="grid grid-cols-12 gap-4 sm:gap-8 items-end">
-      <h2 class="col-span-12 md:col-span-8 font-display tracking-[-0.05em] leading-[0.82] select-none">
-        <span class="block text-[clamp(5rem,22vw,22rem)] text-nwd">
+      <div class="col-span-12 md:col-span-8">
+        <h2 class="font-display tracking-[-0.05em] leading-[0.82] text-nwd select-none text-[clamp(5rem,22vw,22rem)]">
           NWD<span class="text-ink">.</span>
-        </span>
-      </h2>
-      <p class="col-span-12 md:col-span-4 font-display italic text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.05] text-ink md:pb-6">
-        {app.tagline}
-      </p>
+        </h2>
+        <p class="mt-2 font-mono text-[11px] tracking-[0.32em] uppercase text-nwd/70">
+          {app.fullName} · liga gravity
+        </p>
+      </div>
+      <div class="col-span-12 md:col-span-4 md:pb-4">
+        <p class="font-display italic text-[clamp(1.5rem,2.8vw,2.2rem)] leading-[1.1] text-ink">
+          {app.taglinePl}
+        </p>
+        <p class="mt-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">
+          en · {app.tagline}
+        </p>
+      </div>
     </div>
 
     <!-- intro line -->
-    <p class="mt-4 sm:mt-8 max-w-2xl text-base sm:text-lg text-ink-dim leading-relaxed">
+    <p class="mt-10 sm:mt-14 max-w-2xl text-base sm:text-lg text-ink-dim leading-relaxed">
       <span>{app.intro[0]}</span>
       <span class="block text-ink">{app.intro[1]}</span>
     </p>
@@ -48,84 +70,130 @@ const leaderboard = [
 
       <!-- INPUT -->
       <div class="col-span-12 md:col-span-3 flex flex-col justify-between gap-8 md:border-r border-nwd/15 md:pr-6">
-        <div>
+        <div class="space-y-2">
           <p class="callout text-flag mb-4">▍ Input</p>
-          <p class="font-display text-[clamp(2rem,4.5vw,3rem)] leading-[1] text-ink">
-            <span class="text-flag mr-2 align-middle text-2xl">×</span>
-            <span class="line-through decoration-flag/80 decoration-2 italic text-ink-dim">training log</span>
-          </p>
-          <p class="mt-3 font-display text-[clamp(2rem,4.5vw,3rem)] leading-[1] text-ink">
-            <span class="text-flag mr-2 align-middle text-2xl">×</span>
-            <span class="line-through decoration-flag/80 decoration-2 italic text-ink-dim">event calendar</span>
-          </p>
+          {app.input.map((line) => (
+            <p class="font-display text-[clamp(1.8rem,4vw,2.6rem)] leading-[1] text-ink">
+              <span class="text-flag mr-2 align-middle text-2xl">×</span>
+              <span class="line-through decoration-flag/80 decoration-2 italic text-ink-dim">{line}</span>
+            </p>
+          ))}
         </div>
 
-        <ul class="hidden md:block space-y-1 callout text-ink-faint">
+        <ul class="hidden md:block space-y-1">
           {app.bullets.map((b) => (
-            <li class="flex items-baseline gap-2">
-              <span aria-hidden="true">·</span>
-              <span class="text-ink-dim normal-case tracking-normal font-sans text-sm italic">{b}</span>
-            </li>
+            <li class="text-ink-dim text-sm italic">· {b}</li>
           ))}
         </ul>
       </div>
 
-      <!-- arrow -->
       <div class="hidden md:flex md:col-span-1 items-center justify-center text-nwd/50" aria-hidden="true">
         <span class="text-3xl">→</span>
       </div>
 
-      <!-- LOOP — race-track flow with return arc + timer + leaderboard -->
-      <div class="col-span-12 md:col-span-5 relative flex flex-col gap-6 md:gap-8">
-        <p class="callout text-nwd">▍ Loop · live</p>
+      <!-- LOOP — descent/ascent profile: gate (top) ↓ descent ↓ finish ↑ leaderboard ↑ repeat (top) -->
+      <div class="col-span-12 md:col-span-5 relative flex flex-col gap-6">
+        <div class="flex items-center justify-between">
+          <p class="callout text-nwd">▍ Loop · live</p>
+          <span aria-hidden="true" class="stamp text-nwd/80">verified</span>
+        </div>
 
-        <!-- horizontal flow with loop-back arc -->
-        <div class="relative pt-2 pb-12">
-          <ol class="flex items-center justify-between font-mono text-[11px] tracking-[0.18em] uppercase">
-            {app.loopSteps.map((step, i) => (
+        <div class="relative">
+          <svg
+            viewBox="0 0 600 320"
+            class="w-full h-auto text-nwd"
+            role="img"
+            aria-label={`Loop: ${app.loopSteps.join(" → ")} (and back to gate)`}
+          >
+            <!-- mountain profile (subtle), filled -->
+            <path
+              d="M 0 320 L 60 60 L 195 210 L 300 270 L 405 210 L 540 60 L 600 320 Z"
+              fill="currentColor"
+              fill-opacity="0.05"
+            />
+            <!-- descent + ascent path -->
+            <path
+              d="M 60 60 L 195 210 L 300 270 L 405 210 L 540 60"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-opacity="0.55"
+              fill="none"
+            />
+            <!-- return arc (dashed): gate ⤴ from repeat -->
+            <path
+              d="M 540 60 Q 300 -20, 60 60"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-opacity="0.5"
+              stroke-dasharray="3 5"
+              fill="none"
+            />
+            <!-- arrow on return arc -->
+            <polygon points="60,60 70,55 70,65" fill="currentColor" fill-opacity="0.7" />
+
+            <!-- "wróć na górę" caption above the arc -->
+            <text
+              x="300"
+              y="14"
+              text-anchor="middle"
+              font-family="JetBrains Mono, monospace"
+              font-size="10"
+              letter-spacing="0.22em"
+              fill="currentColor"
+              fill-opacity="0.55"
+              style="text-transform: uppercase;"
+            >wróć na górę</text>
+
+            <!-- 5 stations -->
+            {stations.map((s, i) => (
               <Fragment>
-                <li class="flex flex-col items-center gap-2 relative z-10">
-                  <span class="block w-3 h-3 rounded-full bg-nwd shadow-[0_0_12px_var(--color-nwd)]" style={`animation: blink-soft ${2 + i * 0.3}s ease-in-out ${i * 0.2}s infinite;`}></span>
-                  <span class="text-nwd whitespace-nowrap">{step}</span>
-                  <span class="text-ink-faint text-[9px]">0{i + 1}</span>
-                </li>
-                {i < app.loopSteps.length - 1 && (
-                  <li aria-hidden="true" class="flex-1 mx-1 border-t border-dashed border-nwd/40 mb-7"></li>
-                )}
+                <circle
+                  cx={s.x}
+                  cy={s.y}
+                  r="6"
+                  fill="currentColor"
+                  style={`animation: blink-soft ${2 + i * 0.3}s ease-in-out ${i * 0.2}s infinite;`}
+                />
+                <circle cx={s.x} cy={s.y} r="14" fill="none" stroke="currentColor" stroke-opacity="0.4" />
+                <text
+                  x={s.x}
+                  y={s.y > 200 ? s.y + 32 : s.y - 22}
+                  text-anchor="middle"
+                  font-family="JetBrains Mono, monospace"
+                  font-weight="600"
+                  font-size="13"
+                  letter-spacing="0.2em"
+                  fill="currentColor"
+                  fill-opacity="0.95"
+                  style="text-transform: uppercase;"
+                >{s.label}</text>
+                <text
+                  x={s.x}
+                  y={s.y > 200 ? s.y + 46 : s.y - 8}
+                  text-anchor="middle"
+                  font-family="JetBrains Mono, monospace"
+                  font-size="9"
+                  letter-spacing="0.18em"
+                  fill="currentColor"
+                  fill-opacity="0.5"
+                  style="text-transform: uppercase;"
+                >{s.pl}</text>
               </Fragment>
             ))}
-          </ol>
-
-          <!-- return arc (goes from last item back to first, below the row) -->
-          <svg
-            aria-hidden="true"
-            class="absolute left-0 right-0 -bottom-2 w-full h-12 text-nwd/55 overflow-visible"
-            viewBox="0 0 100 14"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M 98 0 C 95 14, 5 14, 2 0"
-              stroke="currentColor"
-              stroke-width="0.6"
-              stroke-dasharray="0.8 1.2"
-              fill="none"
-              vector-effect="non-scaling-stroke"
-            />
-            <polygon
-              points="2,0 5,2 5,-2"
-              fill="currentColor"
-              vector-effect="non-scaling-stroke"
-            />
           </svg>
         </div>
 
-        <!-- TIMER + leaderboard, anchored to the loop -->
+        <p class="text-center callout text-nwd/70">
+          {app.loopSteps.join(" → ")} → <span class="italic">repeat</span>
+        </p>
+
+        <!-- secondary HUD: timer + leaderboard, anchored below the loop -->
         <div class="grid grid-cols-12 gap-4 mt-4 items-end">
           <div class="col-span-7">
             <p class="callout text-nwd/70 mb-2">▍ Time · live</p>
             <p
               class="font-mono font-medium text-nwd leading-none tracking-[-0.04em] tabular-nums"
-              style="font-size: clamp(3rem, 9vw, 7rem); animation: timer 1.4s ease-in-out infinite;"
+              style="font-size: clamp(2.6rem, 8vw, 6rem); animation: timer 1.4s ease-in-out infinite;"
             >01:42<span class="text-nwd/70">.</span>07</p>
           </div>
           <ol class="col-span-5 font-mono text-[11px] text-ink divide-y divide-nwd/15 border-y border-nwd/30">
@@ -142,7 +210,6 @@ const leaderboard = [
         </div>
       </div>
 
-      <!-- arrow -->
       <div class="hidden md:flex md:col-span-1 items-center justify-center text-nwd/50" aria-hidden="true">
         <span class="text-3xl">→</span>
       </div>
