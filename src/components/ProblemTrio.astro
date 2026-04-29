@@ -13,8 +13,8 @@ const problems = [
 
     <ol class="space-y-12 sm:space-y-20">
       {problems.map((p) => (
-        <li class="grid grid-cols-12 gap-4 sm:gap-8 items-baseline border-b border-line-soft pb-8 sm:pb-12">
-          <span class={`col-span-12 md:col-span-2 font-mono text-[11px] tracking-[0.28em] uppercase text-${p.accent}`}>
+        <li class="grid grid-cols-12 gap-4 sm:gap-8 items-start border-b border-line-soft pb-8 sm:pb-12">
+          <span class={`col-span-12 md:col-span-2 font-mono text-[11px] tracking-[0.28em] uppercase text-${p.accent} md:pt-3`}>
             {p.n} · {p.category}
           </span>
           <p class="col-span-12 md:col-span-10 font-display text-[clamp(2rem,7vw,5.5rem)] leading-[0.96] text-ink">
