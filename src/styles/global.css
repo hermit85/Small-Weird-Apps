@@ -117,7 +117,10 @@
 
   [data-motion-visual] {
     transform: translate3d(0, var(--visual-drift, 0), 0);
-    transition: transform var(--motion-slow) var(--motion-ease-apple);
+    /* Parallax tracks scroll via rAF in MotionPolish; a long transition
+       here makes the visuals lag almost a second behind the page. Keep
+       the smoothing very short so the drift feels coupled to the scroll. */
+    transition: transform 120ms linear;
     will-change: transform;
   }
 
@@ -142,9 +145,11 @@
      reveal) gets `.is-visible`, the dashoffset transitions to 0 and the
      trail line draws itself in. */
   .js .trail-draw {
-    stroke-dasharray: 700;
-    stroke-dashoffset: 700;
-    transition: stroke-dashoffset 1.1s var(--motion-ease-apple) 0.2s;
+    /* path uses pathLength="500" so dasharray normalises regardless
+       of the actual SVG path length */
+    stroke-dasharray: 500;
+    stroke-dashoffset: 500;
+    transition: stroke-dashoffset 1.05s var(--motion-ease-apple) 0.18s;
   }
   .js [data-motion-visual] > .is-visible .trail-draw {
     stroke-dashoffset: 0;
@@ -177,11 +182,13 @@
   50%      { transform: scale(1.04);  opacity: 0.78; }
 }
 
-/* class 1 — soft entrance reveal, used once on enter for spark / OK
-   sent / verified stamp / live time readouts inside the visuals. */
+/* class 1 — soft entrance reveal. Drops the filter:blur step we had
+   earlier; on mobile/Safari animating a backdrop filter pinned the
+   compositor and the reveal jittered. opacity + transform are GPU
+   cheap and read just as 'soft'. */
 @keyframes motion-soft-reveal {
-  from { opacity: 0; transform: translate3d(0, 8px, 0) scale(0.96); filter: blur(4px); }
-  to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0); }
+  from { opacity: 0; transform: translate3d(0, 8px, 0) scale(0.96); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
 
 /* class 1 — route draw, used once on the NWD trail line */

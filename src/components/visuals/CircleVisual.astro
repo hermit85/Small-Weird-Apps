@@ -47,11 +47,14 @@ const sinA = Math.sin(angleToReply);
 const lineStart = { x: cx + (motherR + 2) * cosA,    y: cy + (motherR + 2) * sinA    };
 const lineEnd   = { x: reply.x - (haloR + 4) * cosA, y: reply.y - (haloR + 4) * sinA };
 
-// 'ok ✓' badge floats outside the reply dot, away from centre
-const badgeDist = haloR + 22;
+// 'ok ✓' badge — pill anchored to Sarah's halo top-right corner,
+// like a notification chip on a circular avatar. Position is computed
+// at -45° on the halo edge so it always reads as 'attached' to her.
+const okAngle = -Math.PI / 4;            // up-right
+const okOffset = haloR - 2;              // sit slightly inside the halo edge
 const badge = {
-  x: reply.x + badgeDist * cosA,
-  y: reply.y + badgeDist * sinA,
+  x: reply.x + okOffset * Math.cos(okAngle),
+  y: reply.y + okOffset * Math.sin(okAngle),
 };
 ---
 
@@ -117,16 +120,22 @@ const badge = {
       style="text-transform: uppercase;"
     >{reply.label}</text>
 
-    <!-- 'ok ✓' badge floating outside Sarah's halo — reveals with the parent SVG -->
-    <g>
+    <!-- 'ok ✓' badge — pill anchored to Sarah's halo top-right.
+         Filled accent pill with bg-coloured glyph reads like a status
+         chip clipped onto the halo. -->
+    <g transform={`translate(${badge.x}, ${badge.y})`}>
+      <!-- subtle bg-color outline so the pill stays clearly separate
+           from Sarah's filled disc when they overlap -->
+      <rect x="-17" y="-9" width="34" height="18" rx="9" fill="var(--color-bg)" />
+      <rect x="-17" y="-9" width="34" height="18" rx="9" fill="currentColor" />
       <text
-        x={badge.x} y={badge.y + 4}
+        x="0" y="3.5"
         text-anchor="middle"
         font-family="JetBrains Mono, monospace"
         font-weight="700"
-        font-size="11"
-        letter-spacing="0.18em"
-        fill="currentColor"
+        font-size="10"
+        letter-spacing="0.1em"
+        fill="var(--color-bg)"
         style="text-transform: uppercase;"
       >ok ✓</text>
     </g>
