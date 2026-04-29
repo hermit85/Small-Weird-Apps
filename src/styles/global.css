@@ -102,30 +102,29 @@
 /* ─── motion class 2 — ambient (only inside app visuals) ─────
    These keyframes are deliberately small in amplitude. */
 
-/* radar sweep — a single gentle rotation, used only on BZZT */
+/* radar sweep — a single gentle rotation; only on BZZT */
 @keyframes motion-radar-sweep {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
 
-/* soft pulse — used on CMOK center halo + spark glows.
+/* soft pulse — used on the CMOK center halo only.
    Very small scale change, slow timing. */
 @keyframes motion-soft-pulse {
-  0%, 100% { transform: scale(1);     opacity: 0.55; }
-  50%      { transform: scale(1.04);  opacity: 0.85; }
+  0%, 100% { transform: scale(1);     opacity: 0.42; }
+  50%      { transform: scale(1.04);  opacity: 0.78; }
 }
 
-/* breathing — a 2px float used on the CMOK center 'tap' dot */
-@keyframes motion-breathe {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-2px); }
+/* class 1 — soft entrance reveal, used once on enter for spark / OK
+   sent / verified stamp / live time readouts inside the visuals. */
+@keyframes motion-soft-reveal {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
-/* ripple — single one-shot ring expansion + fade
-   (used on the BZZT mutual spark and the CMOK ok-sent reply) */
-@keyframes motion-ripple {
-  0%   { transform: scale(0.55); opacity: 0.85; }
-  100% { transform: scale(1.2);  opacity: 0; }
+/* class 1 — route draw, used once on the NWD trail line */
+@keyframes motion-route-draw {
+  to { stroke-dashoffset: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

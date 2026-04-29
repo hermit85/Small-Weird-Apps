@@ -1,13 +1,10 @@
 ---
 // CMOK — close circle around a daily tap.
 // Motion contract:
-//   AMBIENT: center TAP dot breathes (motion-breathe, 5s).
-//   AMBIENT: center halo soft-pulses (motion-soft-pulse, 5s).
-//   AMBIENT: ok-sent reply node soft-pulses subtly (motion-soft-pulse, 6s).
-//   STATIC:  six other people-dots, dashed reply line, HUD chip, OK SENT stamp.
-// Rationale:
-//   CMOK is calm. Only the centre breathes; the close circle is a steady
-//   ring of people. The OK reply is the only other live element.
+//   AMBIENT: ONE slow soft-pulse on the centre TAP halo (5s).
+//   ENTER:   OK reply + 'OK SENT' stamp fade in once on first paint.
+//   STATIC:  TAP centre dot, six other people-dots, dashed reply line,
+//            HUD chip.
 const cx = 240;
 const cy = 240;
 
@@ -22,7 +19,6 @@ const people = Array.from({ length: peopleCount }, (_, i) => {
   };
 });
 
-// pick second-from-top as the OK reply node
 const okIndex = 1;
 ---
 
@@ -35,43 +31,37 @@ const okIndex = 1;
   >
     <defs>
       <radialGradient id="cmok-glow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="currentColor" stop-opacity="0.26" />
+        <stop offset="0%"  stop-color="currentColor" stop-opacity="0.32" />
         <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
       </radialGradient>
     </defs>
 
     <circle cx={cx} cy={cy} r="230" fill="url(#cmok-glow)" />
 
-    <!-- close-circle ring — STATIC -->
-    <circle cx={cx} cy={cy} r={peopleRadius} stroke="currentColor" stroke-opacity="0.22" fill="none" />
+    <!-- close-circle ring — STATIC, brighter (0.22 → 0.32) -->
+    <circle cx={cx} cy={cy} r={peopleRadius} stroke="currentColor" stroke-opacity="0.32" fill="none" />
 
     <!-- subtle outer guide — STATIC -->
-    <circle cx={cx} cy={cy} r="195" stroke="currentColor" stroke-opacity="0.10" fill="none" stroke-dasharray="2 6" />
+    <circle cx={cx} cy={cy} r="195" stroke="currentColor" stroke-opacity="0.12" fill="none" stroke-dasharray="2 6" />
 
     <!-- subtle line: tap → OK reply — STATIC -->
     <line
       x1={cx} y1={cy}
       x2={people[okIndex].x} y2={people[okIndex].y}
-      stroke="currentColor" stroke-opacity="0.5"
+      stroke="currentColor" stroke-opacity="0.55"
       stroke-width="1.2" stroke-dasharray="3 4"
     />
 
-    <!-- close-circle people — STATIC dots, no per-dot pulse -->
+    <!-- close-circle people — STATIC dots, brighter (0.78 → 0.88) -->
     <g>
       {people.map((p, i) => i !== okIndex && (
-        <circle cx={p.x} cy={p.y} r="9" fill="currentColor" fill-opacity="0.78" />
+        <circle cx={p.x} cy={p.y} r="9" fill="currentColor" fill-opacity="0.88" />
       ))}
     </g>
 
-    <!-- ok reply node — single subtle halo soft-pulse -->
-    <g>
-      <circle
-        cx={people[okIndex].x} cy={people[okIndex].y}
-        r="32"
-        fill="none"
-        stroke="currentColor" stroke-opacity="0.45" stroke-width="1"
-        style={`transform-origin: ${people[okIndex].x}px ${people[okIndex].y}px; animation: motion-soft-pulse 6s var(--motion-ease-ambient) 0.5s infinite;`}
-      />
+    <!-- ok reply — one-shot reveal -->
+    <g style={`transform-origin: ${people[okIndex].x}px ${people[okIndex].y}px; animation: motion-soft-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;`}>
+      <circle cx={people[okIndex].x} cy={people[okIndex].y} r="32" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="1" />
       <circle cx={people[okIndex].x} cy={people[okIndex].y} r="14" fill="currentColor" />
       <text
         x={people[okIndex].x} y={people[okIndex].y + 4}
@@ -84,24 +74,20 @@ const okIndex = 1;
       >ok ✓</text>
     </g>
 
-    <!-- center: TAP — soft halo + breathing dot -->
+    <!-- centre TAP — one ambient soft-pulse on the halo only -->
     <circle
       cx={cx} cy={cy} r="56"
       fill="none"
-      stroke="currentColor" stroke-opacity="0.30"
-      style="transform-origin: 240px 240px; animation: motion-soft-pulse 5s var(--motion-ease-ambient) infinite;"
+      stroke="currentColor" stroke-opacity="0.38"
+      style="transform-origin: 240px 240px; animation: motion-soft-pulse 5s cubic-bezier(0.45, 0, 0.55, 1) infinite;"
     />
-    <circle
-      cx={cx} cy={cy} r="42"
-      fill="currentColor"
-      style="animation: motion-breathe 5s var(--motion-ease-ambient) infinite;"
-    />
+    <circle cx={cx} cy={cy} r="44" fill="currentColor" />
     <text
       x={cx} y={cy + 6}
       text-anchor="middle"
       font-family="JetBrains Mono, monospace"
       font-weight="700"
-      font-size="13"
+      font-size="14"
       letter-spacing="0.22em"
       fill="var(--color-bg)"
       style="text-transform: uppercase;"
@@ -109,16 +95,20 @@ const okIndex = 1;
   </svg>
 
   <!-- HUD — STATIC -->
-  <div class="absolute top-2 left-2 font-mono text-[9px] tracking-[0.28em] uppercase text-cmok/85 flex items-center gap-1.5">
+  <div class="absolute top-2 left-2 font-mono text-[10px] tracking-[0.28em] uppercase text-cmok flex items-center gap-1.5">
     <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-cmok shadow-[0_0_6px_var(--color-cmok)]"></span>
     daily · 18:42
   </div>
 
-  <div class="absolute top-2 right-2 inline-flex items-center gap-2 px-2.5 py-1 border border-cmok/85 text-cmok font-mono text-[9px] tracking-[0.28em] uppercase">
+  <!-- OK SENT stamp — one-shot reveal -->
+  <div
+    class="absolute top-2 right-2 inline-flex items-center gap-2 px-2.5 py-1 border border-cmok text-cmok font-mono text-[10px] tracking-[0.28em] uppercase"
+    style="animation: motion-soft-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;"
+  >
     ok sent
   </div>
 
-  <div class="absolute bottom-3 right-3 font-mono text-[9px] tracking-[0.28em] uppercase text-cmok/60">
+  <div class="absolute bottom-3 right-3 font-mono text-[10px] tracking-[0.28em] uppercase text-cmok/65">
     1 reply
   </div>
 </div>
