@@ -37,12 +37,14 @@ const people = Array.from({ length: peopleCount }, (_, i) => {
   id="cmok"
   class="relative isolate overflow-hidden border-t border-line scroll-mt-20 world-cmok noise"
 >
-  <!-- archive bar -->
+  <!-- machine bar -->
   <div class="relative border-b border-line py-2.5">
     <div class="mx-auto max-w-[1600px] px-5 sm:px-8 flex items-center justify-between font-mono text-[10px] tracking-[0.28em] uppercase text-cmok/80">
-      <span>▍ Machine 02 / Daily ritual · Closeness</span>
-      <span class="hidden md:inline">one tap · daily · close circle · soft</span>
-      <span>cmok.002 ▌</span>
+      <span>▍ Machine 02 · Reassurance / Closeness</span>
+      <span class="hidden md:inline">
+        <span class="text-cmok">●</span> status · ok sent
+      </span>
+      <span>~ 2 sec · daily ▌</span>
     </div>
   </div>
 
@@ -102,8 +104,8 @@ const people = Array.from({ length: peopleCount }, (_, i) => {
 
       <!-- LOOP — close circle: ONE big breathing dot in center, small dots around -->
       <div class="col-span-12 md:col-span-5 relative flex items-center justify-center">
-        <p class="absolute top-0 left-0 callout text-cmok">▍ Loop · once a day</p>
-        <span aria-hidden="true" class="absolute top-0 right-0 stamp text-cmok/80">~ 2 sec</span>
+        <p class="absolute top-0 left-0 callout text-cmok">▍ Loop core</p>
+        <span aria-hidden="true" class="absolute top-0 right-0 stamp text-cmok/80">ok sent</span>
 
         <svg
           viewBox="0 0 600 600"
@@ -188,6 +190,7 @@ const people = Array.from({ length: peopleCount }, (_, i) => {
       <div class="col-span-12 md:col-span-2 flex flex-col justify-between gap-8 md:border-l border-cmok/15 md:pl-6">
         <div>
           <p class="callout text-cmok mb-4">▍ Output</p>
+          <p class="font-mono text-[10px] tracking-[0.32em] uppercase text-cmok/70 mb-4">⌁ status · sent</p>
           <p class="font-display italic text-[clamp(1.8rem,3vw,2.4rem)] leading-[1.05] text-ink">
             {app.punchline}
           </p>

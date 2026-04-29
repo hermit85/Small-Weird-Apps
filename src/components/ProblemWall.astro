@@ -1,28 +1,28 @@
 ---
-const problems = [
+const reports = [
   {
     n: "01",
-    became: "Dating became",
-    accuse: "profile shopping.",
+    cat: "Dating",
+    charge: "profile shopping.",
+    status: "stale",
+    diagnosis: "loop got stuck in browse mode.",
     accent: "bzzt",
-    field: "DATING / D.OBS-01",
-    stamp: "stale",
   },
   {
     n: "02",
-    became: "Safety became",
-    accuse: "panic theatre.",
+    cat: "Safety",
+    charge: "panic theatre.",
+    status: "noisy",
+    diagnosis: "only fires after the fact.",
     accent: "cmok",
-    field: "SAFETY / S.OBS-02",
-    stamp: "noisy",
   },
   {
     n: "03",
-    became: "Racing became",
-    accuse: "either a calendar event or a boring training log.",
+    cat: "Racing",
+    charge: "training log / event dependency.",
+    status: "thin",
+    diagnosis: "no gravity, no game.",
     accent: "nwd",
-    field: "RACING / R.OBS-03",
-    stamp: "thin",
   },
 ] as const;
 ---
@@ -36,91 +36,82 @@ const problems = [
     style="background-image: repeating-linear-gradient(135deg, transparent 0 30px, var(--color-flag) 30px 31px);"
   ></div>
 
-  <!-- intro band -->
+  <!-- masthead -->
   <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8 py-14 sm:py-20">
-    <div class="flex items-center justify-between gap-4">
-      <p class="callout text-flag">▍ Evidence wall</p>
+    <div class="flex items-baseline justify-between gap-4 mb-6">
+      <p class="font-mono text-[11px] tracking-[0.32em] uppercase text-flag">▍ Category failure report</p>
       <span aria-hidden="true" class="flex-1 h-px bg-line"></span>
-      <p class="callout text-ink-faint">B.02 · 2026</p>
+      <p class="font-mono text-[11px] tracking-[0.28em] uppercase text-ink-faint">filed · 2026</p>
     </div>
-    <h2 class="mt-4 font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-[0.95] tracking-tight text-ink max-w-5xl">
-      Three loops <span class="italic text-ink-dim">that quietly broke.</span>
+
+    <h2 class="font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-[0.95] tracking-tight text-ink max-w-5xl">
+      Three categories
+      <span class="italic text-ink-dim">that quietly broke.</span>
     </h2>
   </div>
 
-  <!-- THREE ACCUSATIONS — full-bleed, stacked, huge -->
+  <!-- THREE REPORTS — case file format -->
   <ol class="relative">
-    {problems.map((p) => (
-      <li class={`relative border-t border-line py-16 sm:py-28`}>
-        <div class="mx-auto max-w-[1600px] px-5 sm:px-8 grid grid-cols-12 gap-4 sm:gap-8">
+    {reports.map((r) => (
+      <li class="relative border-t border-line">
+        <div class="mx-auto max-w-[1600px] px-5 sm:px-8 py-14 sm:py-20">
+          <div class="grid grid-cols-12 gap-4 sm:gap-8">
 
-          <!-- left margin: archive code -->
-          <div class="col-span-12 md:col-span-2 flex md:flex-col items-baseline gap-3 md:gap-4">
-            <span class={`font-display text-[clamp(3.5rem,7vw,6rem)] leading-[0.85] text-${p.accent}`}>
-              {p.n}
-            </span>
-            <span class="label text-ink-faint">{p.field}</span>
-          </div>
-
-          <!-- main: the accusation -->
-          <div class="col-span-12 md:col-span-9 md:col-start-3">
-            <p class="callout text-ink-faint mb-4 sm:mb-6">▍ Accusation №{p.n}</p>
-            <p class="font-display text-[clamp(2.6rem,9.5vw,9rem)] leading-[0.95] tracking-tight text-ink">
-              {p.became}
-              <span class="block relative italic">
-                <span class={`text-${p.accent}`}>“</span>{p.accuse}<span class={`text-${p.accent}`}>”</span>
-                <!-- diagonal slash -->
-                <svg
-                  aria-hidden="true"
-                  class="absolute inset-0 w-full h-full overflow-visible pointer-events-none"
-                  preserveAspectRatio="none"
-                  viewBox="0 0 100 100"
-                >
-                  <line x1="-2" y1="100" x2="100" y2="0" stroke="var(--color-flag)" stroke-width="0.6" stroke-opacity="0.7" vector-effect="non-scaling-stroke"/>
-                </svg>
+            <!-- left: report header -->
+            <header class="col-span-12 md:col-span-3 flex md:flex-col items-baseline md:items-start gap-3 md:gap-2">
+              <span class="font-mono text-[11px] tracking-[0.28em] uppercase text-flag">▍ Report</span>
+              <span class={`font-display text-[clamp(3.5rem,7vw,6rem)] leading-[0.85] text-${r.accent}`}>
+                {r.n}
               </span>
-            </p>
-          </div>
+              <span class="font-mono text-[11px] tracking-[0.32em] uppercase text-ink-faint">{r.cat}</span>
+            </header>
 
-          <!-- right: stamp -->
-          <div class="col-span-12 md:col-span-1 md:col-start-12 flex md:justify-end items-start mt-2 md:mt-0">
-            <span class="stamp text-flag whitespace-nowrap">× {p.stamp}</span>
+            <!-- main: structured charge form -->
+            <dl class="col-span-12 md:col-span-7 md:col-start-4 grid grid-cols-12 gap-x-4 gap-y-3 items-baseline">
+              <dt class="col-span-3 md:col-span-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint pt-3">Charge</dt>
+              <dd class="col-span-9 md:col-span-10">
+                <p class="font-display italic text-[clamp(2.2rem,7vw,6rem)] leading-[0.96] text-ink">
+                  <span class={`text-${r.accent}`}>“</span>{r.charge}<span class={`text-${r.accent}`}>”</span>
+                </p>
+              </dd>
+
+              <dt class="col-span-3 md:col-span-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint mt-4">Status</dt>
+              <dd class="col-span-9 md:col-span-10 mt-4">
+                <span class="stamp text-flag uppercase">× {r.status}</span>
+              </dd>
+
+              <dt class="col-span-3 md:col-span-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint mt-2">Diagnosis</dt>
+              <dd class="col-span-9 md:col-span-10 mt-2 font-display italic text-[clamp(1.2rem,2.4vw,1.6rem)] text-ink-dim">
+                {r.diagnosis}
+              </dd>
+            </dl>
+
+            <!-- right: bug ID -->
+            <div class="col-span-12 md:col-span-2 md:col-start-11 md:text-right mt-2 md:mt-0">
+              <span class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint">
+                bug.id<br />
+                <span class={`text-${r.accent}`}>{r.cat.toUpperCase()}.{r.n}</span>
+              </span>
+            </div>
           </div>
         </div>
       </li>
     ))}
   </ol>
 
-  <!-- TRANSITION — big stamp -->
+  <!-- TRANSITION: REWIRE THE LOOP -->
   <div class="relative border-t border-line bg-bg-soft/60">
     <div class="mx-auto max-w-[1600px] px-5 sm:px-8 py-20 sm:py-32">
-      <div class="grid grid-cols-12 gap-4 sm:gap-8 items-center">
+      <div class="grid grid-cols-12 gap-4 sm:gap-8 items-end">
         <div class="col-span-12 md:col-span-2 callout text-ink-faint">
-          ▍ B.02 · counter
+          ▍ Counter
         </div>
-        <p class="col-span-12 md:col-span-10 font-display text-[clamp(2.6rem,9vw,8rem)] leading-[0.95] tracking-tight text-ink">
-          So we changed
-          <span class="inline-flex items-baseline gap-3 sm:gap-5">
-            <span class="italic">the loop</span>
-            <span aria-hidden="true" class="inline-flex items-center gap-[3px] -translate-y-[0.4em]">
-              <i class="block w-2 h-2 rounded-full bg-bzzt shadow-[0_0_10px_var(--color-bzzt)]"></i>
-              <i class="block w-2 h-2 rounded-full bg-cmok shadow-[0_0_10px_var(--color-cmok)]"></i>
-              <i class="block w-2 h-2 rounded-full bg-nwd shadow-[0_0_10px_var(--color-nwd)]"></i>
-            </span>
-            <span class="text-ink">.</span>
+        <p class="col-span-12 md:col-span-10 font-display text-[clamp(2.6rem,9.5vw,9rem)] leading-[0.95] tracking-tight text-ink">
+          Rewire the loop
+          <span aria-hidden="true" class="inline-flex items-baseline gap-3 sm:gap-5 ml-3 sm:ml-5 align-baseline">
+            <span class="text-bzzt">→</span>
           </span>
         </p>
-      </div>
-
-      <!-- machine teaser strip -->
-      <div class="mt-12 sm:mt-20 flex flex-wrap items-center gap-x-6 gap-y-3 callout text-ink-faint">
-        <span>▍ Three machines below</span>
-        <span aria-hidden="true">━━</span>
-        <span class="text-bzzt">01 · BZZT signal machine</span>
-        <span aria-hidden="true">━━</span>
-        <span class="text-cmok">02 · CMOK reassurance machine</span>
-        <span aria-hidden="true">━━</span>
-        <span class="text-nwd">03 · NWD race-loop machine</span>
       </div>
     </div>
   </div>

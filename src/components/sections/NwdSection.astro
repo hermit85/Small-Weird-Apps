@@ -28,12 +28,14 @@ const leaderboard = [
   id="nwd"
   class="relative isolate overflow-hidden border-t border-line scroll-mt-20 world-nwd noise"
 >
-  <!-- archive bar -->
+  <!-- machine bar -->
   <div class="relative border-b border-line py-2.5">
     <div class="mx-auto max-w-[1600px] px-5 sm:px-8 flex items-center justify-between font-mono text-[10px] tracking-[0.28em] uppercase text-nwd/80">
-      <span>▍ Machine 03 / Gravity · MTB league</span>
-      <span class="hidden md:inline">official trails · GPS verified · seasonal podiums</span>
-      <span>NWD.003 ▌</span>
+      <span>▍ Machine 03 · Gravity / MTB league</span>
+      <span class="hidden md:inline">
+        <span class="text-nwd">●</span> status · gate armed
+      </span>
+      <span>verified · seasonal ▌</span>
     </div>
   </div>
 
@@ -94,8 +96,8 @@ const leaderboard = [
       <!-- LOOP — descent/ascent profile: gate (top) ↓ descent ↓ finish ↑ leaderboard ↑ repeat (top) -->
       <div class="col-span-12 md:col-span-5 relative flex flex-col gap-6">
         <div class="flex items-center justify-between">
-          <p class="callout text-nwd">▍ Loop · live</p>
-          <span aria-hidden="true" class="stamp text-nwd/80">verified</span>
+          <p class="callout text-nwd">▍ Loop core</p>
+          <span aria-hidden="true" class="stamp text-nwd/80">verified · live</span>
         </div>
 
         <div class="relative">
@@ -218,6 +220,7 @@ const leaderboard = [
       <div class="col-span-12 md:col-span-2 flex flex-col justify-between gap-8 md:border-l border-nwd/15 md:pl-6">
         <div>
           <p class="callout text-nwd mb-4">▍ Output</p>
+          <p class="font-mono text-[10px] tracking-[0.32em] uppercase text-nwd/70 mb-4">⌁ status · verified</p>
           <p class="font-display italic text-[clamp(1.8rem,3vw,2.4rem)] leading-[1.05] text-ink">
             {app.punchline}
           </p>

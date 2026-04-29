@@ -7,16 +7,18 @@ const year = new Date().getFullYear();
 
   <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8 py-16 sm:py-20">
 
-    <!-- top row: archive numbers -->
-    <div class="flex items-center justify-between mb-12 callout text-ink-faint">
-      <span>▍ End of file</span>
-      <span class="hidden md:inline">A.01 ◇ B.02 ◇ B.03–05 ◇ B.06 ◇ End</span>
-      <span>EOF ▌</span>
+    <!-- top status -->
+    <div class="flex items-center justify-between mb-12 font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint">
+      <span class="flex items-center gap-2">
+        <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-bzzt shadow-[0_0_8px_var(--color-bzzt)]"></span>
+        SWA.OS · halt
+      </span>
+      <span class="hidden md:inline">three loops shipped · loop 04 in draft</span>
+      <span>v.2026.04</span>
     </div>
 
-    <!-- COLOPHON STAMP — centered -->
+    <!-- centered colophon -->
     <div class="text-center max-w-3xl mx-auto">
-      <p class="callout text-ink-faint mb-4">▍ Colophon</p>
       <p class="font-display text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.25] text-ink">
         {site.name} is a product label
         <span class="block">owned by <span class="italic">Cybird Consulting Dariusz Ptaszek</span></span>
@@ -36,7 +38,7 @@ const year = new Date().getFullYear();
       </div>
     </div>
 
-    <!-- bottom strip: stamps + microcopy -->
+    <!-- bottom strip -->
     <div class="mt-16 sm:mt-20 grid grid-cols-12 gap-4 sm:gap-8 items-end border-t border-line pt-8">
       <p class="col-span-6 md:col-span-3 callout text-ink-faint">
         © {year} {site.legalOwner}
@@ -45,7 +47,7 @@ const year = new Date().getFullYear();
         The apps are weird. The company details are normal.
       </p>
       <p class="col-span-6 md:col-span-3 md:order-3 text-right callout text-ink-faint">
-        v.2026.04 ▌
+        End of file
       </p>
     </div>
   </div>

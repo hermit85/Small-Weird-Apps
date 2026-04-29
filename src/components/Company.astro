@@ -7,66 +7,41 @@ import { site } from "../data/site.ts";
   <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8">
 
     <!-- header -->
-    <div class="grid grid-cols-12 gap-4 sm:gap-8 items-end mb-14 sm:mb-20">
-      <div class="col-span-12 md:col-span-3 label text-ink-faint">▍ Section B.05</div>
-      <div class="col-span-12 md:col-span-6">
-        <p class="callout text-ink-faint">▍ Publisher · colophon</p>
-        <h2 class="font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-[0.95] text-ink mt-2">
-          The label, <span class="italic text-ink-dim">on paper.</span>
-        </h2>
-      </div>
-      <div class="col-span-12 md:col-span-3 md:text-right">
-        <span class="stamp text-ink-dim">on file · 2026</span>
-      </div>
+    <div class="flex items-baseline justify-between gap-4 mb-14 sm:mb-20">
+      <p class="font-mono text-[11px] tracking-[0.32em] uppercase text-ink">▍ Publisher plate</p>
+      <span aria-hidden="true" class="flex-1 h-px bg-line"></span>
+      <p class="font-mono text-[11px] tracking-[0.28em] uppercase text-ink-faint">on file · 2026</p>
     </div>
 
-    <!-- card-ish, but feels like a folded admission ticket / library card -->
-    <div class="relative grid grid-cols-12 gap-0 border-y-2 border-ink/30">
+    <!-- THE PLATE -->
+    <div class="relative grid grid-cols-12 gap-0 border-2 border-ink/40 bg-bg-soft/40">
 
-      <!-- perforation column on the left -->
-      <div class="hidden md:flex md:col-span-1 flex-col items-center justify-between border-r border-dashed border-ink/30 py-6">
-        <span class="callout text-ink-faint" style="writing-mode: vertical-rl; transform: rotate(180deg);">
-          PUBLISHER №01
-        </span>
+      <!-- left rivets / vertical stamp -->
+      <div class="hidden md:flex md:col-span-1 flex-col items-center justify-between border-r border-dashed border-ink/30 py-7">
         <span aria-hidden="true" class="block w-2 h-2 rounded-full bg-ink-faint/70"></span>
         <span class="callout text-ink-faint" style="writing-mode: vertical-rl; transform: rotate(180deg);">
-          WARSAW · 2026
+          Publisher · plate
         </span>
+        <span aria-hidden="true" class="block w-2 h-2 rounded-full bg-ink-faint/70"></span>
       </div>
 
-      <!-- main body -->
-      <div class="col-span-12 md:col-span-7 p-6 sm:p-12 md:border-r border-ink/30">
-        <p class="callout text-ink-faint mb-3">▍ Published by</p>
-        <p class="font-display text-[clamp(2rem,5vw,3.5rem)] leading-[1] text-ink">
-          Cybird Consulting,
-          <span class="block italic text-ink-dim">a one-person app publisher</span>
-          <span class="block">based in {site.city}.</span>
-        </p>
-
-        <p class="mt-10 text-base sm:text-lg leading-relaxed text-ink-dim max-w-xl">
-          {site.name} is its product label. It publishes small mobile apps built around
-          real-world loops: <span class="text-bzzt">a proximity radar</span>,
-          <span class="text-cmok">a daily ritual</span> and
-          <span class="text-nwd">a gravity league</span>.
-        </p>
-
-        <!-- "signature line" -->
-        <div class="mt-12 sm:mt-16 flex items-end gap-4">
-          <div class="flex-1">
-            <span class="block w-full border-t border-ink/30"></span>
-            <span class="callout text-ink-faint mt-2 block">Legal owner / signature</span>
-          </div>
-          <span class="font-display italic text-xl sm:text-2xl text-ink">
-            {site.legalOwner}
-          </span>
+      <!-- main fields -->
+      <dl class="col-span-12 md:col-span-7 divide-y divide-ink/15">
+        <div class="grid grid-cols-12 gap-4 items-baseline px-6 sm:px-10 py-5 sm:py-6">
+          <dt class="col-span-4 md:col-span-3 font-mono text-[11px] tracking-[0.28em] uppercase text-ink-faint">Label</dt>
+          <dd class="col-span-8 md:col-span-9 font-display text-2xl sm:text-3xl text-ink">{site.name}</dd>
         </div>
-      </div>
-
-      <!-- right column: contact card -->
-      <dl class="col-span-12 md:col-span-4">
-        <div class="p-6 sm:p-8 border-t md:border-t-0 border-ink/20">
-          <dt class="callout text-ink-faint mb-2">▍ Contact</dt>
-          <dd>
+        <div class="grid grid-cols-12 gap-4 items-baseline px-6 sm:px-10 py-5 sm:py-6">
+          <dt class="col-span-4 md:col-span-3 font-mono text-[11px] tracking-[0.28em] uppercase text-ink-faint">Legal owner</dt>
+          <dd class="col-span-8 md:col-span-9 font-display text-2xl sm:text-3xl text-ink">{site.legalOwner}</dd>
+        </div>
+        <div class="grid grid-cols-12 gap-4 items-baseline px-6 sm:px-10 py-5 sm:py-6">
+          <dt class="col-span-4 md:col-span-3 font-mono text-[11px] tracking-[0.28em] uppercase text-ink-faint">Base</dt>
+          <dd class="col-span-8 md:col-span-9 font-display text-2xl sm:text-3xl text-ink">{site.city}</dd>
+        </div>
+        <div class="grid grid-cols-12 gap-4 items-baseline px-6 sm:px-10 py-5 sm:py-6">
+          <dt class="col-span-4 md:col-span-3 font-mono text-[11px] tracking-[0.28em] uppercase text-ink-faint">Contact</dt>
+          <dd class="col-span-8 md:col-span-9">
             <a
               href={`mailto:${site.email}`}
               class="group inline-flex items-center gap-2 font-display text-2xl sm:text-3xl text-ink hover:text-bzzt transition-colors"
@@ -76,47 +51,46 @@ import { site } from "../data/site.ts";
             </a>
           </dd>
         </div>
-        <div class="p-6 sm:p-8 border-t border-ink/20">
-          <dt class="callout text-ink-faint mb-2">▍ Based in</dt>
-          <dd class="font-display text-2xl sm:text-3xl text-ink">{site.city}</dd>
-        </div>
-        <div class="p-6 sm:p-8 border-t border-ink/20">
-          <dt class="callout text-ink-faint mb-2">▍ Full record</dt>
-          <dd>
+        <div class="grid grid-cols-12 gap-4 items-baseline px-6 sm:px-10 py-5 sm:py-6">
+          <dt class="col-span-4 md:col-span-3 font-mono text-[11px] tracking-[0.28em] uppercase text-ink-faint">Record</dt>
+          <dd class="col-span-8 md:col-span-9">
             <a href="/legal" class="group inline-flex items-center gap-2 font-display text-xl sm:text-2xl text-ink hover:text-bzzt transition-colors">
-              <span class="italic">Open colophon</span>
+              <span class="italic">Legal page</span>
               <span aria-hidden="true" class="callout transition-transform group-hover:translate-x-1">→</span>
             </a>
           </dd>
         </div>
       </dl>
+
+      <!-- catalogue (current machines, manufactured under this label) -->
+      <div class="col-span-12 md:col-span-4 md:border-l border-ink/20 p-6 sm:p-10">
+        <p class="font-mono text-[11px] tracking-[0.28em] uppercase text-ink-faint mb-5">▍ Catalogue · current</p>
+        <ul class="space-y-5">
+          <li class="flex items-baseline justify-between gap-3 pb-3 border-b border-line">
+            <span class="font-mono text-[10px] tracking-[0.22em] uppercase text-bzzt/70 w-12">M.01</span>
+            <a href="https://apps.apple.com/pl/app/bzzt-zone/id6760717645?l=pl" target="_blank" rel="noopener" class="flex-1 font-mono font-bold uppercase tracking-[-0.02em] text-xl text-ink hover:text-bzzt transition-colors">BZZT</a>
+            <span class="callout text-ink-faint">App Store ↗</span>
+          </li>
+          <li class="flex items-baseline justify-between gap-3 pb-3 border-b border-line">
+            <span class="font-mono text-[10px] tracking-[0.22em] uppercase text-cmok/70 w-12">M.02</span>
+            <a href="https://apps.apple.com/pl/app/cmok/id6762090888" target="_blank" rel="noopener" class="flex-1 font-display italic lowercase text-xl text-ink hover:text-cmok transition-colors">cmok</a>
+            <span class="callout text-ink-faint">App Store ↗</span>
+          </li>
+          <li class="flex items-baseline justify-between gap-3">
+            <span class="font-mono text-[10px] tracking-[0.22em] uppercase text-nwd/70 w-12">M.03</span>
+            <a href="https://new-world-disorder.vercel.app/" target="_blank" rel="noopener" class="flex-1 font-display tracking-[-0.02em] text-xl text-ink hover:text-nwd transition-colors">NWD</a>
+            <span class="callout text-ink-faint">Open ↗</span>
+          </li>
+        </ul>
+      </div>
     </div>
 
-    <!-- catalogue: published apps -->
-    <div class="mt-16 sm:mt-24 grid grid-cols-12 gap-4 sm:gap-8 items-baseline">
-      <div class="col-span-12 md:col-span-3 label text-ink-faint">
-        ▍ Catalogue · current
-      </div>
-      <ul class="col-span-12 md:col-span-9 divide-y divide-line">
-        <li class="grid grid-cols-12 gap-4 py-4 items-baseline">
-          <span class="col-span-2 callout text-bzzt/80">Loop 01</span>
-          <span class="col-span-3 font-mono font-bold text-xl uppercase tracking-[-0.02em] text-ink">BZZT</span>
-          <span class="col-span-4 text-ink-dim">A radar for people. Here and now.</span>
-          <a class="col-span-3 text-right callout text-ink hover:text-bzzt transition-colors" href="https://apps.apple.com/pl/app/bzzt-zone/id6760717645?l=pl" target="_blank" rel="noopener">App Store ↗</a>
-        </li>
-        <li class="grid grid-cols-12 gap-4 py-4 items-baseline">
-          <span class="col-span-2 callout text-cmok/80">Loop 02</span>
-          <span class="col-span-3 font-display italic text-2xl text-ink lowercase">cmok</span>
-          <span class="col-span-4 text-ink-dim">A daily sign that everything is OK.</span>
-          <a class="col-span-3 text-right callout text-ink hover:text-cmok transition-colors" href="https://apps.apple.com/pl/app/cmok/id6762090888" target="_blank" rel="noopener">App Store ↗</a>
-        </li>
-        <li class="grid grid-cols-12 gap-4 py-4 items-baseline">
-          <span class="col-span-2 callout text-nwd/80">Loop 03</span>
-          <span class="col-span-3 font-display text-2xl text-ink tracking-[-0.02em]">NWD</span>
-          <span class="col-span-4 text-ink-dim">Gravity MTB league. Verified.</span>
-          <a class="col-span-3 text-right callout text-ink hover:text-nwd transition-colors" href="https://new-world-disorder.vercel.app/" target="_blank" rel="noopener">Open ↗</a>
-        </li>
-      </ul>
-    </div>
+    <!-- microcopy under the plate -->
+    <p class="mt-10 font-display italic text-lg sm:text-xl text-ink-dim max-w-2xl">
+      {site.name} is a product label by Cybird Consulting — a one-person mobile app
+      publisher building <span class="text-bzzt not-italic">a proximity radar</span>,
+      <span class="text-cmok not-italic">a daily ritual</span> and
+      <span class="text-nwd not-italic">a gravity league</span>.
+    </p>
   </div>
 </section>
