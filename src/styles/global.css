@@ -84,18 +84,9 @@
     color: var(--color-ink-faint);
   }
 
-  /* ─── motion class 1 — primary entrance ───────────────────
-     Used only at the top of the page (hero) so the wordmark and
-     subcopy settle in once. Properties limited to opacity + transform. */
-  .motion-reveal {
-    opacity: 0;
-    transform: translateY(10px);
-    animation: motion-reveal var(--motion-slow) var(--motion-ease-primary) forwards;
-  }
-  .motion-reveal.r-1 { animation-delay: 0.05s; }
-  .motion-reveal.r-2 { animation-delay: 0.20s; }
-  .motion-reveal.r-3 { animation-delay: 0.35s; }
-  .motion-reveal.r-4 { animation-delay: 0.55s; }
+  /* class 1 (primary text reveal) deliberately removed — text blocks
+     are static. The page settles immediately; motion lives only inside
+     the app visuals (class 2) and on hover/focus (class 3). */
 
   /* ─── motion class 3 — micro-interactions on tappable surfaces ── */
   .motion-tappable {
@@ -106,11 +97,6 @@
   .motion-tappable:hover {
     transform: translateY(-1px);
   }
-}
-
-/* ─── motion class 1 — primary entrance ─────────────────────── */
-@keyframes motion-reveal {
-  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ─── motion class 2 — ambient (only inside app visuals) ─────
@@ -148,5 +134,4 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .motion-reveal { opacity: 1; transform: none; }
 }

@@ -1,4 +1,9 @@
 ---
+const apps = [
+  { id: "bzzt", n: "01", brand: "BZZT", brandClass: "font-mono font-bold uppercase tracking-tight",                      blurb: "meet people nearby",  accent: "bzzt" },
+  { id: "cmok", n: "02", brand: "cmok", brandClass: "font-display italic lowercase tracking-tight",                      blurb: "send a daily sign",   accent: "cmok" },
+  { id: "nwd",  n: "03", brand: "NWD",  brandClass: "font-display tracking-tight",                                       blurb: "race real trails",    accent: "nwd"  },
+];
 ---
 
 <section class="relative min-h-[100svh] flex flex-col">
@@ -18,27 +23,45 @@
   <div class="relative flex-1 flex flex-col justify-center w-full">
     <div class="relative mx-auto max-w-[1600px] px-5 sm:px-12 lg:px-16 w-full py-16 sm:py-24">
 
-      <!-- wordmark -->
+      <!-- wordmark — static -->
       <h1 class="font-display tracking-[-0.04em] leading-[0.82] select-none">
-        <span class="motion-reveal r-1 block text-[clamp(4.5rem,18vw,18rem)] text-ink">Small</span>
-        <span class="motion-reveal r-2 block text-[clamp(4.5rem,18vw,18rem)] italic text-bzzt -mt-[1.2vw] pl-[6vw] sm:pl-[12vw]">weird</span>
-        <span class="motion-reveal r-3 block text-[clamp(4.5rem,18vw,18rem)] text-ink -mt-[1.2vw]">Apps<span class="text-bzzt">.</span></span>
+        <span class="block text-[clamp(4.5rem,18vw,18rem)] text-ink">Small</span>
+        <span class="block text-[clamp(4.5rem,18vw,18rem)] italic text-bzzt -mt-[1.2vw] pl-[6vw] sm:pl-[12vw]">weird</span>
+        <span class="block text-[clamp(4.5rem,18vw,18rem)] text-ink -mt-[1.2vw]">Apps<span class="text-bzzt">.</span></span>
       </h1>
 
-      <!-- manifesto + subcopy -->
-      <div class="motion-reveal r-4 mt-12 sm:mt-20 grid grid-cols-12 gap-6 sm:gap-12 items-end">
-        <p class="col-span-12 md:col-span-7 font-display text-[clamp(2rem,5vw,4rem)] leading-[1] text-ink">
+      <!-- manifesto + app index -->
+      <div class="mt-12 sm:mt-20 grid grid-cols-12 gap-8 sm:gap-12 items-end">
+        <p class="col-span-12 md:col-span-6 font-display text-[clamp(2.2rem,5.5vw,4.5rem)] leading-[1] text-ink">
           Real problems.
           <span class="block italic text-ink-dim">Strange little loops.</span>
         </p>
-        <p class="col-span-12 md:col-span-5 text-base sm:text-lg leading-relaxed text-ink-dim md:pl-8 md:border-l border-line">
-          Three small mobile apps for three very normal problems
-          that deserved <span class="italic text-ink">weirder answers</span>.
-        </p>
+
+        <!-- app index — replaces abstract subcopy with a real "what they do" reference -->
+        <div class="col-span-12 md:col-span-6 md:pl-8 md:border-l border-line">
+          <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-4">
+            Three small mobile apps
+          </p>
+          <ul class="space-y-2.5">
+            {apps.map((a) => (
+              <li>
+                <a
+                  href={`#${a.id}`}
+                  class={`group inline-flex items-baseline gap-3 text-ink hover:text-${a.accent} transition-colors`}
+                >
+                  <span class={`font-mono text-[10px] tracking-[0.22em] text-${a.accent}/85 w-6`}>[{a.n}]</span>
+                  <span class={`${a.brandClass} text-2xl sm:text-[26px] text-${a.accent}`}>{a.brand}</span>
+                  <span class="text-ink-faint">—</span>
+                  <span class="text-base sm:text-lg text-ink-dim group-hover:text-ink transition-colors">{a.blurb}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <!-- scroll cue -->
-      <div class="motion-reveal r-4 mt-16 sm:mt-24 flex items-center gap-3 font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint">
+      <div class="mt-16 sm:mt-24 flex items-center gap-3 font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint">
         <span aria-hidden="true" class="block w-12 h-px bg-line"></span>
         <a href="#problems" class="hover:text-ink transition-colors">three problems below</a>
         <span aria-hidden="true">↓</span>
