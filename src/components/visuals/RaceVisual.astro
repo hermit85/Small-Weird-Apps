@@ -57,19 +57,25 @@ const leaderboard = [
     <circle cx="60" cy="60" r="5" fill="currentColor" />
     <circle cx="60" cy="60" r="11" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="1" />
 
-    <!-- finish marker — checker flag at the actual end of the descent.
-         Built from one accent rectangle + three bg-coloured cuts so it
-         reads as a classic race-finish flag without an extra <pattern>. -->
+    <!-- finish marker — checker flag PLANTED at the very end of the
+         descent line. The trail terminates exactly at (460, 240); the
+         pole is rooted there with a solid ground anchor, the flag waves
+         out from the top. Bigger / taller than v1 so it reads as a
+         confident "finish" marker rather than a timid afterthought. -->
     <g>
-      <!-- ground anchor -->
-      <circle cx="460" cy="240" r="4" fill="currentColor" />
-      <!-- pole -->
-      <line x1="460" y1="240" x2="460" y2="208" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" />
-      <!-- flag base + checker cuts -->
-      <rect x="460" y="208"   width="18" height="11" fill="currentColor" />
-      <rect x="466" y="208"   width="6"  height="5.5" fill="var(--color-bg)" />
-      <rect x="460" y="213.5" width="6"  height="5.5" fill="var(--color-bg)" />
-      <rect x="472" y="213.5" width="6"  height="5.5" fill="var(--color-bg)" />
+      <!-- pole base — solid anchor sitting ON the trail's last point.
+           Filled disc + outer ring mirrors the drop-in marker at top so
+           the two endpoints feel weighted equally. -->
+      <circle cx="460" cy="240" r="4.5" fill="currentColor" />
+      <circle cx="460" cy="240" r="9" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="1" />
+      <!-- pole rises from the endpoint -->
+      <line x1="460" y1="240" x2="460" y2="194" stroke="currentColor" stroke-width="2" stroke-linecap="butt" />
+      <!-- flag (3×2 checker on 18×16) — waves right from pole top.
+           Stays within the 480-wide viewBox. -->
+      <rect x="460" y="194" width="18" height="16" fill="currentColor" />
+      <rect x="466" y="194" width="6"  height="8"  fill="var(--color-bg)" />
+      <rect x="460" y="202" width="6"  height="8"  fill="var(--color-bg)" />
+      <rect x="472" y="202" width="6"  height="8"  fill="var(--color-bg)" />
       <!-- 'finish' label sits below the ground anchor -->
       <text
         x="460" y="262"

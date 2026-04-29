@@ -47,11 +47,13 @@ const sinA = Math.sin(angleToReply);
 const lineStart = { x: cx + (motherR + 2) * cosA,    y: cy + (motherR + 2) * sinA    };
 const lineEnd   = { x: reply.x - (haloR + 4) * cosA, y: reply.y - (haloR + 4) * sinA };
 
-// 'ok ✓' badge — pill anchored to Sarah's halo top-right corner,
-// like a notification chip on a circular avatar. Position is computed
-// at -45° on the halo edge so it always reads as 'attached' to her.
-const okAngle = -Math.PI / 4;            // up-right
-const okOffset = haloR - 2;              // sit slightly inside the halo edge
+// 'ok ✓' badge — pill placed OUTSIDE Sarah's halo with breathing room.
+// Computed at -45° (up-right) so it always reads as 'belonging to her'
+// without ever overlapping the halo stroke. okOffset = halo radius
+// + half-pill-width (17) + 14px breathing → nearest pill corner sits
+// ~14px outside the halo at the closest point.
+const okAngle = -Math.PI / 4;
+const okOffset = haloR + 31;
 const badge = {
   x: reply.x + okOffset * Math.cos(okAngle),
   y: reply.y + okOffset * Math.sin(okAngle),
