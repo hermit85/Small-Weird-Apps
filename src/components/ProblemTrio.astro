@@ -1,0 +1,32 @@
+---
+const problems = [
+  { n: "01", category: "Dating",  text: "Dating became profile shopping.",                                           accent: "bzzt" },
+  { n: "02", category: "Safety",  text: "Safety became panic theatre.",                                              accent: "cmok" },
+  { n: "03", category: "Racing",  text: "Racing became either a calendar event or a training log.",                  accent: "nwd"  },
+] as const;
+---
+
+<section id="problems" class="relative border-t border-line py-20 sm:py-32 scroll-mt-12">
+  <div class="mx-auto max-w-[1600px] px-5 sm:px-12 lg:px-16">
+
+    <p class="label-mono mb-12 sm:mb-16">▍ Three problems</p>
+
+    <ol class="space-y-12 sm:space-y-20">
+      {problems.map((p) => (
+        <li class="grid grid-cols-12 gap-4 sm:gap-8 items-baseline border-b border-line-soft pb-8 sm:pb-12">
+          <span class={`col-span-12 md:col-span-2 font-mono text-[11px] tracking-[0.28em] uppercase text-${p.accent}`}>
+            {p.n} · {p.category}
+          </span>
+          <p class="col-span-12 md:col-span-10 font-display text-[clamp(2rem,7vw,5.5rem)] leading-[0.96] text-ink">
+            {p.text}
+          </p>
+        </li>
+      ))}
+    </ol>
+
+    <p class="mt-16 sm:mt-24 font-display italic text-[clamp(1.6rem,4vw,2.8rem)] leading-tight text-ink-dim max-w-3xl">
+      So we changed the loop.
+      <span aria-hidden="true" class="not-italic text-ink-faint font-mono text-[11px] tracking-[0.22em] uppercase ml-3">↓</span>
+    </p>
+  </div>
+</section>

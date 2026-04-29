@@ -1,16 +1,83 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import StrangeLoopEngine from "../components/StrangeLoopEngine.astro";
-import Console from "../components/Console.astro";
-import Manifest from "../components/overlays/Manifest.astro";
-import FailureReport from "../components/overlays/FailureReport.astro";
-import Plate from "../components/overlays/Plate.astro";
+import Hero from "../components/Hero.astro";
+import ProblemTrio from "../components/ProblemTrio.astro";
+import AppStory from "../components/AppStory.astro";
+import Manifest from "../components/Manifest.astro";
+import Footer from "../components/Footer.astro";
+
+import RadarVisual from "../components/visuals/RadarVisual.astro";
+import CircleVisual from "../components/visuals/CircleVisual.astro";
+import RaceVisual from "../components/visuals/RaceVisual.astro";
+
+import { apps } from "../data/apps.ts";
+const bzzt = apps.find((a) => a.id === "bzzt")!;
+const cmok = apps.find((a) => a.id === "cmok")!;
+const nwd  = apps.find((a) => a.id === "nwd")!;
 ---
 
 <Layout>
-  <StrangeLoopEngine />
-  <Console />
+  <Hero />
+  <ProblemTrio />
+
+  <AppStory
+    app={bzzt}
+    kicker="01 / Dating"
+    headline="Dating without endless swiping."
+    story={[
+      "Most dating apps make you browse, match and chat forever.",
+      "BZZT starts with someone nearby.",
+    ]}
+    steps={[
+      "See a signal.",
+      "Send a signal.",
+      "If it's mutual, say hello in real life.",
+    ]}
+    punch="Less swiping. More actual hello."
+    cta="Open in App Store"
+  >
+    <RadarVisual slot="visual" />
+  </AppStory>
+
+  <AppStory
+    app={cmok}
+    kicker="02 / Safety"
+    headline="Safety without panic theatre."
+    story={[
+      "Most safety apps start when something is already wrong.",
+      "cmok starts earlier — with a daily sign.",
+    ]}
+    steps={[
+      "One tap.",
+      "Close circle.",
+      "Quiet reassurance.",
+    ]}
+    punch="Less panic. More presence."
+    reverse
+    cta="Open in App Store"
+  >
+    <CircleVisual slot="visual" />
+  </AppStory>
+
+  <AppStory
+    app={nwd}
+    kicker="03 / Racing"
+    headline="Racing without waiting for an event."
+    story={[
+      "Riders already race the same trails every weekend.",
+      "NWD turns that into a game.",
+    ]}
+    steps={[
+      "Gate. Ride. Time.",
+      "Rank. Repeat.",
+      "Real trails. Verified times.",
+    ]}
+    punch="Not a tracker. A gravity league."
+    cta="Open NWD"
+  >
+    <RaceVisual slot="visual" />
+  </AppStory>
+
   <Manifest />
-  <FailureReport />
-  <Plate />
+  <Footer />
 </Layout>
