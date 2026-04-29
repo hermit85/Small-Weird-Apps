@@ -1,25 +1,58 @@
 ---
-// CMOK — close circle around a daily tap.
+// CMOK — krąg bliskich (the close circle of family / friends).
+// Centre is the signaller, around her are her people, one of them
+// has already replied OK to today's daily sign.
+//
 // Motion contract:
-//   AMBIENT: ONE slow soft-pulse on the centre TAP halo (5s).
-//   ENTER:   OK reply + 'OK SENT' stamp fade in once on first paint.
-//   STATIC:  TAP centre dot, six other people-dots, dashed reply line,
-//            HUD chip.
+//   AMBIENT: ONE slow soft-pulse on the centre 'Mama' halo (5s).
+//   ENTER:   Córka's halo + 'ok ✓' badge fade in once on first paint.
+//   ENTER:   'ok sent' stamp top-right fades in once on first paint.
+//   STATIC:  Mama dot, the five other people, dashed reply line, HUD chip.
+
 const cx = 240;
 const cy = 240;
+const peopleR = 145;
+const dotR = 26;
+const motherR = 48;
+const haloR = 40;
 
-const peopleCount = 7;
-const peopleRadius = 130;
-const people = Array.from({ length: peopleCount }, (_, i) => {
-  const angleDeg = -90 + (360 / peopleCount) * i;
-  const angleRad = (angleDeg * Math.PI) / 180;
+type Person = { label: string; angleDeg: number; isReply?: boolean };
+
+// 6 people around Mama — clockwise from top.
+// Polish names match the actual cmok product.
+const people: Person[] = [
+  { label: "Syn",    angleDeg: -90  },                // top
+  { label: "Córka",  angleDeg: -30, isReply: true },  // upper-right (the reply)
+  { label: "Sąsiad", angleDeg:  30  },                // lower-right
+  { label: "Wnuk",   angleDeg:  90  },                // bottom
+  { label: "Koleż.", angleDeg: 150  },                // lower-left
+  { label: "Brat",   angleDeg: -150 },                // upper-left
+];
+
+const positions = people.map((p) => {
+  const rad = (p.angleDeg * Math.PI) / 180;
   return {
-    x: cx + peopleRadius * Math.cos(angleRad),
-    y: cy + peopleRadius * Math.sin(angleRad),
+    ...p,
+    x: cx + peopleR * Math.cos(rad),
+    y: cy + peopleR * Math.sin(rad),
   };
 });
 
-const okIndex = 1;
+const reply = positions.find((p) => p.isReply)!;
+
+// dashed connector — clip to outer edges of Mama and the reply halo
+const angleToReply = Math.atan2(reply.y - cy, reply.x - cx);
+const cosA = Math.cos(angleToReply);
+const sinA = Math.sin(angleToReply);
+const lineStart = { x: cx + (motherR + 2) * cosA,    y: cy + (motherR + 2) * sinA    };
+const lineEnd   = { x: reply.x - (haloR + 4) * cosA, y: reply.y - (haloR + 4) * sinA };
+
+// 'ok ✓' badge floats outside the reply dot, away from centre
+const badgeDist = haloR + 22;
+const badge = {
+  x: reply.x + badgeDist * cosA,
+  y: reply.y + badgeDist * sinA,
+};
 ---
 
 <div class="relative w-full max-w-md mx-auto">
@@ -27,87 +60,107 @@ const okIndex = 1;
     viewBox="0 0 480 480"
     class="w-full h-auto text-cmok"
     role="img"
-    aria-label="cmok — central daily sign, close circle of seven, one OK SENT reply"
+    aria-label="cmok — close circle: Mama at the centre and six people around (Syn, Córka, Sąsiad, Wnuk, Koleż., Brat). Córka has already replied OK."
   >
     <defs>
       <radialGradient id="cmok-glow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="currentColor" stop-opacity="0.32" />
+        <stop offset="0%"  stop-color="currentColor" stop-opacity="0.30" />
         <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
       </radialGradient>
     </defs>
 
     <circle cx={cx} cy={cy} r="230" fill="url(#cmok-glow)" />
 
-    <!-- subtle outer guide only (the people-dots themselves form the
-         visible close circle; an explicit ring was crashing through
-         the OK-reply halo) -->
-    <circle cx={cx} cy={cy} r="195" stroke="currentColor" stroke-opacity="0.12" fill="none" stroke-dasharray="2 6" />
+    <!-- subtle outer guide -->
+    <circle cx={cx} cy={cy} r="200" stroke="currentColor" stroke-opacity="0.10" fill="none" stroke-dasharray="2 6" />
 
-    <!-- subtle line: tap → OK reply — STATIC -->
+    <!-- dashed connector: Mama edge → Córka halo edge (clean, no overlap) -->
     <line
-      x1={cx} y1={cy}
-      x2={people[okIndex].x} y2={people[okIndex].y}
+      x1={lineStart.x} y1={lineStart.y}
+      x2={lineEnd.x}   y2={lineEnd.y}
       stroke="currentColor" stroke-opacity="0.55"
       stroke-width="1.2" stroke-dasharray="3 4"
     />
 
-    <!-- close-circle people — STATIC dots, brighter (0.78 → 0.88) -->
-    <g>
-      {people.map((p, i) => i !== okIndex && (
-        <circle cx={p.x} cy={p.y} r="9" fill="currentColor" fill-opacity="0.88" />
-      ))}
-    </g>
+    <!-- 5 non-reply people -->
+    {positions.filter((p) => !p.isReply).map((p) => (
+      <Fragment>
+        <circle cx={p.x} cy={p.y} r={dotR} fill="currentColor" fill-opacity="0.9" />
+        <text
+          x={p.x} y={p.y + 3.5}
+          text-anchor="middle"
+          font-family="JetBrains Mono, monospace"
+          font-weight="700"
+          font-size="9"
+          letter-spacing="0.12em"
+          fill="var(--color-bg)"
+          style="text-transform: uppercase;"
+        >{p.label}</text>
+      </Fragment>
+    ))}
 
-    <!-- ok reply — one-shot reveal -->
-    <g style={`transform-origin: ${people[okIndex].x}px ${people[okIndex].y}px; animation: motion-soft-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;`}>
-      <circle cx={people[okIndex].x} cy={people[okIndex].y} r="32" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="1" />
-      <circle cx={people[okIndex].x} cy={people[okIndex].y} r="14" fill="currentColor" />
+    <!-- Reply person (Córka) — halo + dot + label, halo reveals once -->
+    <g style={`transform-origin: ${reply.x}px ${reply.y}px; animation: motion-soft-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;`}>
+      <circle cx={reply.x} cy={reply.y} r={haloR} fill="none" stroke="currentColor" stroke-opacity="0.7" stroke-width="1.4" />
+    </g>
+    <circle cx={reply.x} cy={reply.y} r={dotR} fill="currentColor" />
+    <text
+      x={reply.x} y={reply.y + 3.5}
+      text-anchor="middle"
+      font-family="JetBrains Mono, monospace"
+      font-weight="700"
+      font-size="9"
+      letter-spacing="0.12em"
+      fill="var(--color-bg)"
+      style="text-transform: uppercase;"
+    >{reply.label}</text>
+
+    <!-- 'ok ✓' badge floating outside Córka's halo -->
+    <g style={`transform-origin: ${badge.x}px ${badge.y}px; animation: motion-soft-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;`}>
       <text
-        x={people[okIndex].x} y={people[okIndex].y + 4}
+        x={badge.x} y={badge.y + 4}
         text-anchor="middle"
         font-family="JetBrains Mono, monospace"
         font-weight="700"
         font-size="11"
-        letter-spacing="0.16em"
-        fill="var(--color-bg)"
+        letter-spacing="0.18em"
+        fill="currentColor"
+        style="text-transform: uppercase;"
       >ok ✓</text>
     </g>
 
-    <!-- centre TAP — one ambient soft-pulse on the halo only -->
+    <!-- centre 'Mama' — ambient soft-pulse halo + filled dot -->
     <circle
-      cx={cx} cy={cy} r="56"
+      cx={cx} cy={cy} r={motherR + 14}
       fill="none"
-      stroke="currentColor" stroke-opacity="0.38"
+      stroke="currentColor" stroke-opacity="0.42"
       style="transform-origin: 240px 240px; animation: motion-soft-pulse 5s cubic-bezier(0.45, 0, 0.55, 1) infinite;"
     />
-    <circle cx={cx} cy={cy} r="44" fill="currentColor" />
+    <circle cx={cx} cy={cy} r={motherR} fill="currentColor" />
     <text
       x={cx} y={cy + 6}
       text-anchor="middle"
-      font-family="JetBrains Mono, monospace"
-      font-weight="700"
-      font-size="14"
-      letter-spacing="0.22em"
+      font-family="Instrument Serif, ui-serif, Georgia, serif"
+      font-style="italic"
+      font-size="22"
       fill="var(--color-bg)"
-      style="text-transform: uppercase;"
-    >tap</text>
+    >Mama</text>
   </svg>
 
-  <!-- HUD — STATIC -->
+  <!-- HUD overlays — STATIC -->
   <div class="absolute top-2 left-2 font-mono text-[10px] tracking-[0.28em] uppercase text-cmok flex items-center gap-1.5">
     <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-cmok shadow-[0_0_6px_var(--color-cmok)]"></span>
     daily · 18:42
   </div>
 
-  <!-- OK SENT stamp — one-shot reveal -->
   <div
     class="absolute top-2 right-2 inline-flex items-center gap-2 px-2.5 py-1 border border-cmok text-cmok font-mono text-[10px] tracking-[0.28em] uppercase"
     style="animation: motion-soft-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;"
   >
-    ok sent
+    sent
   </div>
 
   <div class="absolute bottom-3 right-3 font-mono text-[10px] tracking-[0.28em] uppercase text-cmok/65">
-    1 reply
+    Córka · 1 reply
   </div>
 </div>
