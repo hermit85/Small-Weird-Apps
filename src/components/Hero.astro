@@ -52,7 +52,7 @@ const apps = [
                 >
                   <span class={`font-mono text-[11px] tracking-[0.22em] text-${a.accent} w-6`}>[{a.n}]</span>
                   <span class={`${a.brandClass} text-[clamp(1.6rem,2.6vw,1.95rem)] text-${a.accent}`}>{a.brand}</span>
-                  <span class="text-ink-faint">—</span>
+                  <span class="text-ink-faint" aria-hidden="true">·</span>
                   <span class="text-lg sm:text-xl text-ink/90 group-hover:text-ink transition-colors">{a.blurb}</span>
                 </a>
               </li>
