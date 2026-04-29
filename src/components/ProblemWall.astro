@@ -2,109 +2,126 @@
 const problems = [
   {
     n: "01",
-    quote: "Dating became profile shopping.",
+    became: "Dating became",
+    accuse: "profile shopping.",
     accent: "bzzt",
     field: "DATING / D.OBS-01",
-    diagnosis: "loop got stuck in browse mode",
     stamp: "stale",
   },
   {
     n: "02",
-    quote: "Safety became panic theatre.",
+    became: "Safety became",
+    accuse: "panic theatre.",
     accent: "cmok",
     field: "SAFETY / S.OBS-02",
-    diagnosis: "only fires after the fact",
     stamp: "noisy",
   },
   {
     n: "03",
-    quote: "Racing became either a calendar event or a boring training log.",
+    became: "Racing became",
+    accuse: "either a calendar event or a boring training log.",
     accent: "nwd",
     field: "RACING / R.OBS-03",
-    diagnosis: "no gravity, no game",
     stamp: "thin",
   },
 ] as const;
 ---
 
-<section class="relative py-24 sm:py-36 border-t border-line">
+<section class="relative border-t border-line overflow-hidden">
 
-  <!-- diagonal slashes pattern (very subtle) decorating the section -->
-  <div class="pointer-events-none absolute inset-0 opacity-[0.04]" aria-hidden="true"
-    style="background-image: repeating-linear-gradient(135deg, transparent 0 28px, var(--color-flag) 28px 29px);"></div>
+  <!-- subtle slash pattern -->
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.05]"
+    aria-hidden="true"
+    style="background-image: repeating-linear-gradient(135deg, transparent 0 30px, var(--color-flag) 30px 31px);"
+  ></div>
 
-  <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8">
-
-    <!-- header strip -->
-    <div class="grid grid-cols-12 gap-4 sm:gap-8 items-end mb-16 sm:mb-24">
-      <div class="col-span-12 md:col-span-3 label text-ink-faint">
-        ▍ Section B.02
-      </div>
-      <div class="col-span-12 md:col-span-6">
-        <p class="callout text-flag">▍ Evidence wall</p>
-        <h2 class="font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-[0.95] text-ink mt-2">
-          Three loops <span class="italic text-ink-dim">that quietly broke.</span>
-        </h2>
-      </div>
-      <div class="col-span-12 md:col-span-3 md:text-right">
-        <span class="stamp text-flag">filed · 2026</span>
-      </div>
+  <!-- intro band -->
+  <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8 py-14 sm:py-20">
+    <div class="flex items-center justify-between gap-4">
+      <p class="callout text-flag">▍ Evidence wall</p>
+      <span aria-hidden="true" class="flex-1 h-px bg-line"></span>
+      <p class="callout text-ink-faint">B.02 · 2026</p>
     </div>
+    <h2 class="mt-4 font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-[0.95] tracking-tight text-ink max-w-5xl">
+      Three loops <span class="italic text-ink-dim">that quietly broke.</span>
+    </h2>
+  </div>
 
-    <!-- evidence items — asymmetric, typewriter-ish -->
-    <ol class="space-y-16 sm:space-y-24">
-      {problems.map((p, i) => (
-        <li class="relative grid grid-cols-12 gap-4 sm:gap-8 items-baseline">
+  <!-- THREE ACCUSATIONS — full-bleed, stacked, huge -->
+  <ol class="relative">
+    {problems.map((p) => (
+      <li class={`relative border-t border-line py-16 sm:py-28`}>
+        <div class="mx-auto max-w-[1600px] px-5 sm:px-8 grid grid-cols-12 gap-4 sm:gap-8">
 
-          <!-- left: large numeral + field code -->
-          <div class={`col-span-12 md:col-span-2 ${i % 2 === 0 ? "md:order-1" : "md:order-2 md:text-right"}`}>
-            <span class={`block font-display text-[clamp(5rem,12vw,9rem)] leading-[0.85] text-${p.accent}`}>
+          <!-- left margin: archive code -->
+          <div class="col-span-12 md:col-span-2 flex md:flex-col items-baseline gap-3 md:gap-4">
+            <span class={`font-display text-[clamp(3.5rem,7vw,6rem)] leading-[0.85] text-${p.accent}`}>
               {p.n}
             </span>
-            <span class="block label text-ink-faint mt-2">{p.field}</span>
+            <span class="label text-ink-faint">{p.field}</span>
           </div>
 
-          <!-- center: quoted broken pattern -->
-          <div class={`col-span-12 md:col-span-7 ${i % 2 === 0 ? "md:order-2" : "md:order-1"}`}>
-            <p class="font-display text-[clamp(2rem,5.5vw,4.5rem)] leading-[1] text-ink">
-              <span aria-hidden="true" class={`text-${p.accent}`}>“</span>
-              <span class="relative">
-                {p.quote}
-                <!-- diagonal slash overlay using SVG -->
+          <!-- main: the accusation -->
+          <div class="col-span-12 md:col-span-9 md:col-start-3">
+            <p class="callout text-ink-faint mb-4 sm:mb-6">▍ Accusation №{p.n}</p>
+            <p class="font-display text-[clamp(2.6rem,9.5vw,9rem)] leading-[0.95] tracking-tight text-ink">
+              {p.became}
+              <span class="block relative italic">
+                <span class={`text-${p.accent}`}>“</span>{p.accuse}<span class={`text-${p.accent}`}>”</span>
+                <!-- diagonal slash -->
                 <svg
                   aria-hidden="true"
                   class="absolute inset-0 w-full h-full overflow-visible pointer-events-none"
                   preserveAspectRatio="none"
                   viewBox="0 0 100 100"
                 >
-                  <line x1="0" y1="100" x2="100" y2="0" stroke="var(--color-flag)" stroke-width="0.6" stroke-opacity="0.7" vector-effect="non-scaling-stroke"/>
+                  <line x1="-2" y1="100" x2="100" y2="0" stroke="var(--color-flag)" stroke-width="0.6" stroke-opacity="0.7" vector-effect="non-scaling-stroke"/>
                 </svg>
               </span>
-              <span aria-hidden="true" class={`text-${p.accent}`}>”</span>
             </p>
           </div>
 
-          <!-- right: diagnosis sticker -->
-          <div class={`col-span-12 md:col-span-3 ${i % 2 === 0 ? "md:order-3" : "md:order-3 md:text-right"}`}>
-            <div class="inline-flex flex-col gap-3">
-              <span class={`stamp text-flag self-start ${i % 2 === 1 ? "md:self-end" : ""}`}>{p.stamp}</span>
-              <span class="callout text-ink-faint italic font-mono">
-                {p.diagnosis}
-              </span>
-            </div>
+          <!-- right: stamp -->
+          <div class="col-span-12 md:col-span-1 md:col-start-12 flex md:justify-end items-start mt-2 md:mt-0">
+            <span class="stamp text-flag whitespace-nowrap">× {p.stamp}</span>
           </div>
-        </li>
-      ))}
-    </ol>
+        </div>
+      </li>
+    ))}
+  </ol>
 
-    <!-- bridge / counter-statement -->
-    <div class="mt-24 sm:mt-32 grid grid-cols-12 gap-4 sm:gap-8 items-baseline border-t border-line pt-10">
-      <div class="col-span-12 md:col-span-3 label text-ink-faint">▍ Counter-statement</div>
-      <p class="col-span-12 md:col-span-9 font-display text-[clamp(1.8rem,4vw,3rem)] leading-[1.1] text-ink">
-        So we built three small apps
-        <span class="italic text-ink-dim">with different loops.</span>
-        <span aria-hidden="true" class="inline-block align-middle ml-3">↓</span>
-      </p>
+  <!-- TRANSITION — big stamp -->
+  <div class="relative border-t border-line bg-bg-soft/60">
+    <div class="mx-auto max-w-[1600px] px-5 sm:px-8 py-20 sm:py-32">
+      <div class="grid grid-cols-12 gap-4 sm:gap-8 items-center">
+        <div class="col-span-12 md:col-span-2 callout text-ink-faint">
+          ▍ B.02 · counter
+        </div>
+        <p class="col-span-12 md:col-span-10 font-display text-[clamp(2.6rem,9vw,8rem)] leading-[0.95] tracking-tight text-ink">
+          So we changed
+          <span class="inline-flex items-baseline gap-3 sm:gap-5">
+            <span class="italic">the loop</span>
+            <span aria-hidden="true" class="inline-flex items-center gap-[3px] -translate-y-[0.4em]">
+              <i class="block w-2 h-2 rounded-full bg-bzzt shadow-[0_0_10px_var(--color-bzzt)]"></i>
+              <i class="block w-2 h-2 rounded-full bg-cmok shadow-[0_0_10px_var(--color-cmok)]"></i>
+              <i class="block w-2 h-2 rounded-full bg-nwd shadow-[0_0_10px_var(--color-nwd)]"></i>
+            </span>
+            <span class="text-ink">.</span>
+          </span>
+        </p>
+      </div>
+
+      <!-- machine teaser strip -->
+      <div class="mt-12 sm:mt-20 flex flex-wrap items-center gap-x-6 gap-y-3 callout text-ink-faint">
+        <span>▍ Three machines below</span>
+        <span aria-hidden="true">━━</span>
+        <span class="text-bzzt">01 · BZZT signal machine</span>
+        <span aria-hidden="true">━━</span>
+        <span class="text-cmok">02 · CMOK reassurance machine</span>
+        <span aria-hidden="true">━━</span>
+        <span class="text-nwd">03 · NWD race-loop machine</span>
+      </div>
     </div>
   </div>
 </section>

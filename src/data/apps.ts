@@ -1,5 +1,4 @@
 export type AppId = "bzzt" | "cmok" | "nwd";
-export type Visual = "radar" | "dot" | "hud";
 
 export type AppData = {
   id: AppId;
@@ -8,12 +7,13 @@ export type AppData = {
   name: string;
   tagline: string;
   intro: string[];
+  input: string;
+  loopSteps: string[];
   bullets: string[];
   punchline: string;
   href: string | null;
   hrefLabel: string;
   accent: AppId;
-  visual: Visual;
 };
 
 export const apps: AppData[] = [
@@ -27,12 +27,13 @@ export const apps: AppData[] = [
       "Most dating apps are built for browsing.",
       "BZZT is built for noticing someone now.",
     ],
+    input: "profile shopping",
+    loopSteps: ["nearby", "signal", "spark", "hello"],
     bullets: ["Nearby.", "Mutual.", "Time-sensitive.", "Actually human."],
     punchline: "Less swiping. More actual hello.",
     href: "https://apps.apple.com/pl/app/bzzt-zone/id6760717645?l=pl",
     hrefLabel: "Open BZZT",
     accent: "bzzt",
-    visual: "radar",
   },
   {
     id: "cmok",
@@ -44,12 +45,13 @@ export const apps: AppData[] = [
       "Most safety apps start when something goes wrong.",
       "CMOK starts earlier — with a small daily sign between people who care.",
     ],
+    input: "panic theatre",
+    loopSteps: ["daily sign", "close circle", "reassurance"],
     bullets: ["Quiet.", "Private.", "Human."],
     punchline: "Less panic. More presence.",
     href: null,
     hrefLabel: "Open CMOK",
     accent: "cmok",
-    visual: "dot",
   },
   {
     id: "nwd",
@@ -61,11 +63,12 @@ export const apps: AppData[] = [
       "Riders already race the same trails.",
       "NWD turns that into a league.",
     ],
+    input: "training log / event calendar",
+    loopSteps: ["gate", "ride", "time", "rank", "repeat"],
     bullets: ["Gate.", "Ride.", "Time.", "Rank.", "Repeat."],
     punchline: "Not a tracker. A gravity league.",
     href: "https://new-world-disorder.vercel.app/",
     hrefLabel: "Open NWD",
     accent: "nwd",
-    visual: "hud",
   },
 ];
