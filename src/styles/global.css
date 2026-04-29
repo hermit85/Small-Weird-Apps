@@ -17,6 +17,13 @@
   --font-serif: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+
+  /* motion system tokens (used everywhere we animate) */
+  --motion-ease-primary: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-ambient: cubic-bezier(0.45, 0, 0.55, 1);
+  --motion-fast:    150ms;
+  --motion-medium:  600ms;
+  --motion-slow:    900ms;
 }
 
 @layer base {
@@ -47,6 +54,11 @@
   a {
     color: inherit;
     text-decoration: none;
+    /* class 3: micro-interactions */
+    transition: color var(--motion-fast) ease-out,
+                opacity var(--motion-fast) ease-out,
+                border-color var(--motion-fast) ease-out,
+                background-color var(--motion-fast) ease-out;
   }
 
   *:focus-visible {
@@ -72,43 +84,62 @@
     color: var(--color-ink-faint);
   }
 
-  /* gentle entrance — runs once on first paint */
-  .reveal {
+  /* ─── motion class 1 — primary entrance ───────────────────
+     Used only at the top of the page (hero) so the wordmark and
+     subcopy settle in once. Properties limited to opacity + transform. */
+  .motion-reveal {
     opacity: 0;
-    transform: translateY(12px);
-    animation: reveal 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    transform: translateY(10px);
+    animation: motion-reveal var(--motion-slow) var(--motion-ease-primary) forwards;
   }
-  .reveal.r-1 { animation-delay: 0.05s; }
-  .reveal.r-2 { animation-delay: 0.20s; }
-  .reveal.r-3 { animation-delay: 0.35s; }
-  .reveal.r-4 { animation-delay: 0.55s; }
+  .motion-reveal.r-1 { animation-delay: 0.05s; }
+  .motion-reveal.r-2 { animation-delay: 0.20s; }
+  .motion-reveal.r-3 { animation-delay: 0.35s; }
+  .motion-reveal.r-4 { animation-delay: 0.55s; }
+
+  /* ─── motion class 3 — micro-interactions on tappable surfaces ── */
+  .motion-tappable {
+    transition: transform var(--motion-fast) ease-out,
+                border-color var(--motion-fast) ease-out,
+                background-color var(--motion-fast) ease-out;
+  }
+  .motion-tappable:hover {
+    transform: translateY(-1px);
+  }
 }
 
-@keyframes reveal {
+/* ─── motion class 1 — primary entrance ─────────────────────── */
+@keyframes motion-reveal {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* per-app micro-animations (used inside the app visuals) */
-@keyframes pulse-ring {
-  0%   { transform: scale(0.18); opacity: 0.95; }
-  85%  { opacity: 0; }
-  100% { transform: scale(1); opacity: 0; }
-}
-@keyframes blink-soft {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.55; }
-}
-@keyframes drift {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-3px); }
-}
-@keyframes timer-blink {
-  0%, 100% { opacity: 0.85; }
-  50%      { opacity: 1; }
-}
-@keyframes spin {
+/* ─── motion class 2 — ambient (only inside app visuals) ─────
+   These keyframes are deliberately small in amplitude. */
+
+/* radar sweep — a single gentle rotation, used only on BZZT */
+@keyframes motion-radar-sweep {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
+}
+
+/* soft pulse — used on CMOK center halo + spark glows.
+   Very small scale change, slow timing. */
+@keyframes motion-soft-pulse {
+  0%, 100% { transform: scale(1);     opacity: 0.55; }
+  50%      { transform: scale(1.04);  opacity: 0.85; }
+}
+
+/* breathing — a 2px float used on the CMOK center 'tap' dot */
+@keyframes motion-breathe {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+
+/* ripple — single one-shot ring expansion + fade
+   (used on the BZZT mutual spark and the CMOK ok-sent reply) */
+@keyframes motion-ripple {
+  0%   { transform: scale(0.55); opacity: 0.85; }
+  100% { transform: scale(1.2);  opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -117,5 +148,5 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .reveal { opacity: 1; transform: none; }
+  .motion-reveal { opacity: 1; transform: none; }
 }

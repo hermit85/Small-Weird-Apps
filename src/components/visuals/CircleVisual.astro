@@ -1,5 +1,13 @@
 ---
-// CMOK — warm close circle, central tap, one OK SENT reply.
+// CMOK — close circle around a daily tap.
+// Motion contract:
+//   AMBIENT: center TAP dot breathes (motion-breathe, 5s).
+//   AMBIENT: center halo soft-pulses (motion-soft-pulse, 5s).
+//   AMBIENT: ok-sent reply node soft-pulses subtly (motion-soft-pulse, 6s).
+//   STATIC:  six other people-dots, dashed reply line, HUD chip, OK SENT stamp.
+// Rationale:
+//   CMOK is calm. Only the centre breathes; the close circle is a steady
+//   ring of people. The OK reply is the only other live element.
 const cx = 240;
 const cy = 240;
 
@@ -11,7 +19,6 @@ const people = Array.from({ length: peopleCount }, (_, i) => {
   return {
     x: cx + peopleRadius * Math.cos(angleRad),
     y: cy + peopleRadius * Math.sin(angleRad),
-    delay: (i * 0.4).toFixed(2),
   };
 });
 
@@ -35,13 +42,13 @@ const okIndex = 1;
 
     <circle cx={cx} cy={cy} r="230" fill="url(#cmok-glow)" />
 
-    <!-- close-circle ring -->
+    <!-- close-circle ring — STATIC -->
     <circle cx={cx} cy={cy} r={peopleRadius} stroke="currentColor" stroke-opacity="0.22" fill="none" />
 
-    <!-- subtle outer guide -->
+    <!-- subtle outer guide — STATIC -->
     <circle cx={cx} cy={cy} r="195" stroke="currentColor" stroke-opacity="0.10" fill="none" stroke-dasharray="2 6" />
 
-    <!-- subtle line: tap → OK reply -->
+    <!-- subtle line: tap → OK reply — STATIC -->
     <line
       x1={cx} y1={cy}
       x2={people[okIndex].x} y2={people[okIndex].y}
@@ -49,19 +56,22 @@ const okIndex = 1;
       stroke-width="1.2" stroke-dasharray="3 4"
     />
 
-    <!-- close-circle people -->
+    <!-- close-circle people — STATIC dots, no per-dot pulse -->
     <g>
       {people.map((p, i) => i !== okIndex && (
-        <Fragment>
-          <circle cx={p.x} cy={p.y} r="22" fill="currentColor" fill-opacity="0.16" style={`transform-origin: ${p.x}px ${p.y}px; animation: pulse-ring 4s ease-out ${p.delay}s infinite;`} />
-          <circle cx={p.x} cy={p.y} r="9" fill="currentColor" fill-opacity="0.85" />
-        </Fragment>
+        <circle cx={p.x} cy={p.y} r="9" fill="currentColor" fill-opacity="0.78" />
       ))}
     </g>
 
-    <!-- OK reply node — special treatment -->
+    <!-- ok reply node — single subtle halo soft-pulse -->
     <g>
-      <circle cx={people[okIndex].x} cy={people[okIndex].y} r="36" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="1" style={`transform-origin: ${people[okIndex].x}px ${people[okIndex].y}px; animation: pulse-ring 2.6s ease-out infinite;`} />
+      <circle
+        cx={people[okIndex].x} cy={people[okIndex].y}
+        r="32"
+        fill="none"
+        stroke="currentColor" stroke-opacity="0.45" stroke-width="1"
+        style={`transform-origin: ${people[okIndex].x}px ${people[okIndex].y}px; animation: motion-soft-pulse 6s var(--motion-ease-ambient) 0.5s infinite;`}
+      />
       <circle cx={people[okIndex].x} cy={people[okIndex].y} r="14" fill="currentColor" />
       <text
         x={people[okIndex].x} y={people[okIndex].y + 4}
@@ -74,9 +84,18 @@ const okIndex = 1;
       >ok ✓</text>
     </g>
 
-    <!-- center: today's tap -->
-    <circle cx={cx} cy={cy} r="60" fill="none" stroke="currentColor" stroke-opacity="0.35" style="transform-origin: 240px 240px; animation: pulse-ring 3.6s ease-out infinite;" />
-    <circle cx={cx} cy={cy} r="42" fill="currentColor" style="animation: drift 4s ease-in-out infinite;" />
+    <!-- center: TAP — soft halo + breathing dot -->
+    <circle
+      cx={cx} cy={cy} r="56"
+      fill="none"
+      stroke="currentColor" stroke-opacity="0.30"
+      style="transform-origin: 240px 240px; animation: motion-soft-pulse 5s var(--motion-ease-ambient) infinite;"
+    />
+    <circle
+      cx={cx} cy={cy} r="42"
+      fill="currentColor"
+      style="animation: motion-breathe 5s var(--motion-ease-ambient) infinite;"
+    />
     <text
       x={cx} y={cy + 6}
       text-anchor="middle"
@@ -89,9 +108,9 @@ const okIndex = 1;
     >tap</text>
   </svg>
 
-  <!-- HUD -->
+  <!-- HUD — STATIC -->
   <div class="absolute top-2 left-2 font-mono text-[9px] tracking-[0.28em] uppercase text-cmok/85 flex items-center gap-1.5">
-    <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-cmok shadow-[0_0_6px_var(--color-cmok)]" style="animation: blink-soft 1.4s infinite;"></span>
+    <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-cmok shadow-[0_0_6px_var(--color-cmok)]"></span>
     daily · 18:42
   </div>
 

@@ -1,5 +1,12 @@
 ---
-// BZZT — radar with two nearby dots, one mutual spark, 30:00 timer.
+// BZZT — proximity radar.
+// Motion contract:
+//   AMBIENT: one slow radar sweep (motion-radar-sweep, 9s linear, infinite).
+//   AMBIENT: one very subtle soft-pulse on the mutual spark glow (5s).
+//   STATIC:  YOU dot, two nearby pings, HUD chip, 30:00 timer.
+// Rationale:
+//   BZZT means "noticed someone". The sweep tells the radar story; the
+//   spark settles in calmly. Anything else competes.
 ---
 
 <div class="relative w-full max-w-md mx-auto">
@@ -16,14 +23,14 @@
       </radialGradient>
       <linearGradient id="bzzt-sweep" x1="0%" y1="50%" x2="100%" y2="50%">
         <stop offset="0%"  stop-color="currentColor" stop-opacity="0" />
-        <stop offset="100%" stop-color="currentColor" stop-opacity="0.5" />
+        <stop offset="100%" stop-color="currentColor" stop-opacity="0.42" />
       </linearGradient>
     </defs>
 
     <circle cx="240" cy="240" r="230" fill="url(#bzzt-glow)" />
 
     <!-- baseline rings -->
-    <g stroke="currentColor" fill="none" stroke-opacity="0.18">
+    <g stroke="currentColor" fill="none" stroke-opacity="0.16">
       <circle cx="240" cy="240" r="80" />
       <circle cx="240" cy="240" r="150" />
       <circle cx="240" cy="240" r="220" />
@@ -35,31 +42,30 @@
       <line x1="20"  y1="240" x2="460" y2="240" />
     </g>
 
-    <!-- pulse rings -->
-    <g stroke="currentColor" fill="none" style="transform-origin: 240px 240px;">
-      <circle cx="240" cy="240" r="220" stroke-width="1" style="animation: pulse-ring 3.4s ease-out infinite;"></circle>
-      <circle cx="240" cy="240" r="220" stroke-width="1" style="animation: pulse-ring 3.4s ease-out 1.7s infinite;"></circle>
-    </g>
-
-    <!-- sweep -->
-    <g style="transform-origin: 240px 240px; animation: spin 7s linear infinite;">
+    <!-- ambient: one slow radar sweep — the only rotating element -->
+    <g style="transform-origin: 240px 240px; animation: motion-radar-sweep 9s linear infinite;">
       <path d="M 240 240 L 460 240 A 220 220 0 0 0 350 30 Z" fill="url(#bzzt-sweep)" opacity="0.55" />
     </g>
 
-    <!-- 2 anonymous nearby pings -->
+    <!-- 2 anonymous nearby pings — STATIC -->
     <g fill="currentColor">
-      <circle cx="160" cy="170" r="5" fill-opacity="0.7" style="animation: blink-soft 2.6s ease-in-out infinite;" />
-      <circle cx="370" cy="180" r="5" fill-opacity="0.7" style="animation: blink-soft 3.2s ease-in-out 0.6s infinite;" />
+      <circle cx="160" cy="170" r="5" fill-opacity="0.72" />
+      <circle cx="370" cy="180" r="5" fill-opacity="0.72" />
     </g>
 
-    <!-- mutual spark — bigger, with halo -->
+    <!-- mutual spark — a single subtle soft-pulse on the halo only -->
     <g>
-      <circle cx="320" cy="330" r="36" fill="none" stroke="currentColor" stroke-opacity="0.5" stroke-width="1" style="transform-origin: 320px 330px; animation: pulse-ring 2.4s ease-out infinite;" />
+      <circle
+        cx="320" cy="330" r="32"
+        fill="none"
+        stroke="currentColor" stroke-opacity="0.45" stroke-width="1"
+        style="transform-origin: 320px 330px; animation: motion-soft-pulse 5s var(--motion-ease-ambient) infinite;"
+      />
       <circle cx="320" cy="330" r="14" fill="currentColor" />
       <circle cx="320" cy="330" r="22" fill="none" stroke="currentColor" stroke-opacity="0.95" stroke-width="1.2" />
     </g>
 
-    <!-- center YOU -->
+    <!-- center YOU — STATIC -->
     <circle cx="240" cy="240" r="9" fill="currentColor" />
     <circle cx="240" cy="240" r="20" fill="none" stroke="currentColor" stroke-opacity="0.7" stroke-width="1" />
     <text
@@ -75,15 +81,15 @@
     >you</text>
   </svg>
 
-  <!-- HUD overlays -->
+  <!-- HUD overlays — STATIC -->
   <div class="absolute top-2 left-2 font-mono text-[9px] tracking-[0.28em] uppercase text-bzzt/85 flex items-center gap-1.5">
-    <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-bzzt shadow-[0_0_6px_var(--color-bzzt)]" style="animation: blink-soft 1.4s infinite;"></span>
+    <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-bzzt shadow-[0_0_6px_var(--color-bzzt)]"></span>
     nearby · 2
   </div>
 
   <div class="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 text-right">
     <p class="font-mono text-[9px] tracking-[0.28em] uppercase text-bzzt/85 mb-0.5">▍ mutual spark</p>
-    <p class="font-mono font-bold text-bzzt tracking-[-0.02em] tabular-nums" style="font-size: clamp(1.4rem, 4vw, 2.4rem); animation: timer-blink 1.2s ease-in-out infinite;">
+    <p class="font-mono font-bold text-bzzt tracking-[-0.02em] tabular-nums" style="font-size: clamp(1.4rem, 4vw, 2.4rem);">
       30<span class="text-bzzt/70">:</span>00
     </p>
   </div>
