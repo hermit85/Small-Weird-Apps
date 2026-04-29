@@ -38,10 +38,9 @@ const okIndex = 1;
 
     <circle cx={cx} cy={cy} r="230" fill="url(#cmok-glow)" />
 
-    <!-- close-circle ring — STATIC, brighter (0.22 → 0.32) -->
-    <circle cx={cx} cy={cy} r={peopleRadius} stroke="currentColor" stroke-opacity="0.32" fill="none" />
-
-    <!-- subtle outer guide — STATIC -->
+    <!-- subtle outer guide only (the people-dots themselves form the
+         visible close circle; an explicit ring was crashing through
+         the OK-reply halo) -->
     <circle cx={cx} cy={cy} r="195" stroke="currentColor" stroke-opacity="0.12" fill="none" stroke-dasharray="2 6" />
 
     <!-- subtle line: tap → OK reply — STATIC -->

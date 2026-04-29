@@ -38,7 +38,10 @@ const leaderboard = [
     <!-- mountain silhouette — STATIC, slightly stronger (0.05 → 0.07) -->
     <path d="M 0 280 L 60 60 L 200 200 L 280 240 L 380 170 L 480 60 L 480 280 Z" fill="currentColor" fill-opacity="0.07" />
 
-    <!-- trail line — draws once on enter via stroke-dashoffset -->
+    <!-- trail line — draws once on enter via stroke-dashoffset.
+         (The HTML 'gate · armed' chip in the corner is the gate label;
+         we no longer draw a separate SVG icon + word — they were
+         stacking in the same corner.) -->
     <path
       d="M 60 60 L 200 200 L 280 240 L 380 170 L 480 60"
       stroke="currentColor" stroke-width="2.4" stroke-opacity="0.78" fill="none"
@@ -46,13 +49,8 @@ const leaderboard = [
       style="animation: motion-route-draw 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;"
     />
 
-    <!-- start gate — STATIC -->
-    <g>
-      <rect x="40" y="40" width="6" height="40" fill="currentColor" />
-      <rect x="74" y="40" width="6" height="40" fill="currentColor" />
-      <line x1="40" y1="48" x2="80" y2="48" stroke="currentColor" stroke-width="2" />
-      <text x="60" y="36" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="0.22em" fill="currentColor" style="text-transform: uppercase;">gate</text>
-    </g>
+    <!-- start node at the top of the trail (small dot, no label) -->
+    <circle cx="60" cy="60" r="5" fill="currentColor" />
 
     <!-- finish flag — STATIC -->
     <g>
