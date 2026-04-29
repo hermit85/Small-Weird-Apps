@@ -4,8 +4,7 @@ export const site = {
   description:
     "A tiny indie app label for mobile products that rethink familiar problems by changing the loop.",
   url: "https://smallweirdapps.com",
-  email: "hello@smallweirdapps.com",
-  legalOwner: "Cybird Consulting Dariusz Ptaszek",
+  email: "cybird.consulting@gmail.com",
+  legalOwner: "Cybird Consulting",
   city: "Warsaw, Poland",
-  linkedin: "https://www.linkedin.com/in/dariuszptaszek/",
 } as const;

@@ -21,7 +21,7 @@ const year = new Date().getFullYear();
     <div class="text-center max-w-3xl mx-auto">
       <p class="font-display text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.25] text-ink">
         {site.name} is a product label
-        <span class="block">owned by <span class="italic">Cybird Consulting Dariusz Ptaszek</span></span>
+        <span class="block">owned by <span class="italic">{site.legalOwner}</span></span>
         <span class="block text-ink-dim">— published from {site.city}.</span>
       </p>
 
@@ -33,7 +33,7 @@ const year = new Date().getFullYear();
         <span aria-hidden="true">·</span>
         <a href="/legal" class="hover:text-ink transition-colors">Legal</a>
         <span aria-hidden="true">·</span>
-        <a href={site.linkedin} target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn ↗</a>
+        <a href={`mailto:${site.email}`} class="hover:text-ink transition-colors">{site.email} ↗</a>
         <span aria-hidden="true">━━━━━</span>
       </div>
     </div>
