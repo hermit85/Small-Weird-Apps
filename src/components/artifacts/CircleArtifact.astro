@@ -1,0 +1,82 @@
+---
+import { apps } from "../../data/apps.ts";
+const app = apps.find((a) => a.id === "cmok")!;
+
+const cx = 300;
+const cy = 300;
+const labelRadius = 245;
+const stepPositions = app.loopSteps.map((label, i) => {
+  const angleDeg = -90 + i * 120;
+  const angleRad = (angleDeg * Math.PI) / 180;
+  return {
+    label,
+    pl: app.loopStepsPl[i],
+    x: cx + labelRadius * Math.cos(angleRad),
+    y: cy + labelRadius * Math.sin(angleRad),
+    angleDeg,
+  };
+});
+
+const peopleCount = 7;
+const peopleRadius = 145;
+const people = Array.from({ length: peopleCount }, (_, i) => {
+  const angleDeg = -90 + (360 / peopleCount) * i;
+  const angleRad = (angleDeg * Math.PI) / 180;
+  return {
+    x: cx + peopleRadius * Math.cos(angleRad),
+    y: cy + peopleRadius * Math.sin(angleRad),
+    delay: (i * 0.4).toFixed(2),
+  };
+});
+---
+
+<svg
+  viewBox="0 0 600 600"
+  class="w-full h-auto text-cmok"
+  role="img"
+  aria-label="cmok close circle — daily sign with seven people receiving an echo"
+>
+  <defs>
+    <radialGradient id="cmok-glow-c" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="currentColor" stop-opacity="0.30" />
+      <stop offset="60%" stop-color="currentColor" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <circle cx={cx} cy={cy} r="290" fill="url(#cmok-glow-c)" />
+
+  <circle cx={cx} cy={cy} r={labelRadius - 30} stroke="currentColor" stroke-opacity="0.12" fill="none" stroke-dasharray="2 6" />
+  <circle cx={cx} cy={cy} r={peopleRadius} stroke="currentColor" stroke-opacity="0.22" fill="none" />
+
+  <g>
+    {people.map((p) => (
+      <Fragment>
+        <circle cx={p.x} cy={p.y} r="22" fill="currentColor" fill-opacity="0.18" style={`transform-origin: ${p.x}px ${p.y}px; animation: pulse-ring 4s ease-out ${p.delay}s infinite;`} />
+        <circle cx={p.x} cy={p.y} r="9" fill="currentColor" />
+      </Fragment>
+    ))}
+  </g>
+
+  <g font-family="JetBrains Mono, monospace" font-weight="600" font-size="14" letter-spacing="0.2em" fill="currentColor" fill-opacity="0.95" style="text-transform: uppercase;">
+    {stepPositions.map((s) => {
+      const cos = Math.cos((s.angleDeg * Math.PI) / 180);
+      const anchor = s.angleDeg === -90 ? "middle" : (cos > 0 ? "start" : "end");
+      return <text x={s.x} y={s.y} text-anchor={anchor} dominant-baseline={s.angleDeg === -90 ? "auto" : "middle"}>{s.label}</text>;
+    })}
+  </g>
+
+  <!-- center: today's sign -->
+  <circle cx={cx} cy={cy} r="60" fill="none" stroke="currentColor" stroke-opacity="0.35" style="transform-origin: 300px 300px; animation: pulse-ring 3.6s ease-out infinite;" />
+  <circle cx={cx} cy={cy} r="42" fill="currentColor" style="animation: drift 4s ease-in-out infinite;" />
+  <text
+    x={cx} y={cy + 6}
+    text-anchor="middle"
+    font-family="JetBrains Mono, monospace"
+    font-weight="700"
+    font-size="13"
+    letter-spacing="0.22em"
+    fill="var(--color-bg)"
+    style="text-transform: uppercase;"
+  >tap</text>
+</svg>

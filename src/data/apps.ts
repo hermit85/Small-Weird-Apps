@@ -16,6 +16,8 @@ export type AppData = {
   intro: string[];
   /** What the app pushes back against (rejected pattern) */
   input: string[];
+  /** The category default loop — how the broken pattern actually flows */
+  categoryDefault: string[];
   /** Loop steps — Polish (canonical, as the product uses) */
   loopStepsPl: string[];
   /** Loop steps — English mapping for the diagram labels */
@@ -44,6 +46,7 @@ export const apps: AppData[] = [
       "BZZT is built for noticing someone now — with a 30-minute window to actually meet.",
     ],
     input: ["endless swiping", "profile shopping"],
+    categoryDefault: ["profile", "swipe", "chat", "ghost"],
     loopStepsPl: ["radar", "sygnał", "iskra", "spotkanie"],
     loopSteps: ["radar", "signal", "spark", "meet"],
     bullets: ["Nearby.", "Anonymous until mutual.", "30 minutes.", "Face to face."],
@@ -64,7 +67,8 @@ export const apps: AppData[] = [
       "Most safety apps start when something goes wrong.",
       "cmok starts earlier — with one tap a day, between people who already care.",
     ],
-    input: ["panic theatre", "did you call mom?"],
+    input: ["panic theatre", "cold emergency tools"],
+    categoryDefault: ["worry", "call", "no answer", "panic"],
     loopStepsPl: ["znak", "echo", "spokój"],
     loopSteps: ["sign", "echo", "reassurance"],
     bullets: ["One tap.", "No chat.", "Just presence."],
@@ -85,7 +89,8 @@ export const apps: AppData[] = [
       "Riders already race the same trails.",
       "NWD turns that into a verified, seasonal gravity league.",
     ],
-    input: ["training log", "event calendar"],
+    input: ["training log", "event dependency"],
+    categoryDefault: ["track", "log", "forget"],
     loopStepsPl: ["bramka", "rozpęd", "meta", "tablica", "loop"],
     loopSteps: ["gate", "descent", "finish", "leaderboard", "repeat"],
     bullets: ["Official trails.", "GPS-verified.", "Seasonal podiums."],

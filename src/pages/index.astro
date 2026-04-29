@@ -1,26 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Hero from "../components/Hero.astro";
-import ProblemWall from "../components/ProblemWall.astro";
-import LoopDiagram from "../components/LoopDiagram.astro";
-import BzztSection from "../components/sections/BzztSection.astro";
-import CmokSection from "../components/sections/CmokSection.astro";
-import NwdSection from "../components/sections/NwdSection.astro";
-import Manifest from "../components/Manifest.astro";
-import Company from "../components/Company.astro";
-import WhatsNext from "../components/WhatsNext.astro";
+import Console from "../components/Console.astro";
+import Manifest from "../components/overlays/Manifest.astro";
+import FailureReport from "../components/overlays/FailureReport.astro";
+import Plate from "../components/overlays/Plate.astro";
 ---
 
 <Layout>
-  <Hero />
-  <ProblemWall />
-  <LoopDiagram />
-  <div id="apps" class="scroll-mt-20">
-    <BzztSection />
-    <CmokSection />
-    <NwdSection />
-  </div>
+  <Console />
   <Manifest />
-  <Company />
-  <WhatsNext />
+  <FailureReport />
+  <Plate />
 </Layout>

@@ -9,9 +9,16 @@ import { apps } from "../data/apps.ts";
   description={`Legal owner and contact details for ${site.name}.`}
   pathname="/legal"
 >
-  <section class="mx-auto max-w-3xl px-5 sm:px-8 pt-20 sm:pt-32 pb-24">
+  <header class="border-b border-line">
+    <div class="mx-auto max-w-3xl px-5 sm:px-8 py-4 flex items-center justify-between font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint">
+      <a href="/" class="hover:text-ink transition-colors">← {site.name}</a>
+      <span>Legal</span>
+    </div>
+  </header>
+
+  <section class="mx-auto max-w-3xl px-5 sm:px-8 pt-12 sm:pt-20 pb-24">
     <p class="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint mb-8">
-      ▍ Legal
+      ▍ Legal record
     </p>
 
     <h1 class="font-display text-[clamp(2.6rem,7vw,5rem)] leading-[0.95] text-ink">

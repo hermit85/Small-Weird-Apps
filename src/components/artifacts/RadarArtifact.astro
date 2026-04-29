@@ -1,0 +1,82 @@
+---
+import { apps } from "../../data/apps.ts";
+const app = apps.find((a) => a.id === "bzzt")!;
+
+const stepsOnRadar = [
+  { label: app.loopSteps[0], cx: 300, cy: 60,  tx: 300, ty: 38,  anchor: "middle" },
+  { label: app.loopSteps[1], cx: 540, cy: 300, tx: 562, ty: 304, anchor: "start"  },
+  { label: app.loopSteps[2], cx: 300, cy: 540, tx: 300, ty: 568, anchor: "middle" },
+  { label: app.loopSteps[3], cx: 60,  cy: 300, tx: 38,  ty: 304, anchor: "end"    },
+];
+---
+
+<svg
+  viewBox="0 0 600 600"
+  class="w-full h-auto text-bzzt"
+  role="img"
+  aria-label="BZZT radar — proximity signal with four loop step pings"
+>
+  <defs>
+    <radialGradient id="bzzt-glow-c" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="currentColor" stop-opacity="0.20" />
+      <stop offset="60%" stop-color="currentColor" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="bzzt-sweep-c" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="currentColor" stop-opacity="0" />
+      <stop offset="100%" stop-color="currentColor" stop-opacity="0.50" />
+    </linearGradient>
+  </defs>
+
+  <circle cx="300" cy="300" r="290" fill="url(#bzzt-glow-c)" />
+
+  <g stroke="currentColor" fill="none" stroke-opacity="0.20">
+    <circle cx="300" cy="300" r="80" />
+    <circle cx="300" cy="300" r="160" />
+    <circle cx="300" cy="300" r="240" />
+  </g>
+
+  <g stroke="currentColor" stroke-opacity="0.16" stroke-dasharray="2 6">
+    <line x1="300" y1="60" x2="300" y2="540" />
+    <line x1="60" y1="300" x2="540" y2="300" />
+  </g>
+
+  <g stroke="currentColor" fill="none">
+    <circle cx="300" cy="300" r="270" stroke-width="1" style="animation: pulse-ring 3.6s ease-out infinite; transform-origin: 300px 300px;"></circle>
+    <circle cx="300" cy="300" r="270" stroke-width="1" style="animation: pulse-ring 3.6s ease-out 1.2s infinite; transform-origin: 300px 300px;"></circle>
+    <circle cx="300" cy="300" r="270" stroke-width="1" style="animation: pulse-ring 3.6s ease-out 2.4s infinite; transform-origin: 300px 300px;"></circle>
+  </g>
+
+  <g style="transform-origin: 300px 300px; animation: spin 7s linear infinite;">
+    <path d="M 300 300 L 580 300 A 280 280 0 0 0 440 60 Z" fill="url(#bzzt-sweep-c)" opacity="0.55" />
+  </g>
+
+  <g stroke="currentColor" fill="none" stroke-opacity="0.45">
+    <path d="M 460 180 A 220 220 0 0 1 460 420" stroke-width="1.4" stroke-dasharray="3 4" />
+    <polygon points="460,420 454,408 466,408" fill="currentColor" fill-opacity="0.8" />
+  </g>
+
+  <g>
+    {stepsOnRadar.map((s, i) => (
+      <Fragment>
+        <circle cx={s.cx} cy={s.cy} r="7" fill="currentColor" style={`animation: blink-soft ${2.4 + i * 0.4}s ease-in-out ${i * 0.3}s infinite;`} />
+        <circle cx={s.cx} cy={s.cy} r="14" fill="none" stroke="currentColor" stroke-opacity="0.55" />
+        <text
+          x={s.tx}
+          y={s.ty}
+          text-anchor={s.anchor}
+          font-family="JetBrains Mono, monospace"
+          font-size="14"
+          font-weight="600"
+          letter-spacing="0.2em"
+          fill="currentColor"
+          fill-opacity="0.95"
+          style="text-transform: uppercase;"
+        >{s.label}</text>
+      </Fragment>
+    ))}
+  </g>
+
+  <circle cx="300" cy="300" r="9" fill="currentColor" />
+  <circle cx="300" cy="300" r="20" fill="none" stroke="currentColor" stroke-opacity="0.7" />
+</svg>

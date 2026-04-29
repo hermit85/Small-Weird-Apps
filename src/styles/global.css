@@ -237,6 +237,135 @@
     mix-blend-mode: overlay;
   }
 
+  /* ─── console ───────────────────────────────────────── */
+
+  .console {
+    display: grid;
+    grid-template-areas:
+      "top      top      top"
+      "select   artifact details"
+      "dock     dock     dock";
+    grid-template-columns: minmax(240px, 22%) 1fr minmax(280px, 28%);
+    grid-template-rows: auto 1fr auto;
+    min-height: 100svh;
+  }
+  .console-top      { grid-area: top; }
+  .console-select   { grid-area: select; }
+  .console-artifact { grid-area: artifact; }
+  .console-details  { grid-area: details; }
+  .console-dock     { grid-area: dock; }
+
+  @media (max-width: 1023px) {
+    .console {
+      grid-template-areas:
+        "top"
+        "select"
+        "artifact"
+        "details"
+        "dock";
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto auto;
+    }
+  }
+
+  /* radio inputs that drive console state — visually hidden, focusable */
+  .console-state {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* loop slots: hidden by default, shown when their loop is active.
+     !important needed to beat Tailwind utility layer (flex/block etc).
+     --slot-d allows per-slot display value (default block; pass flex via inline style). */
+  [data-loop] {
+    display: none !important;
+  }
+  .console:has(#loop-bzzt:checked) [data-loop="bzzt"],
+  .console:has(#loop-cmok:checked) [data-loop="cmok"],
+  .console:has(#loop-nwd:checked)  [data-loop="nwd"]  {
+    display: var(--slot-d, block) !important;
+    animation: loop-fade 0.32s ease-out;
+  }
+
+  /* selector buttons — active state */
+  .loop-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: 1px solid transparent;
+    transition: border-color 0.18s, background-color 0.18s, color 0.18s;
+    cursor: pointer;
+  }
+  .console:has(#loop-bzzt:checked) [data-loop-btn="bzzt"] {
+    border-color: var(--color-bzzt);
+    background-color: rgba(0,229,255,0.05);
+  }
+  .console:has(#loop-cmok:checked) [data-loop-btn="cmok"] {
+    border-color: var(--color-cmok);
+    background-color: rgba(232,93,58,0.05);
+  }
+  .console:has(#loop-nwd:checked) [data-loop-btn="nwd"] {
+    border-color: var(--color-nwd);
+    background-color: rgba(0,255,135,0.05);
+  }
+
+  /* keyboard focus visible on radio reflects on label */
+  #loop-bzzt:focus-visible ~ * [data-loop-btn="bzzt"],
+  #loop-cmok:focus-visible ~ * [data-loop-btn="cmok"],
+  #loop-nwd:focus-visible ~ * [data-loop-btn="nwd"] {
+    outline: 2px solid var(--color-bzzt);
+    outline-offset: 2px;
+  }
+
+  /* :target overlay modal */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    background: rgba(8, 8, 12, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .overlay:target {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 4rem 1.25rem;
+    animation: overlay-in 0.22s ease-out;
+  }
+  .overlay-card {
+    position: relative;
+    width: 100%;
+    max-width: 56rem;
+    background: var(--color-bg);
+    border: 2px solid var(--color-line);
+    padding: clamp(1.5rem, 4vw, 3rem);
+  }
+  .overlay-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-ink-dim);
+  }
+  .overlay-close:hover { color: var(--color-ink); }
+  .overlay-backdrop-link {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
   /* sticker — rotated mono label */
   .sticker {
     display: inline-flex;
@@ -262,6 +391,16 @@
 @keyframes boot-line {
   0% { opacity: 0; transform: translateY(2px); }
   100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes loop-fade {
+  0%   { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes overlay-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 @keyframes blink-cursor {
