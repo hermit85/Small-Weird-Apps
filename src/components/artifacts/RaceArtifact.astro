@@ -1,4 +1,7 @@
 ---
+// NWD — gravity racing HUD.
+// Mountain profile + descent stations + timer overlay + VERIFIED stamp + leaderboard strip.
+
 import { apps } from "../../data/apps.ts";
 const app = apps.find((a) => a.id === "nwd")!;
 
@@ -7,44 +10,85 @@ const stations = app.loopSteps.map((label, i) => {
   const ys = [60, 210, 270, 210, 60];
   return { label, x: xs[i], y: ys[i] };
 });
+
+const leaderboard = [
+  { rank: 1, tag: "MTB.LD7", time: "01:38.42", delta: "leader" },
+  { rank: 2, tag: "GATE_K", time: "01:39.07", delta: "+0.65" },
+  { rank: 3, tag: "DRT.PL", time: "01:41.18", delta: "+2.76" },
+];
 ---
 
 <div class="relative">
+
+  <!-- VERIFIED stamp (angled), sits over the visual -->
+  <span class="absolute top-2 right-3 z-10 stamp text-nwd/85 -rotate-[6deg]" aria-hidden="true">
+    verified · 2026
+  </span>
+
+  <!-- live HUD label -->
+  <div class="absolute top-2 left-2 z-10 font-mono text-[9px] tracking-[0.28em] uppercase text-nwd/80 flex items-center gap-1.5">
+    <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-nwd shadow-[0_0_6px_var(--color-nwd)]" style="animation: blink-soft 1.4s infinite;"></span>
+    gate · armed · was-001
+  </div>
+
+  <!-- mountain profile + descent path -->
   <svg
     viewBox="0 0 600 320"
     class="w-full h-auto text-nwd"
     role="img"
-    aria-label="NWD gravity loop — five stations on a downhill profile with a return arc"
+    aria-label="NWD gravity race — mountain profile with descent stations and return arc"
   >
     <path d="M 0 320 L 60 60 L 195 210 L 300 270 L 405 210 L 540 60 L 600 320 Z" fill="currentColor" fill-opacity="0.05" />
-    <path d="M 60 60 L 195 210 L 300 270 L 405 210 L 540 60" stroke="currentColor" stroke-width="2" stroke-opacity="0.55" fill="none" />
+    <path d="M 60 60 L 195 210 L 300 270 L 405 210 L 540 60" stroke="currentColor" stroke-width="2.2" stroke-opacity="0.65" fill="none" />
+
+    <!-- "wróć na górę" return arc (dashed) -->
     <path d="M 540 60 Q 300 -20, 60 60" stroke="currentColor" stroke-width="1.4" stroke-opacity="0.55" stroke-dasharray="3 5" fill="none" />
     <polygon points="60,60 70,55 70,65" fill="currentColor" fill-opacity="0.7" />
-
     <text x="300" y="14" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.22em" fill="currentColor" fill-opacity="0.55" style="text-transform: uppercase;">wróć na górę</text>
 
+    <!-- 5 stations -->
     {stations.map((s, i) => (
       <Fragment>
         <circle cx={s.x} cy={s.y} r="6" fill="currentColor" style={`animation: blink-soft ${2 + i * 0.3}s ease-in-out ${i * 0.2}s infinite;`} />
         <circle cx={s.x} cy={s.y} r="14" fill="none" stroke="currentColor" stroke-opacity="0.4" />
-        <text x={s.x} y={s.y > 200 ? s.y + 32 : s.y - 22} text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="600" font-size="13" letter-spacing="0.2em" fill="currentColor" fill-opacity="0.95" style="text-transform: uppercase;">{s.label}</text>
+        <text
+          x={s.x}
+          y={s.y > 200 ? s.y + 32 : s.y - 22}
+          text-anchor="middle"
+          font-family="JetBrains Mono, monospace"
+          font-weight="600"
+          font-size="11"
+          letter-spacing="0.2em"
+          fill="currentColor"
+          fill-opacity="0.85"
+          style="text-transform: uppercase;"
+        >{s.label}</text>
       </Fragment>
     ))}
   </svg>
 
-  <!-- secondary HUD: timer + leaderboard, compact -->
-  <div class="mt-6 grid grid-cols-12 gap-4 items-end">
-    <div class="col-span-7">
-      <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-nwd/70 mb-1">▍ live time</p>
-      <p
-        class="font-mono font-medium text-nwd leading-none tracking-[-0.04em] tabular-nums"
-        style="font-size: clamp(2rem, 6vw, 3.6rem); animation: timer 1.4s ease-in-out infinite;"
-      >01:42<span class="text-nwd/70">.</span>07</p>
-    </div>
-    <ol class="col-span-5 font-mono text-[10px] text-ink divide-y divide-nwd/15 border-y border-nwd/30">
-      <li class="flex items-center justify-between py-1 text-nwd"><span><span class="tabular-nums w-4 inline-block text-right mr-1.5">01</span>MTB.LD7</span><span class="tabular-nums">01:38.42</span></li>
-      <li class="flex items-center justify-between py-1 text-ink-dim"><span><span class="tabular-nums w-4 inline-block text-right mr-1.5">02</span>GATE_K</span><span class="tabular-nums">01:39.07</span></li>
-      <li class="flex items-center justify-between py-1 text-ink-dim"><span><span class="tabular-nums w-4 inline-block text-right mr-1.5">03</span>DRT.PL</span><span class="tabular-nums">01:41.18</span></li>
-    </ol>
+  <!-- BIG TIMER overlay (HUD), sits over the descent peak -->
+  <div class="absolute left-1/2 -translate-x-1/2 top-[34%] sm:top-[36%] text-center pointer-events-none">
+    <p class="font-mono text-[9px] tracking-[0.32em] uppercase text-nwd/70 mb-1">▍ live · descent</p>
+    <p
+      class="font-mono font-bold text-nwd leading-none tracking-[-0.04em] tabular-nums drop-shadow-[0_0_24px_rgba(0,255,135,0.35)]"
+      style="font-size: clamp(2.6rem, 6.5vw, 4.6rem); animation: timer 1.2s ease-in-out infinite;"
+    >01:42<span class="text-nwd/70">.</span>07</p>
   </div>
+
+  <!-- leaderboard strip integrated below -->
+  <ol class="mt-4 font-mono text-[11px] divide-y divide-nwd/15 border-y border-nwd/30">
+    {leaderboard.map((row) => (
+      <li class={`flex items-center justify-between py-1.5 px-1 ${row.rank === 1 ? "text-nwd" : "text-ink-dim"}`}>
+        <span class="flex items-center gap-3">
+          <span class="tabular-nums w-5 text-right">{String(row.rank).padStart(2, "0")}</span>
+          <span>{row.tag}</span>
+        </span>
+        <span class="flex items-center gap-3">
+          <span class="text-[9px] tracking-[0.18em] uppercase opacity-60">{row.delta}</span>
+          <span class="tabular-nums">{row.time}</span>
+        </span>
+      </li>
+    ))}
+  </ol>
 </div>

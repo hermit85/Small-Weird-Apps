@@ -1,24 +1,13 @@
 ---
-import { apps } from "../../data/apps.ts";
-const app = apps.find((a) => a.id === "cmok")!;
+// CMOK — daily reassurance device.
+// Center = today's tap. Around = 7 close-circle dots.
+// One of them shows OK SENT (a recipient replied). Subtle line connecting them.
 
 const cx = 300;
 const cy = 300;
-const labelRadius = 245;
-const stepPositions = app.loopSteps.map((label, i) => {
-  const angleDeg = -90 + i * 120;
-  const angleRad = (angleDeg * Math.PI) / 180;
-  return {
-    label,
-    pl: app.loopStepsPl[i],
-    x: cx + labelRadius * Math.cos(angleRad),
-    y: cy + labelRadius * Math.sin(angleRad),
-    angleDeg,
-  };
-});
 
 const peopleCount = 7;
-const peopleRadius = 145;
+const peopleRadius = 165;
 const people = Array.from({ length: peopleCount }, (_, i) => {
   const angleDeg = -90 + (360 / peopleCount) * i;
   const angleRad = (angleDeg * Math.PI) / 180;
@@ -28,55 +17,101 @@ const people = Array.from({ length: peopleCount }, (_, i) => {
     delay: (i * 0.4).toFixed(2),
   };
 });
+
+// pick one node to be the OK reply — second from top, on the right side
+const okIndex = 1;
 ---
 
-<svg
-  viewBox="0 0 600 600"
-  class="w-full h-auto text-cmok"
-  role="img"
-  aria-label="cmok close circle — daily sign with seven people receiving an echo"
->
-  <defs>
-    <radialGradient id="cmok-glow-c" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="currentColor" stop-opacity="0.30" />
-      <stop offset="60%" stop-color="currentColor" stop-opacity="0.06" />
-      <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
-    </radialGradient>
-  </defs>
+<div class="relative">
+  <svg
+    viewBox="0 0 600 600"
+    class="w-full h-auto text-cmok"
+    role="img"
+    aria-label="cmok daily sign — today's tap, close circle of seven, one OK SENT reply"
+  >
+    <defs>
+      <radialGradient id="cmok-glow-c" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="currentColor" stop-opacity="0.30" />
+        <stop offset="60%" stop-color="currentColor" stop-opacity="0.06" />
+        <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+      </radialGradient>
+    </defs>
 
-  <circle cx={cx} cy={cy} r="290" fill="url(#cmok-glow-c)" />
+    <circle cx={cx} cy={cy} r="290" fill="url(#cmok-glow-c)" />
 
-  <circle cx={cx} cy={cy} r={labelRadius - 30} stroke="currentColor" stroke-opacity="0.12" fill="none" stroke-dasharray="2 6" />
-  <circle cx={cx} cy={cy} r={peopleRadius} stroke="currentColor" stroke-opacity="0.22" fill="none" />
+    <!-- outer guide -->
+    <circle cx={cx} cy={cy} r="240" stroke="currentColor" stroke-opacity="0.10" fill="none" stroke-dasharray="2 6" />
+    <!-- close-circle ring -->
+    <circle cx={cx} cy={cy} r={peopleRadius} stroke="currentColor" stroke-opacity="0.22" fill="none" />
 
-  <g>
-    {people.map((p) => (
-      <Fragment>
-        <circle cx={p.x} cy={p.y} r="22" fill="currentColor" fill-opacity="0.18" style={`transform-origin: ${p.x}px ${p.y}px; animation: pulse-ring 4s ease-out ${p.delay}s infinite;`} />
-        <circle cx={p.x} cy={p.y} r="9" fill="currentColor" />
-      </Fragment>
-    ))}
-  </g>
+    <!-- subtle connection line: today's tap → OK reply node -->
+    <line
+      x1={cx}
+      y1={cy}
+      x2={people[okIndex].x}
+      y2={people[okIndex].y}
+      stroke="currentColor"
+      stroke-opacity="0.5"
+      stroke-width="1.2"
+      stroke-dasharray="3 4"
+    />
 
-  <g font-family="JetBrains Mono, monospace" font-weight="600" font-size="14" letter-spacing="0.2em" fill="currentColor" fill-opacity="0.95" style="text-transform: uppercase;">
-    {stepPositions.map((s) => {
-      const cos = Math.cos((s.angleDeg * Math.PI) / 180);
-      const anchor = s.angleDeg === -90 ? "middle" : (cos > 0 ? "start" : "end");
-      return <text x={s.x} y={s.y} text-anchor={anchor} dominant-baseline={s.angleDeg === -90 ? "auto" : "middle"}>{s.label}</text>;
-    })}
-  </g>
+    <!-- close circle people dots -->
+    <g>
+      {people.map((p, i) => i !== okIndex && (
+        <Fragment>
+          <circle cx={p.x} cy={p.y} r="22" fill="currentColor" fill-opacity="0.18" style={`transform-origin: ${p.x}px ${p.y}px; animation: pulse-ring 4s ease-out ${p.delay}s infinite;`} />
+          <circle cx={p.x} cy={p.y} r="9" fill="currentColor" fill-opacity="0.85" />
+        </Fragment>
+      ))}
+    </g>
 
-  <!-- center: today's sign -->
-  <circle cx={cx} cy={cy} r="60" fill="none" stroke="currentColor" stroke-opacity="0.35" style="transform-origin: 300px 300px; animation: pulse-ring 3.6s ease-out infinite;" />
-  <circle cx={cx} cy={cy} r="42" fill="currentColor" style="animation: drift 4s ease-in-out infinite;" />
-  <text
-    x={cx} y={cy + 6}
-    text-anchor="middle"
-    font-family="JetBrains Mono, monospace"
-    font-weight="700"
-    font-size="13"
-    letter-spacing="0.22em"
-    fill="var(--color-bg)"
-    style="text-transform: uppercase;"
-  >tap</text>
-</svg>
+    <!-- OK reply node — special treatment -->
+    <g>
+      <circle cx={people[okIndex].x} cy={people[okIndex].y} r="36" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="1" style={`transform-origin: ${people[okIndex].x}px ${people[okIndex].y}px; animation: pulse-ring 2.6s ease-out infinite;`} />
+      <circle cx={people[okIndex].x} cy={people[okIndex].y} r="14" fill="currentColor" />
+      <circle cx={people[okIndex].x} cy={people[okIndex].y} r="22" fill="none" stroke="currentColor" stroke-opacity="0.9" />
+      <text
+        x={people[okIndex].x}
+        y={people[okIndex].y + 4}
+        text-anchor="middle"
+        font-family="JetBrains Mono, monospace"
+        font-weight="700"
+        font-size="11"
+        letter-spacing="0.16em"
+        fill="var(--color-bg)"
+      >ok ✓</text>
+    </g>
+
+    <!-- center: today's tap -->
+    <circle cx={cx} cy={cy} r="60" fill="none" stroke="currentColor" stroke-opacity="0.35" style="transform-origin: 300px 300px; animation: pulse-ring 3.6s ease-out infinite;" />
+    <circle cx={cx} cy={cy} r="42" fill="currentColor" style="animation: drift 4s ease-in-out infinite;" />
+    <text
+      x={cx} y={cy + 6}
+      text-anchor="middle"
+      font-family="JetBrains Mono, monospace"
+      font-weight="700"
+      font-size="13"
+      letter-spacing="0.22em"
+      fill="var(--color-bg)"
+      style="text-transform: uppercase;"
+    >tap</text>
+  </svg>
+
+  <!-- HUD overlays -->
+  <div class="absolute top-2 left-2 font-mono text-[9px] tracking-[0.28em] uppercase text-cmok/80 flex items-center gap-1.5">
+    <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-cmok shadow-[0_0_6px_var(--color-cmok)]" style="animation: blink-soft 1.4s infinite;"></span>
+    daily · sent · 18:42
+  </div>
+
+  <div class="absolute top-2 right-2">
+    <span class="stamp text-cmok/90">ok sent</span>
+  </div>
+
+  <div class="absolute bottom-3 left-3 font-mono text-[9px] tracking-[0.28em] uppercase text-cmok/60">
+    close circle · 7
+  </div>
+  <div class="absolute bottom-3 right-3 font-mono text-[9px] tracking-[0.28em] uppercase text-cmok/60">
+    1 reply received
+  </div>
+</div>

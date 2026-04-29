@@ -1,6 +1,5 @@
 ---
 import { apps } from "../data/apps.ts";
-import { site } from "../data/site.ts";
 import RadarArtifact from "./artifacts/RadarArtifact.astro";
 import CircleArtifact from "./artifacts/CircleArtifact.astro";
 import RaceArtifact from "./artifacts/RaceArtifact.astro";
@@ -10,15 +9,15 @@ const cmok = apps.find((a) => a.id === "cmok")!;
 const nwd  = apps.find((a) => a.id === "nwd")!;
 
 const meta = [
-  { id: "bzzt", n: "01", cat: "Proximity",  appLabel: "BZZT", brand: "BZZT",  brandClass: "font-mono font-bold uppercase tracking-tight",     accent: "bzzt", data: bzzt },
-  { id: "cmok", n: "02", cat: "Reassurance",appLabel: "cmok", brand: "cmok", brandClass: "font-display italic lowercase",                     accent: "cmok", data: cmok },
-  { id: "nwd",  n: "03", cat: "Gravity",    appLabel: "NWD",  brand: "NWD",  brandClass: "font-display tracking-[-0.02em]",                  accent: "nwd",  data: nwd  },
+  { id: "bzzt", n: "01", cat: "Proximity",   brand: "BZZT", brandClass: "font-mono font-bold uppercase tracking-tight",     accent: "bzzt", data: bzzt, status: "live · scanning", tag: "30 min" },
+  { id: "cmok", n: "02", cat: "Reassurance", brand: "cmok", brandClass: "font-display italic lowercase",                     accent: "cmok", data: cmok, status: "ok sent",          tag: "~ 2 sec" },
+  { id: "nwd",  n: "03", cat: "Gravity",     brand: "NWD",  brandClass: "font-display tracking-[-0.02em]",                  accent: "nwd",  data: nwd,  status: "gate armed",       tag: "verified" },
 ];
 ---
 
 <form class="console" aria-label="SWA loop console">
 
-  <!-- ─── radio inputs (CSS-only state) ─── -->
+  <!-- ─── radio inputs ─── -->
   <input type="radio" name="loop" id="loop-bzzt" class="console-state" checked aria-label="Loop 01 — BZZT, proximity" />
   <input type="radio" name="loop" id="loop-cmok" class="console-state" aria-label="Loop 02 — cmok, reassurance" />
   <input type="radio" name="loop" id="loop-nwd"  class="console-state" aria-label="Loop 03 — NWD, gravity" />
@@ -28,187 +27,210 @@ const meta = [
     <span class="absolute top-3 left-3 reg-cross" aria-hidden="true"></span>
     <span class="absolute top-3 right-3 reg-cross" aria-hidden="true"></span>
 
-    <div class="px-5 sm:px-8 py-3 flex items-center justify-between font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint">
-      <span class="flex items-center gap-2">
+    <div class="px-5 sm:px-8 py-3 flex items-center justify-between gap-4 font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint">
+      <span class="flex items-center gap-2 shrink-0">
         <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-bzzt shadow-[0_0_8px_var(--color-bzzt)]"></span>
         SWA.OS · v.2026
       </span>
-      <span class="hidden md:inline">3 strange loops detected · status · live</span>
-      <span class="text-right">Warsaw · 2026</span>
+      <span class="hidden md:flex items-center gap-3">
+        <span>3 strange loops detected</span>
+        <span class="flex items-center gap-1.5">
+          <span aria-hidden="true" class="block w-1 h-1 rounded-full bg-bzzt" style="animation: blink-soft 2.2s infinite;"></span>
+          <span aria-hidden="true" class="block w-1 h-1 rounded-full bg-cmok" style="animation: blink-soft 2.2s 0.7s infinite;"></span>
+          <span aria-hidden="true" class="block w-1 h-1 rounded-full bg-nwd"  style="animation: blink-soft 2.2s 1.4s infinite;"></span>
+        </span>
+      </span>
+      <span class="text-right shrink-0">Warsaw · 2026</span>
     </div>
   </header>
 
-  <!-- ─── LEFT: SELECTOR + BRAND ─── -->
-  <aside class="console-select border-r border-line lg:flex flex-col">
-    <!-- brand -->
-    <div class="px-5 sm:px-8 py-6 sm:py-8 border-b border-line">
-      <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-3">▍ Publisher</p>
-      <p class="font-display tracking-[-0.04em] leading-[0.85]">
-        <span class="block text-[clamp(2.4rem,5vw,3.6rem)] text-ink">Small</span>
-        <span class="block text-[clamp(2.4rem,5vw,3.6rem)] italic text-bzzt -mt-1">weird</span>
-        <span class="block text-[clamp(2.4rem,5vw,3.6rem)] text-ink -mt-1">Apps<span class="text-bzzt">.</span></span>
+  <!-- ─── LEFT: SELECTOR ─── -->
+  <aside class="console-select border-r border-line flex flex-col">
+    <!-- compact brand -->
+    <div class="px-4 sm:px-5 py-5 border-b border-line">
+      <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-2">▍ Publisher</p>
+      <p class="font-display tracking-[-0.04em] leading-[0.9]">
+        <span class="block text-[clamp(1.6rem,2.4vw,2.2rem)] text-ink">Small</span>
+        <span class="block text-[clamp(1.6rem,2.4vw,2.2rem)] italic text-bzzt">weird</span>
+        <span class="block text-[clamp(1.6rem,2.4vw,2.2rem)] text-ink">Apps<span class="text-bzzt">.</span></span>
       </p>
     </div>
 
-    <!-- selector -->
-    <nav aria-label="Select loop" class="px-5 sm:px-8 py-6 sm:py-8 flex-1">
-      <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-5">▍ Select loop</p>
+    <!-- selector — hardware switch -->
+    <nav aria-label="Select loop" class="px-4 sm:px-5 py-5 flex-1">
+      <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-4 flex items-center justify-between">
+        <span>▍ Select loop</span>
+        <span class="text-ink-faint/60">3 / 4</span>
+      </p>
 
-      <ul class="space-y-3">
+      <ul class="space-y-2.5">
         {meta.map((m) => (
           <li>
             <label
               for={`loop-${m.id}`}
               data-loop-btn={m.id}
-              class="loop-btn group p-3.5 sm:p-4 rounded-sm hover:border-line"
+              class="loop-btn group relative p-3 sm:p-3.5"
             >
-              <span class="flex items-baseline justify-between gap-3 mb-2">
-                <span class={`font-mono text-[11px] tracking-[0.22em] text-${m.accent}`}>[{m.n}]</span>
-                <span class={`${m.brandClass} text-xl text-ink`}>{m.brand}</span>
-              </span>
-              <span class="block font-mono font-bold tracking-[0.18em] uppercase text-[12px] text-ink mb-1">
+              <!-- header: number + status -->
+              <div class="flex items-center justify-between mb-2">
+                <span class={`font-mono font-bold text-[18px] tracking-[-0.02em] text-${m.accent}`}>
+                  {m.n}
+                </span>
+                <span class="active-marker items-center gap-1.5 font-mono text-[9px] tracking-[0.22em] uppercase">
+                  <span aria-hidden="true" class={`block w-1 h-1 rounded-full bg-${m.accent} shadow-[0_0_6px_currentColor] text-${m.accent}`} style="animation: blink-soft 1.4s infinite;"></span>
+                  <span class={`text-${m.accent}`}>active</span>
+                </span>
+                <span class="idle-marker items-center font-mono text-[9px] tracking-[0.22em] uppercase text-ink-faint/60">
+                  idle
+                </span>
+              </div>
+
+              <!-- category -->
+              <div class="font-mono font-bold tracking-[0.18em] uppercase text-[11px] text-ink mb-1">
                 {m.cat}
-              </span>
-              <span class="block font-display italic text-[15px] leading-snug text-ink-dim">
-                {m.data.taglinePl}
-              </span>
+              </div>
+
+              <!-- brand -->
+              <div class={`${m.brandClass} text-xl sm:text-[22px] text-ink`}>
+                {m.brand}
+              </div>
             </label>
           </li>
         ))}
       </ul>
+
+      <!-- 4th slot — unassigned -->
+      <div class="mt-2.5 px-3 sm:px-3.5 py-3 border border-dashed border-line opacity-60">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-mono font-bold text-[18px] tracking-[-0.02em] text-ink-faint/60">04</span>
+          <span class="font-mono text-[9px] tracking-[0.22em] uppercase text-ink-faint/60">unassigned</span>
+        </div>
+        <div class="font-mono font-bold tracking-[0.18em] uppercase text-[11px] text-ink-faint">—</div>
+        <div class="font-display italic text-base text-ink-faint/70">drafting</div>
+      </div>
     </nav>
 
-    <!-- bottom: manifesto line -->
-    <div class="px-5 sm:px-8 py-6 sm:py-8 border-t border-line">
-      <p class="font-display text-[clamp(1.2rem,1.8vw,1.4rem)] leading-[1.15] text-ink">
+    <!-- bottom: manifesto -->
+    <div class="px-4 sm:px-5 py-5 border-t border-line">
+      <p class="font-display text-[clamp(1rem,1.4vw,1.2rem)] leading-[1.15] text-ink">
         Real problems.
         <span class="block italic text-ink-dim">Strange little loops.</span>
       </p>
     </div>
   </aside>
 
-  <!-- ─── CENTER: ACTIVE ARTIFACT ─── -->
+  <!-- ─── CENTER: ACTIVE ARTIFACT (the hero) ─── -->
   <section class="console-artifact relative border-r border-line min-h-[60svh] lg:min-h-0 flex flex-col">
 
     <!-- artifact bar -->
     <div class="border-b border-line px-5 sm:px-8 py-3 font-mono text-[10px] tracking-[0.28em] uppercase">
       {meta.map((m) => (
-        <span
-          data-loop={m.id}
-          style="--slot-d: flex"
-          class={`items-center justify-between w-full text-${m.accent}/80`}
-        >
+        <span data-loop={m.id} style="--slot-d: flex" class={`items-center justify-between w-full text-${m.accent}/80`}>
           <span>▍ Machine {m.n} · {m.cat}</span>
-          <span class="hidden md:inline">
-            <span class={`text-${m.accent}`}>●</span>
-            {m.id === "bzzt" && " status · live · scanning"}
-            {m.id === "cmok" && " status · ok sent"}
-            {m.id === "nwd"  && " status · gate armed"}
+          <span class="hidden md:inline-flex items-center gap-2">
+            <span aria-hidden="true" class={`block w-1.5 h-1.5 rounded-full bg-${m.accent}`} style="animation: blink-soft 1.6s infinite;"></span>
+            status · {m.status}
           </span>
-          <span>{m.id === "bzzt" ? "30 min" : m.id === "cmok" ? "~ 2 sec" : "verified"} ▌</span>
+          <span>{m.tag} ▌</span>
         </span>
       ))}
     </div>
 
-    <!-- giant brand wordmark + artifact -->
-    <div class="flex-1 px-5 sm:px-8 py-8 sm:py-12 flex flex-col gap-8 justify-between">
+    <!-- machine wordmark + artifact -->
+    <div class="flex-1 px-5 sm:px-12 py-8 sm:py-10 flex flex-col gap-6 sm:gap-8 justify-between">
 
-      <!-- machine wordmark -->
-      <div class="flex items-baseline gap-6">
+      <!-- header: wordmark + tagline (inline) -->
+      <div>
         {meta.map((m) => (
-          <span data-loop={m.id} class="block">
-            <span class={`block ${m.brandClass} text-[clamp(4rem,11vw,11rem)] leading-[0.85] text-${m.accent}`}>
+          <span data-loop={m.id}>
+            <span class={`block ${m.brandClass} text-[clamp(4rem,12vw,12rem)] leading-[0.85] text-${m.accent}`}>
               {m.brand}<span class="text-ink">.</span>
             </span>
-            <span class="block mt-2 font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint">
-              {m.data.fullName}
-            </span>
+            <p class="mt-3 font-display italic text-[clamp(1.4rem,2.4vw,2rem)] leading-[1.1] text-ink">
+              {m.data.taglinePl}
+              <span class="block mt-1 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-faint not-italic">
+                en · {m.data.tagline}
+              </span>
+            </p>
           </span>
         ))}
       </div>
 
-      <!-- the artifact itself -->
-      <div class="relative flex-1 flex items-center justify-center min-h-[40svh] py-4">
-        <div data-loop="bzzt" class="w-full max-w-lg"><RadarArtifact /></div>
-        <div data-loop="cmok" class="w-full max-w-lg"><CircleArtifact /></div>
-        <div data-loop="nwd"  class="w-full max-w-lg"><RaceArtifact /></div>
-      </div>
-
-      <!-- tagline -->
-      <div>
-        {meta.map((m) => (
-          <p data-loop={m.id} class="font-display italic text-[clamp(1.4rem,2.4vw,2rem)] leading-[1.1] text-ink">
-            {m.data.taglinePl}
-            <span class="block mt-1 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint not-italic">
-              en · {m.data.tagline}
-            </span>
-          </p>
-        ))}
+      <!-- the artifact itself — large, dominant -->
+      <div class="relative flex-1 flex items-center justify-center min-h-[42svh] py-2">
+        <div data-loop="bzzt" class="w-full max-w-[640px]"><RadarArtifact /></div>
+        <div data-loop="cmok" class="w-full max-w-[640px]"><CircleArtifact /></div>
+        <div data-loop="nwd"  class="w-full max-w-[680px]"><RaceArtifact  /></div>
       </div>
     </div>
   </section>
 
-  <!-- ─── RIGHT: ACTIVE LOOP DETAILS ─── -->
+  <!-- ─── RIGHT: INSPECTOR (concise) ─── -->
   <aside class="console-details flex flex-col">
 
     {meta.map((m) => (
       <div data-loop={m.id} style="--slot-d: flex" class="flex-1 flex-col">
 
-        <!-- INPUT block -->
-        <section class="border-b border-line px-5 sm:px-7 py-6 sm:py-7">
-          <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-flag mb-3">▍ Input</p>
-          <ul class="space-y-1.5">
-            {m.data.input.map((line) => (
-              <li class="font-display text-[clamp(1.4rem,2.2vw,1.7rem)] leading-[1.1] text-ink">
-                <span class="text-flag mr-2 align-middle">×</span>
-                <span class="line-through decoration-flag/80 decoration-2 italic text-ink-dim">{line}</span>
-              </li>
-            ))}
-          </ul>
+        <!-- INPUT -->
+        <section class="border-b border-line px-5 py-5">
+          <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-flag mb-2">▍ Input</p>
+          <p class="font-display text-[clamp(1.4rem,2vw,1.7rem)] leading-[1.1] text-ink">
+            <span class="text-flag mr-2 align-middle">×</span>
+            <span class="line-through decoration-flag/80 decoration-2 italic text-ink-dim">{m.data.input[0]}</span>
+          </p>
         </section>
 
-        <!-- CATEGORY DEFAULT loop -->
-        <section class="border-b border-line px-5 sm:px-7 py-6 sm:py-7">
-          <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-3">▍ Category default</p>
-          <p class="font-display text-[clamp(1.2rem,1.9vw,1.5rem)] leading-[1.2] text-ink-dim line-through decoration-flag/60 decoration-1">
+        <!-- CATEGORY DEFAULT -->
+        <section class="border-b border-line px-5 py-5">
+          <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-2">▍ Category default</p>
+          <p class="font-display text-[clamp(1.1rem,1.6vw,1.35rem)] leading-[1.2] text-ink-dim line-through decoration-flag/50 decoration-1">
             {m.data.categoryDefault.join(" → ")}
           </p>
         </section>
 
-        <!-- LOOP CORE — the SWA mutation -->
-        <section class={`border-b border-line px-5 sm:px-7 py-6 sm:py-7 bg-${m.accent}/[0.04]`}>
-          <div class="flex items-baseline justify-between mb-3">
-            <p class={`font-mono text-[10px] tracking-[0.28em] uppercase text-${m.accent}`}>▍ Loop core · SWA mutation</p>
-            <span class={`font-mono text-[9px] tracking-[0.22em] uppercase text-${m.accent}/70`}>↺ repeat</span>
-          </div>
-          <ol class="space-y-1">
-            {m.data.loopSteps.map((step, i) => (
-              <li class="flex items-baseline gap-3 font-display text-[clamp(1.4rem,2.2vw,1.7rem)] text-ink">
-                <span class={`font-mono text-[10px] tracking-[0.18em] text-${m.accent}/70 w-5`}>0{i + 1}</span>
-                <span>{step}</span>
-                <span class={`font-mono text-[9px] tracking-[0.18em] uppercase text-${m.accent}/50 ml-auto`}>{m.data.loopStepsPl[i]}</span>
-              </li>
-            ))}
-          </ol>
+        <!-- SWA MUTATION -->
+        <section class={`border-b border-line px-5 py-5 bg-${m.accent}/[0.06]`}>
+          <p class={`font-mono text-[10px] tracking-[0.28em] uppercase text-${m.accent} mb-2 flex items-center justify-between`}>
+            <span>▍ SWA mutation</span>
+            <span class={`text-${m.accent}/60`}>↺ repeat</span>
+          </p>
+          <p class={`font-display text-[clamp(1.3rem,1.9vw,1.6rem)] leading-[1.15] text-ink`}>
+            {m.data.loopSteps.join(" → ")}
+          </p>
         </section>
 
-        <!-- OUTPUT block -->
-        <section class="px-5 sm:px-7 py-6 sm:py-7 flex-1 flex flex-col justify-between gap-6">
-          <div>
-            <p class={`font-mono text-[10px] tracking-[0.28em] uppercase text-${m.accent} mb-3`}>▍ Output</p>
-            <p class="font-display italic text-[clamp(1.5rem,2.4vw,2rem)] leading-[1.05] text-ink">
-              {m.data.punchline}
-            </p>
-          </div>
+        <!-- OUTPUT -->
+        <section class="border-b border-line px-5 py-5">
+          <p class={`font-mono text-[10px] tracking-[0.28em] uppercase text-${m.accent} mb-2`}>▍ Output</p>
+          <p class="font-display italic text-[clamp(1.4rem,2.2vw,1.9rem)] leading-[1.05] text-ink">
+            {m.data.punchline}
+          </p>
+        </section>
 
+        <!-- CATEGORY PATCH — the punchline of the inspector -->
+        <section class="px-5 py-5">
+          <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-2 flex items-center justify-between">
+            <span>▍ Category patch · {m.n}</span>
+            <span class={`text-${m.accent}`}>● applied</span>
+          </p>
+          <p class="font-mono text-[12px] leading-[1.5] text-ink-dim">
+            <span class="text-flag">×</span> <span class="line-through decoration-flag/60">{m.data.categoryPatch[0].replace(/^.*?:\s*/, "").replace(/\.$/, "")}</span><br />
+            <span class={`text-${m.accent}`}>+</span> <span class="text-ink">{m.data.categoryPatch[1].replace(/\.$/, "")}</span>
+          </p>
+        </section>
+
+        <!-- CTA dock -->
+        <section class={`mt-auto px-5 py-5 border-t border-line bg-bg-soft/40`}>
           <a
             href={m.data.href!}
             target="_blank"
             rel="noopener"
-            class={`group inline-flex items-center gap-3 self-start mt-2 px-4 py-3 border border-${m.accent}/40 text-ink hover:bg-${m.accent}/10 hover:border-${m.accent} transition-colors font-mono text-[11px] tracking-[0.22em] uppercase`}
+            class={`group inline-flex items-center justify-between w-full px-4 py-3 border border-${m.accent}/40 text-ink hover:bg-${m.accent}/10 hover:border-${m.accent} transition-colors font-mono text-[11px] tracking-[0.22em] uppercase`}
           >
-            <span aria-hidden="true" class={`block w-2 h-2 rounded-full bg-${m.accent} shadow-[0_0_8px_currentColor] text-${m.accent}`}></span>
-            <span>Open {m.brand}</span>
+            <span class="flex items-center gap-2.5">
+              <span aria-hidden="true" class={`block w-2 h-2 rounded-full bg-${m.accent} shadow-[0_0_8px_currentColor] text-${m.accent}`} style="animation: blink-soft 1.6s infinite;"></span>
+              <span>Open {m.brand}</span>
+            </span>
             <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">↗</span>
           </a>
         </section>
@@ -219,7 +241,6 @@ const meta = [
   <!-- ─── DOCK ─── -->
   <footer class="console-dock relative border-t border-line bg-bg-soft/40">
     <div class="px-5 sm:px-8 py-3 sm:py-4 flex flex-wrap items-center justify-between gap-4 font-mono text-[10px] tracking-[0.28em] uppercase">
-
       <ul class="flex flex-wrap items-center gap-x-6 gap-y-2 text-ink-dim">
         <li>
           <a href="#manifest" class="inline-flex items-center gap-1.5 hover:text-ink transition-colors">
@@ -228,7 +249,7 @@ const meta = [
         </li>
         <li>
           <a href="#failure" class="inline-flex items-center gap-1.5 hover:text-flag transition-colors">
-            <span aria-hidden="true">▍</span> Category failure report
+            <span aria-hidden="true">▍</span> Failure report
           </a>
         </li>
         <li>
@@ -243,9 +264,7 @@ const meta = [
         </li>
       </ul>
 
-      <p class="text-ink-faint">
-        © 2026 Cybird Consulting · loop 04 · drafting
-      </p>
+      <p class="text-ink-faint">© 2026 Cybird Consulting · loop 04 drafting</p>
     </div>
   </footer>
 </form>

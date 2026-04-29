@@ -18,6 +18,8 @@ export type AppData = {
   input: string[];
   /** The category default loop — how the broken pattern actually flows */
   categoryDefault: string[];
+  /** Two-line patch description: what was removed, what was installed */
+  categoryPatch: [string, string];
   /** Loop steps — Polish (canonical, as the product uses) */
   loopStepsPl: string[];
   /** Loop steps — English mapping for the diagram labels */
@@ -47,6 +49,7 @@ export const apps: AppData[] = [
     ],
     input: ["endless swiping", "profile shopping"],
     categoryDefault: ["profile", "swipe", "chat", "ghost"],
+    categoryPatch: ["Dating: browse loop removed.", "Live signal loop installed."],
     loopStepsPl: ["radar", "sygnał", "iskra", "spotkanie"],
     loopSteps: ["radar", "signal", "spark", "meet"],
     bullets: ["Nearby.", "Anonymous until mutual.", "30 minutes.", "Face to face."],
@@ -69,6 +72,7 @@ export const apps: AppData[] = [
     ],
     input: ["panic theatre", "cold emergency tools"],
     categoryDefault: ["worry", "call", "no answer", "panic"],
+    categoryPatch: ["Safety: panic loop softened.", "Daily reassurance loop installed."],
     loopStepsPl: ["znak", "echo", "spokój"],
     loopSteps: ["sign", "echo", "reassurance"],
     bullets: ["One tap.", "No chat.", "Just presence."],
@@ -91,6 +95,7 @@ export const apps: AppData[] = [
     ],
     input: ["training log", "event dependency"],
     categoryDefault: ["track", "log", "forget"],
+    categoryPatch: ["Racing: event dependency removed.", "Gravity league loop installed."],
     loopStepsPl: ["bramka", "rozpęd", "meta", "tablica", "loop"],
     loopSteps: ["gate", "descent", "finish", "leaderboard", "repeat"],
     bullets: ["Official trails.", "GPS-verified.", "Seasonal podiums."],

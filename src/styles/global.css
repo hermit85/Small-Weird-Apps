@@ -245,7 +245,7 @@
       "top      top      top"
       "select   artifact details"
       "dock     dock     dock";
-    grid-template-columns: minmax(240px, 22%) 1fr minmax(280px, 28%);
+    grid-template-columns: minmax(220px, 18%) 1fr minmax(280px, 26%);
     grid-template-rows: auto 1fr auto;
     min-height: 100svh;
   }
@@ -292,26 +292,50 @@
     animation: loop-fade 0.32s ease-out;
   }
 
-  /* selector buttons — active state */
+  /* selector buttons — hardware-switch active state */
   .loop-btn {
     display: block;
     width: 100%;
     text-align: left;
-    border: 1px solid transparent;
-    transition: border-color 0.18s, background-color 0.18s, color 0.18s;
+    border: 1px solid var(--color-line);
+    background-color: rgba(255,255,255,0.01);
+    transition: border-color 0.18s, background-color 0.18s, color 0.18s, transform 0.18s;
     cursor: pointer;
+  }
+  .loop-btn:hover {
+    border-color: var(--color-ink-faint);
   }
   .console:has(#loop-bzzt:checked) [data-loop-btn="bzzt"] {
     border-color: var(--color-bzzt);
-    background-color: rgba(0,229,255,0.05);
+    background-color: rgba(0,229,255,0.06);
+    box-shadow: inset 0 0 0 1px var(--color-bzzt), 0 0 0 1px rgba(0,229,255,0.2);
+    transform: translateX(2px);
   }
   .console:has(#loop-cmok:checked) [data-loop-btn="cmok"] {
     border-color: var(--color-cmok);
-    background-color: rgba(232,93,58,0.05);
+    background-color: rgba(232,93,58,0.06);
+    box-shadow: inset 0 0 0 1px var(--color-cmok), 0 0 0 1px rgba(232,93,58,0.2);
+    transform: translateX(2px);
   }
   .console:has(#loop-nwd:checked) [data-loop-btn="nwd"] {
     border-color: var(--color-nwd);
-    background-color: rgba(0,255,135,0.05);
+    background-color: rgba(0,255,135,0.06);
+    box-shadow: inset 0 0 0 1px var(--color-nwd), 0 0 0 1px rgba(0,255,135,0.2);
+    transform: translateX(2px);
+  }
+
+  /* "ACTIVE LOOP" marker — hidden by default, revealed on active */
+  .active-marker { display: none !important; }
+  .console:has(#loop-bzzt:checked) [data-loop-btn="bzzt"] .active-marker,
+  .console:has(#loop-cmok:checked) [data-loop-btn="cmok"] .active-marker,
+  .console:has(#loop-nwd:checked)  [data-loop-btn="nwd"]  .active-marker {
+    display: inline-flex !important;
+  }
+  .idle-marker { display: inline-flex; }
+  .console:has(#loop-bzzt:checked) [data-loop-btn="bzzt"] .idle-marker,
+  .console:has(#loop-cmok:checked) [data-loop-btn="cmok"] .idle-marker,
+  .console:has(#loop-nwd:checked)  [data-loop-btn="nwd"]  .idle-marker {
+    display: none;
   }
 
   /* keyboard focus visible on radio reflects on label */
