@@ -18,15 +18,15 @@ const haloR = 40;
 
 type Person = { label: string; angleDeg: number; isReply?: boolean };
 
-// 6 people around Mama — clockwise from top.
-// Polish names match the actual cmok product.
+// 6 people around Mom — clockwise from top.
+// First-name labels (the real cmok app pulls names from contacts).
 const people: Person[] = [
-  { label: "Syn",    angleDeg: -90  },                // top
-  { label: "Córka",  angleDeg: -30, isReply: true },  // upper-right (the reply)
-  { label: "Sąsiad", angleDeg:  30  },                // lower-right
-  { label: "Wnuk",   angleDeg:  90  },                // bottom
-  { label: "Koleż.", angleDeg: 150  },                // lower-left
-  { label: "Brat",   angleDeg: -150 },                // upper-left
+  { label: "Tom",    angleDeg: -90  },                // top
+  { label: "Sarah",  angleDeg: -30, isReply: true },  // upper-right (the reply)
+  { label: "Eva",    angleDeg:  30  },                // lower-right
+  { label: "Lily",   angleDeg:  90  },                // bottom
+  { label: "Kate",   angleDeg: 150  },                // lower-left
+  { label: "Mike",   angleDeg: -150 },                // upper-left
 ];
 
 const positions = people.map((p) => {
@@ -60,7 +60,7 @@ const badge = {
     viewBox="0 0 480 480"
     class="w-full h-auto text-cmok"
     role="img"
-    aria-label="cmok — close circle: Mama at the centre and six people around (Syn, Córka, Sąsiad, Wnuk, Koleż., Brat). Córka has already replied OK."
+    aria-label="cmok — close circle: Mom at the centre and six people around (Tom, Sarah, Eva, Lily, Kate, Mike). Sarah has already replied OK."
   >
     <defs>
       <radialGradient id="cmok-glow" cx="50%" cy="50%" r="50%">
@@ -144,7 +144,7 @@ const badge = {
       font-style="italic"
       font-size="22"
       fill="var(--color-bg)"
-    >Mama</text>
+    >Mom</text>
   </svg>
 
   <!-- HUD overlays — STATIC -->
@@ -161,6 +161,6 @@ const badge = {
   </div>
 
   <div class="absolute bottom-3 right-3 font-mono text-[10px] tracking-[0.28em] uppercase text-cmok/65">
-    Córka · 1 reply
+    Sarah · 1 reply
   </div>
 </div>
