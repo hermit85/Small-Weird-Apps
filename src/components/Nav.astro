@@ -1,0 +1,28 @@
+---
+import { site } from "../data/site.ts";
+---
+
+<header class="sticky top-0 z-50 backdrop-blur-md bg-bg/70 border-b border-line-soft">
+  <nav
+    aria-label="Primary"
+    class="mx-auto max-w-6xl px-5 sm:px-8 h-14 flex items-center justify-between"
+  >
+    <a href="/" class="flex items-center gap-2 group" aria-label={`${site.name} — home`}>
+      <span aria-hidden="true" class="inline-block w-2 h-2 rounded-full bg-bzzt shadow-[0_0_12px_var(--color-bzzt)] transition-transform group-hover:scale-110"></span>
+      <span class="font-mono text-[12px] tracking-[0.2em] uppercase text-ink">
+        Small Weird Apps
+      </span>
+    </a>
+    <ul class="hidden sm:flex items-center gap-7 font-mono text-[11px] tracking-[0.2em] uppercase text-ink-dim">
+      <li><a href="/#apps" class="hover:text-ink transition-colors">Apps</a></li>
+      <li><a href="/#company" class="hover:text-ink transition-colors">Company</a></li>
+      <li><a href="/legal" class="hover:text-ink transition-colors">Legal</a></li>
+    </ul>
+    <a
+      href="/#apps"
+      class="sm:hidden font-mono text-[11px] tracking-[0.2em] uppercase text-ink-dim hover:text-ink transition-colors"
+    >
+      Apps →
+    </a>
+  </nav>
+</header>

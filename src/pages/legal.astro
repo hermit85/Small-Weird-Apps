@@ -1,0 +1,102 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site } from "../data/site.ts";
+import { apps } from "../data/apps.ts";
+---
+
+<Layout
+  title="Legal"
+  description={`Legal owner and contact details for ${site.name}.`}
+  pathname="/legal"
+>
+  <section class="mx-auto max-w-3xl px-5 sm:px-8 pt-20 sm:pt-32 pb-24">
+    <p class="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint mb-8">
+      ▍ Legal
+    </p>
+
+    <h1 class="font-display text-[clamp(2.6rem,7vw,5rem)] leading-[0.95] text-ink">
+      Company &amp;<br />publisher info.
+    </h1>
+
+    <p class="mt-8 text-lg leading-relaxed text-ink-dim max-w-2xl">
+      {site.name} is a product label owned by <span class="text-ink">{site.legalOwner}</span>,
+      a one-person mobile app publisher based in {site.city}.
+    </p>
+
+    <dl class="mt-12 divide-y divide-line border-y border-line">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 py-5">
+        <dt class="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">Brand / label</dt>
+        <dd class="sm:col-span-2 text-ink">{site.name}</dd>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 py-5">
+        <dt class="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">Legal owner</dt>
+        <dd class="sm:col-span-2 text-ink">{site.legalOwner}</dd>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 py-5">
+        <dt class="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">Based in</dt>
+        <dd class="sm:col-span-2 text-ink">{site.city}</dd>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 py-5">
+        <dt class="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">Contact</dt>
+        <dd class="sm:col-span-2">
+          <a
+            href={`mailto:${site.email}`}
+            class="text-ink hover:text-bzzt transition-colors underline-offset-4 hover:underline"
+          >{site.email}</a>
+        </dd>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 py-5">
+        <dt class="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">Registered business details</dt>
+        <dd class="sm:col-span-2">
+          <span class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md border border-line text-ink-faint font-mono text-[10px] tracking-[0.2em] uppercase">
+            TODO
+          </span>
+          <p class="mt-2 text-sm text-ink-faint">
+            Registered business name, tax ID and address will be added here.
+          </p>
+        </dd>
+      </div>
+    </dl>
+
+    <h2 class="mt-16 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">
+      ▍ Apps published under this label
+    </h2>
+    <ul class="mt-6 divide-y divide-line border-y border-line">
+      {apps.map((app) => (
+        <li class="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-6 py-5 items-baseline">
+          <span class="sm:col-span-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">
+            Loop {app.loop}
+          </span>
+          <span class="sm:col-span-3 font-display text-2xl text-ink">{app.name}</span>
+          <span class="sm:col-span-3 text-ink-dim">{app.category}</span>
+          <span class="sm:col-span-4 text-right">
+            {app.href ? (
+              <a
+                href={app.href}
+                target="_blank"
+                rel="noopener"
+                class="text-ink hover:text-bzzt transition-colors underline-offset-4 hover:underline"
+              >Open ↗</a>
+            ) : (
+              <span class="text-ink-faint font-mono text-[11px] tracking-[0.2em] uppercase">soon</span>
+            )}
+          </span>
+        </li>
+      ))}
+    </ul>
+
+    <p class="mt-16 text-sm text-ink-faint">
+      For questions about this publisher or any of the apps listed above,
+      reach out at <a class="text-ink-dim hover:text-ink underline-offset-4 hover:underline" href={`mailto:${site.email}`}>{site.email}</a>.
+    </p>
+
+    <p class="mt-12">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-dim hover:text-ink transition-colors"
+      >
+        ← Back to {site.name}
+      </a>
+    </p>
+  </section>
+</Layout>

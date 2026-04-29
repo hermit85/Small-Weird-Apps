@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import ProblemWall from "../components/ProblemWall.astro";
+import AppSection from "../components/AppSection.astro";
+import Manifest from "../components/Manifest.astro";
+import Company from "../components/Company.astro";
+import WhatsNext from "../components/WhatsNext.astro";
+import { apps } from "../data/apps.ts";
+---
+
+<Layout>
+  <Hero />
+  <ProblemWall />
+  <div id="apps" class="scroll-mt-20">
+    {apps.map((app, i) => (
+      <AppSection app={app} reverse={i % 2 === 1} />
+    ))}
+  </div>
+  <Manifest />
+  <Company />
+  <WhatsNext />
+</Layout>

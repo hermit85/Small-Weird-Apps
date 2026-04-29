@@ -1,0 +1,32 @@
+---
+const problems = [
+  { kicker: "Loop 01", text: "Dating became profile shopping.", accent: "bzzt" },
+  { kicker: "Loop 02", text: "Safety became panic theatre.", accent: "cmok" },
+  { kicker: "Loop 03", text: "Racing became either a calendar event or a boring training log.", accent: "nwd" },
+] as const;
+---
+
+<section class="relative py-20 sm:py-32 border-t border-line-soft">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <p class="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint mb-12 sm:mb-16">
+      ▍ The problem wall
+    </p>
+
+    <ul class="space-y-8 sm:space-y-12">
+      {problems.map((p) => (
+        <li class="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-8 items-baseline border-b border-line-soft pb-8 sm:pb-12">
+          <div class="sm:col-span-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">
+            {p.kicker}
+          </div>
+          <p class={`sm:col-span-10 font-display text-[clamp(1.8rem,5vw,3.5rem)] leading-[1.05] text-ink`}>
+            <span class={`text-${p.accent}`}>“</span>{p.text}<span class={`text-${p.accent}`}>”</span>
+          </p>
+        </li>
+      ))}
+    </ul>
+
+    <p class="mt-14 sm:mt-20 font-display italic text-[clamp(1.4rem,3vw,2rem)] leading-snug text-ink-dim max-w-3xl">
+      So we built three small apps with different loops.
+    </p>
+  </div>
+</section>

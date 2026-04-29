@@ -1,0 +1,111 @@
+---
+import type { AppData } from "../data/apps.ts";
+import Radar from "./visuals/Radar.astro";
+import DailyDot from "./visuals/DailyDot.astro";
+import RaceHud from "./visuals/RaceHud.astro";
+
+type Props = { app: AppData; reverse?: boolean };
+const { app, reverse = false } = Astro.props;
+
+const Visual =
+  app.visual === "radar" ? Radar : app.visual === "dot" ? DailyDot : RaceHud;
+
+// All accent classes are written out as static strings so Tailwind picks them up.
+const accent = {
+  bzzt: {
+    text: "text-bzzt",
+    bg: "bg-bzzt",
+    ring: "ring-bzzt/20 hover:ring-bzzt/60",
+    hoverText: "hover:text-bzzt",
+    hoverBorder: "hover:border-bzzt",
+  },
+  cmok: {
+    text: "text-cmok",
+    bg: "bg-cmok",
+    ring: "ring-cmok/20 hover:ring-cmok/60",
+    hoverText: "hover:text-cmok",
+    hoverBorder: "hover:border-cmok",
+  },
+  nwd: {
+    text: "text-nwd",
+    bg: "bg-nwd",
+    ring: "ring-nwd/20 hover:ring-nwd/60",
+    hoverText: "hover:text-nwd",
+    hoverBorder: "hover:border-nwd",
+  },
+}[app.accent];
+
+const visualOrder = reverse ? "lg:order-2" : "lg:order-1";
+const copyOrder = reverse ? "lg:order-1" : "lg:order-2";
+---
+
+<section
+  id={app.id}
+  class="relative py-24 sm:py-36 border-t border-line-soft scroll-mt-20"
+>
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <div class="flex items-center justify-between mb-12 sm:mb-16">
+      <div class="flex items-center gap-3 font-mono text-[11px] tracking-[0.22em] uppercase">
+        <span class={accent.text}>Loop {app.loop}</span>
+        <span aria-hidden="true" class="text-ink-faint">·</span>
+        <span class="text-ink-faint">{app.category}</span>
+      </div>
+      <span
+        class={`block w-2 h-2 rounded-full ${accent.bg} ${accent.text} shadow-[0_0_14px_currentColor]`}
+        aria-hidden="true"
+      ></span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+      <div class={`lg:col-span-5 ${visualOrder}`}>
+        <div class={`rounded-3xl border border-line bg-bg-card/60 ring-1 ${accent.ring} transition-all p-2 sm:p-4 noise`}>
+          <Visual />
+        </div>
+      </div>
+
+      <div class={`lg:col-span-7 ${copyOrder}`}>
+        <h2 class={`font-display text-[clamp(3rem,9vw,7rem)] leading-[0.92] ${accent.text}`}>
+          {app.name}
+        </h2>
+        <p class="mt-4 font-display italic text-[clamp(1.4rem,3vw,2rem)] leading-snug text-ink">
+          {app.tagline}
+        </p>
+
+        <div class="mt-10 max-w-xl space-y-1 text-base sm:text-lg leading-relaxed text-ink-dim">
+          {app.intro.map((line) => <p>{line}</p>)}
+        </div>
+
+        <ul class="mt-8 flex flex-wrap gap-x-5 gap-y-1 font-display text-[clamp(1.2rem,2.4vw,1.7rem)] text-ink">
+          {app.bullets.map((b) => (
+            <li class="flex items-baseline gap-2">
+              <span aria-hidden="true" class={`${accent.text} text-base`}>·</span>
+              {b}
+            </li>
+          ))}
+        </ul>
+
+        <p class="mt-10 font-display italic text-[clamp(1.4rem,3vw,2rem)] leading-snug text-ink">
+          {app.punchline}
+        </p>
+
+        <div class="mt-10">
+          {app.href ? (
+            <a
+              href={app.href}
+              target="_blank"
+              rel="noopener"
+              class={`group inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-line text-ink ${accent.hoverBorder} ${accent.hoverText} transition-colors font-mono text-[11px] tracking-[0.22em] uppercase`}
+            >
+              {app.hrefLabel}
+              <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">↗</span>
+            </a>
+          ) : (
+            <span class="inline-flex items-center gap-3 px-6 py-3.5 rounded-full border border-line text-ink-faint font-mono text-[11px] tracking-[0.22em] uppercase">
+              {app.hrefLabel} · soon
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

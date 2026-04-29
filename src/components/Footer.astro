@@ -1,0 +1,43 @@
+---
+import { site } from "../data/site.ts";
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line mt-32">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8 py-14">
+    <div class="grid grid-cols-1 sm:grid-cols-12 gap-10">
+      <div class="sm:col-span-7">
+        <p class="font-display text-2xl sm:text-3xl leading-tight text-ink max-w-xl">
+          Small Weird Apps is a product label owned by{" "}
+          <span class="italic">{site.legalOwner}</span>.<br />
+          {site.city}.
+        </p>
+      </div>
+      <div class="sm:col-span-5 flex sm:justify-end">
+        <ul class="grid grid-cols-2 gap-x-10 gap-y-3 font-mono text-[11px] tracking-[0.2em] uppercase text-ink-dim">
+          <li><a href="/#apps" class="hover:text-ink transition-colors">Apps</a></li>
+          <li><a href="/#company" class="hover:text-ink transition-colors">Contact</a></li>
+          <li><a href="/legal" class="hover:text-ink transition-colors">Legal</a></li>
+          <li>
+            <a
+              href={site.linkedin}
+              target="_blank"
+              rel="noopener"
+              class="hover:text-ink transition-colors"
+            >
+              LinkedIn ↗
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-14 pt-6 border-t border-line-soft flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+      <p class="font-mono text-[11px] tracking-[0.2em] uppercase text-ink-faint">
+        © {year} {site.legalOwner}
+      </p>
+      <p class="font-display italic text-lg text-ink-dim">
+        The apps are weird. The company details are normal.
+      </p>
+    </div>
+  </div>
+</footer>
