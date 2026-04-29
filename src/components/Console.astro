@@ -9,9 +9,9 @@ const cmok = apps.find((a) => a.id === "cmok")!;
 const nwd  = apps.find((a) => a.id === "nwd")!;
 
 const meta = [
-  { id: "bzzt", n: "01", cat: "Proximity",   brand: "BZZT", brandClass: "font-mono font-bold uppercase tracking-tight",     accent: "bzzt", data: bzzt, status: "live · scanning", tag: "30 min" },
-  { id: "cmok", n: "02", cat: "Reassurance", brand: "cmok", brandClass: "font-display italic lowercase",                     accent: "cmok", data: cmok, status: "ok sent",          tag: "~ 2 sec" },
-  { id: "nwd",  n: "03", cat: "Gravity",     brand: "NWD",  brandClass: "font-display tracking-[-0.02em]",                  accent: "nwd",  data: nwd,  status: "gate armed",       tag: "verified" },
+  { id: "bzzt", n: "01", cat: "Proximity",   short: "dating without endless swiping",       brand: "BZZT", brandClass: "font-mono font-bold uppercase tracking-tight",     accent: "bzzt", data: bzzt, status: "scanning" },
+  { id: "cmok", n: "02", cat: "Reassurance", short: "care without panic theatre",            brand: "cmok", brandClass: "font-display italic lowercase",                     accent: "cmok", data: cmok, status: "ok sent" },
+  { id: "nwd",  n: "03", cat: "Gravity",     short: "racing without waiting for an event",   brand: "NWD",  brandClass: "font-display tracking-[-0.02em]",                  accent: "nwd",  data: nwd,  status: "gate armed" },
 ];
 ---
 
@@ -22,22 +22,21 @@ const meta = [
   <input type="radio" name="loop" id="loop-cmok" class="console-state" aria-label="Loop 02 — cmok, reassurance" />
   <input type="radio" name="loop" id="loop-nwd"  class="console-state" aria-label="Loop 03 — NWD, gravity" />
 
-  <!-- ─── TOP STRIP ─── -->
+  <!-- ─── TOP STRIP (trimmed) ─── -->
   <header class="console-top relative border-b border-line">
     <span class="absolute top-3 left-3 reg-cross" aria-hidden="true"></span>
     <span class="absolute top-3 right-3 reg-cross" aria-hidden="true"></span>
 
     <div class="px-5 sm:px-8 py-3 flex items-center justify-between gap-4 font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint">
       <span class="flex items-center gap-2 shrink-0">
-        <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-bzzt shadow-[0_0_8px_var(--color-bzzt)]"></span>
-        SWA.OS · v.2026
-      </span>
-      <span class="hidden md:flex items-center gap-3">
-        <span>3 strange loops detected</span>
-        <span class="flex items-center gap-1.5">
-          <span aria-hidden="true" class="block w-1 h-1 rounded-full bg-bzzt" style="animation: blink-soft 2.2s infinite;"></span>
-          <span aria-hidden="true" class="block w-1 h-1 rounded-full bg-cmok" style="animation: blink-soft 2.2s 0.7s infinite;"></span>
-          <span aria-hidden="true" class="block w-1 h-1 rounded-full bg-nwd"  style="animation: blink-soft 2.2s 1.4s infinite;"></span>
+        <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-bzzt shadow-[0_0_8px_var(--color-bzzt)]" style="animation: blink-soft 2s infinite;"></span>
+        <span class="text-ink">SWA.OS</span>
+        <span aria-hidden="true">·</span>
+        <span>3 loops</span>
+        <span aria-hidden="true" class="hidden sm:flex items-center gap-1 ml-1">
+          <span class="block w-1 h-1 rounded-full bg-bzzt" style="animation: blink-soft 2.2s infinite;"></span>
+          <span class="block w-1 h-1 rounded-full bg-cmok" style="animation: blink-soft 2.2s 0.7s infinite;"></span>
+          <span class="block w-1 h-1 rounded-full bg-nwd"  style="animation: blink-soft 2.2s 1.4s infinite;"></span>
         </span>
       </span>
       <span class="text-right shrink-0">Warsaw · 2026</span>
@@ -46,24 +45,23 @@ const meta = [
 
   <!-- ─── LEFT: SELECTOR ─── -->
   <aside class="console-select border-r border-line flex flex-col">
-    <!-- compact brand -->
-    <div class="px-4 sm:px-5 py-5 border-b border-line">
-      <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-2">▍ Publisher</p>
+
+    <!-- brand (desktop only) -->
+    <div class="brand-block px-4 sm:px-5 py-6 border-b border-line">
       <p class="font-display tracking-[-0.04em] leading-[0.9]">
-        <span class="block text-[clamp(1.6rem,2.4vw,2.2rem)] text-ink">Small</span>
-        <span class="block text-[clamp(1.6rem,2.4vw,2.2rem)] italic text-bzzt">weird</span>
-        <span class="block text-[clamp(1.6rem,2.4vw,2.2rem)] text-ink">Apps<span class="text-bzzt">.</span></span>
+        <span class="block text-[clamp(1.6rem,2.4vw,2.4rem)] text-ink">Small</span>
+        <span class="block text-[clamp(1.6rem,2.4vw,2.4rem)] italic text-bzzt">weird</span>
+        <span class="block text-[clamp(1.6rem,2.4vw,2.4rem)] text-ink">Apps<span class="text-bzzt">.</span></span>
       </p>
     </div>
 
-    <!-- selector — hardware switch -->
-    <nav aria-label="Select loop" class="px-4 sm:px-5 py-5 flex-1">
-      <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-4 flex items-center justify-between">
-        <span>▍ Select loop</span>
-        <span class="text-ink-faint/60">3 / 4</span>
+    <!-- selector -->
+    <nav aria-label="Select loop" class="loops flex-1">
+      <p class="font-mono text-[10px] tracking-[0.32em] uppercase text-ink-faint px-4 sm:px-5 py-4 border-b border-line">
+        ▍ Select loop
       </p>
 
-      <ul class="space-y-2.5">
+      <ul class="px-4 sm:px-5 py-5 space-y-2.5">
         {meta.map((m) => (
           <li>
             <label
@@ -71,17 +69,11 @@ const meta = [
               data-loop-btn={m.id}
               class="loop-btn group relative p-3 sm:p-3.5"
             >
-              <!-- header: number + status -->
-              <div class="flex items-center justify-between mb-2">
-                <span class={`font-mono font-bold text-[18px] tracking-[-0.02em] text-${m.accent}`}>
-                  {m.n}
-                </span>
-                <span class="active-marker items-center gap-1.5 font-mono text-[9px] tracking-[0.22em] uppercase">
-                  <span aria-hidden="true" class={`block w-1 h-1 rounded-full bg-${m.accent} shadow-[0_0_6px_currentColor] text-${m.accent}`} style="animation: blink-soft 1.4s infinite;"></span>
-                  <span class={`text-${m.accent}`}>active</span>
-                </span>
-                <span class="idle-marker items-center font-mono text-[9px] tracking-[0.22em] uppercase text-ink-faint/60">
-                  idle
+              <!-- top row: number + active dot -->
+              <div class="flex items-center justify-between mb-1.5">
+                <span class={`font-mono font-bold text-[clamp(1.1rem,1.6vw,1.4rem)] tracking-[-0.02em] text-${m.accent}`}>{m.n}</span>
+                <span class="active-marker items-center gap-1.5">
+                  <span aria-hidden="true" class={`block w-1.5 h-1.5 rounded-full bg-${m.accent} shadow-[0_0_6px_currentColor] text-${m.accent}`} style="animation: blink-soft 1.4s infinite;"></span>
                 </span>
               </div>
 
@@ -90,28 +82,29 @@ const meta = [
                 {m.cat}
               </div>
 
-              <!-- brand -->
-              <div class={`${m.brandClass} text-xl sm:text-[22px] text-ink`}>
-                {m.brand}
+              <!-- brand · short -->
+              <div class="text-[12px] leading-tight text-ink-dim">
+                <span class={`${m.brandClass} text-ink`}>{m.brand}</span>
+                <span class="opacity-60"> · </span>
+                <span>{m.short}</span>
               </div>
             </label>
           </li>
         ))}
       </ul>
 
-      <!-- 4th slot — unassigned -->
-      <div class="mt-2.5 px-3 sm:px-3.5 py-3 border border-dashed border-line opacity-60">
-        <div class="flex items-center justify-between mb-2">
-          <span class="font-mono font-bold text-[18px] tracking-[-0.02em] text-ink-faint/60">04</span>
-          <span class="font-mono text-[9px] tracking-[0.22em] uppercase text-ink-faint/60">unassigned</span>
+      <!-- 4th slot — unassigned (desktop) -->
+      <div class="slot-04 mx-4 sm:mx-5 mb-5 px-3 sm:px-3.5 py-2.5 border border-dashed border-line opacity-50">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-mono font-bold text-[clamp(1.1rem,1.6vw,1.4rem)] tracking-[-0.02em] text-ink-faint">04</span>
+          <span class="font-mono text-[9px] tracking-[0.22em] uppercase text-ink-faint">drafting</span>
         </div>
-        <div class="font-mono font-bold tracking-[0.18em] uppercase text-[11px] text-ink-faint">—</div>
-        <div class="font-display italic text-base text-ink-faint/70">drafting</div>
+        <div class="font-mono font-bold tracking-[0.18em] uppercase text-[11px] text-ink-faint">unassigned</div>
       </div>
     </nav>
 
-    <!-- bottom: manifesto -->
-    <div class="px-4 sm:px-5 py-5 border-t border-line">
+    <!-- bottom: manifesto (desktop) -->
+    <div class="manifesto-block px-4 sm:px-5 py-5 border-t border-line">
       <p class="font-display text-[clamp(1rem,1.4vw,1.2rem)] leading-[1.15] text-ink">
         Real problems.
         <span class="block italic text-ink-dim">Strange little loops.</span>
@@ -119,27 +112,41 @@ const meta = [
     </div>
   </aside>
 
-  <!-- ─── CENTER: ACTIVE ARTIFACT (the hero) ─── -->
+  <!-- ─── CENTER: ACTIVE ARTIFACT ─── -->
   <section class="console-artifact relative border-r border-line min-h-[60svh] lg:min-h-0 flex flex-col">
 
-    <!-- artifact bar -->
+    <!-- compact artifact bar -->
     <div class="border-b border-line px-5 sm:px-8 py-3 font-mono text-[10px] tracking-[0.28em] uppercase">
       {meta.map((m) => (
-        <span data-loop={m.id} style="--slot-d: flex" class={`items-center justify-between w-full text-${m.accent}/80`}>
-          <span>▍ Machine {m.n} · {m.cat}</span>
-          <span class="hidden md:inline-flex items-center gap-2">
+        <span data-loop={m.id} style="--slot-d: flex" class={`items-center justify-between w-full text-${m.accent}/85`}>
+          <span>Active machine · {m.n} / {m.cat}</span>
+          <span class="hidden sm:inline-flex items-center gap-2">
             <span aria-hidden="true" class={`block w-1.5 h-1.5 rounded-full bg-${m.accent}`} style="animation: blink-soft 1.6s infinite;"></span>
-            status · {m.status}
+            {m.status}
           </span>
-          <span>{m.tag} ▌</span>
         </span>
       ))}
     </div>
 
-    <!-- machine wordmark + artifact -->
+    <!-- PATCH INSTALLED micro-event (overlay banner that flashes on loop change) -->
+    <div class="absolute top-12 sm:top-14 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+      {meta.map((m) => (
+        <div data-loop={m.id} style="--slot-d: block">
+          <div class={`patch-flash inline-flex items-center gap-3 px-4 py-2 border border-${m.accent} bg-bg-soft/95 shadow-[0_0_24px_currentColor] text-${m.accent}`}>
+            <span aria-hidden="true" class={`block w-1.5 h-1.5 rounded-full bg-${m.accent}`}></span>
+            <span class="font-mono font-bold text-[10px] tracking-[0.32em] uppercase">patch {m.n} installed</span>
+            <span aria-hidden="true" class="text-ink-faint">·</span>
+            <span class="font-mono text-[10px] tracking-[0.22em] uppercase text-ink-dim normal-case">
+              {m.data.categoryPatch[1].toLowerCase().replace(/\.$/, "")}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- machine wordmark + tagline -->
     <div class="flex-1 px-5 sm:px-12 py-8 sm:py-10 flex flex-col gap-6 sm:gap-8 justify-between">
 
-      <!-- header: wordmark + tagline (inline) -->
       <div>
         {meta.map((m) => (
           <span data-loop={m.id}>
@@ -158,14 +165,14 @@ const meta = [
 
       <!-- the artifact itself — large, dominant -->
       <div class="relative flex-1 flex items-center justify-center min-h-[42svh] py-2">
-        <div data-loop="bzzt" class="w-full max-w-[640px]"><RadarArtifact /></div>
-        <div data-loop="cmok" class="w-full max-w-[640px]"><CircleArtifact /></div>
-        <div data-loop="nwd"  class="w-full max-w-[680px]"><RaceArtifact  /></div>
+        <div data-loop="bzzt" class="w-full max-w-[680px]"><RadarArtifact /></div>
+        <div data-loop="cmok" class="w-full max-w-[680px]"><CircleArtifact /></div>
+        <div data-loop="nwd"  class="w-full max-w-[720px]"><RaceArtifact  /></div>
       </div>
     </div>
   </section>
 
-  <!-- ─── RIGHT: INSPECTOR (concise) ─── -->
+  <!-- ─── RIGHT: INSPECTOR ─── -->
   <aside class="console-details flex flex-col">
 
     {meta.map((m) => (
@@ -180,21 +187,31 @@ const meta = [
           </p>
         </section>
 
-        <!-- CATEGORY DEFAULT -->
+        <!-- CATEGORY DEFAULT — failed -->
         <section class="border-b border-line px-5 py-5">
-          <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-2">▍ Category default</p>
-          <p class="font-display text-[clamp(1.1rem,1.6vw,1.35rem)] leading-[1.2] text-ink-dim line-through decoration-flag/50 decoration-1">
+          <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-2 flex items-center justify-between">
+            <span>▍ Category default</span>
+            <span class="text-flag">× failed</span>
+          </p>
+          <p class="font-display text-[clamp(1.1rem,1.6vw,1.35rem)] leading-[1.2] text-ink-dim line-through decoration-flag/55 decoration-1">
             {m.data.categoryDefault.join(" → ")}
           </p>
         </section>
 
-        <!-- SWA MUTATION -->
+        <!-- ↓ patched connector -->
+        <div class="px-5 py-3 border-b border-line flex items-center gap-3 font-mono text-[10px] tracking-[0.32em] uppercase text-ink-faint">
+          <span aria-hidden="true" class={`block w-3 h-3 border-l border-b border-${m.accent}/60 -rotate-45 -mt-2 -ml-1`}></span>
+          <span class={`text-${m.accent}/80`}>patched</span>
+          <span aria-hidden="true" class={`flex-1 h-px bg-${m.accent}/30`}></span>
+        </div>
+
+        <!-- SWA MUTATION — installed -->
         <section class={`border-b border-line px-5 py-5 bg-${m.accent}/[0.06]`}>
           <p class={`font-mono text-[10px] tracking-[0.28em] uppercase text-${m.accent} mb-2 flex items-center justify-between`}>
             <span>▍ SWA mutation</span>
-            <span class={`text-${m.accent}/60`}>↺ repeat</span>
+            <span class={`text-${m.accent}`}>✓ installed</span>
           </p>
-          <p class={`font-display text-[clamp(1.3rem,1.9vw,1.6rem)] leading-[1.15] text-ink`}>
+          <p class="font-display text-[clamp(1.3rem,1.9vw,1.6rem)] leading-[1.15] text-ink">
             {m.data.loopSteps.join(" → ")}
           </p>
         </section>
@@ -207,20 +224,17 @@ const meta = [
           </p>
         </section>
 
-        <!-- CATEGORY PATCH — the punchline of the inspector -->
+        <!-- PATCH (compact summary) -->
         <section class="px-5 py-5">
-          <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-2 flex items-center justify-between">
-            <span>▍ Category patch · {m.n}</span>
-            <span class={`text-${m.accent}`}>● applied</span>
-          </p>
-          <p class="font-mono text-[12px] leading-[1.5] text-ink-dim">
-            <span class="text-flag">×</span> <span class="line-through decoration-flag/60">{m.data.categoryPatch[0].replace(/^.*?:\s*/, "").replace(/\.$/, "")}</span><br />
+          <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint mb-2">▍ Patch · {m.n}</p>
+          <p class="font-mono text-[12px] leading-[1.5]">
+            <span class="text-flag">×</span> <span class="line-through decoration-flag/60 text-ink-dim">{m.data.categoryPatch[0].replace(/^.*?:\s*/, "").replace(/\.$/, "")}</span><br />
             <span class={`text-${m.accent}`}>+</span> <span class="text-ink">{m.data.categoryPatch[1].replace(/\.$/, "")}</span>
           </p>
         </section>
 
         <!-- CTA dock -->
-        <section class={`mt-auto px-5 py-5 border-t border-line bg-bg-soft/40`}>
+        <section class="mt-auto px-5 py-5 border-t border-line bg-bg-soft/40">
           <a
             href={m.data.href!}
             target="_blank"
@@ -241,30 +255,16 @@ const meta = [
   <!-- ─── DOCK ─── -->
   <footer class="console-dock relative border-t border-line bg-bg-soft/40">
     <div class="px-5 sm:px-8 py-3 sm:py-4 flex flex-wrap items-center justify-between gap-4 font-mono text-[10px] tracking-[0.28em] uppercase">
-      <ul class="flex flex-wrap items-center gap-x-6 gap-y-2 text-ink-dim">
-        <li>
-          <a href="#manifest" class="inline-flex items-center gap-1.5 hover:text-ink transition-colors">
-            <span aria-hidden="true">▍</span> Manifest
-          </a>
-        </li>
-        <li>
-          <a href="#failure" class="inline-flex items-center gap-1.5 hover:text-flag transition-colors">
-            <span aria-hidden="true">▍</span> Failure report
-          </a>
-        </li>
-        <li>
-          <a href="#plate" class="inline-flex items-center gap-1.5 hover:text-ink transition-colors">
-            <span aria-hidden="true">▍</span> Publisher plate
-          </a>
-        </li>
-        <li>
-          <a href="/legal" class="inline-flex items-center gap-1.5 hover:text-ink transition-colors">
-            <span aria-hidden="true">▍</span> Legal ↗
-          </a>
-        </li>
+      <ul class="flex flex-wrap items-center gap-x-5 gap-y-2 text-ink-dim">
+        <li><a href="#manifest" class="hover:text-ink transition-colors">Manifest</a></li>
+        <li aria-hidden="true" class="text-ink-faint/60">·</li>
+        <li><a href="#failure" class="hover:text-flag transition-colors">Failure report</a></li>
+        <li aria-hidden="true" class="text-ink-faint/60">·</li>
+        <li><a href="#plate" class="hover:text-ink transition-colors">Publisher plate</a></li>
+        <li aria-hidden="true" class="text-ink-faint/60">·</li>
+        <li><a href="/legal" class="hover:text-ink transition-colors">Legal ↗</a></li>
       </ul>
-
-      <p class="text-ink-faint">© 2026 Cybird Consulting · loop 04 drafting</p>
+      <p class="text-ink-faint">© 2026 Cybird Consulting</p>
     </div>
   </footer>
 </form>

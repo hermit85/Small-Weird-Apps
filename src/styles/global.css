@@ -266,6 +266,41 @@
       grid-template-columns: 1fr;
       grid-template-rows: auto auto auto auto auto;
     }
+    /* mobile: hide brand block + manifesto block + slot-04 from selector */
+    .console-select .brand-block,
+    .console-select .manifesto-block,
+    .console-select .slot-04 {
+      display: none;
+    }
+    /* mobile: horizontal loop tabs */
+    .console-select { border-right: none; border-bottom: 1px solid var(--color-line); }
+    .console-select nav.loops { padding: 0; }
+    .console-select nav.loops > p { padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--color-line); }
+    .console-select nav.loops ul {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+    .console-select nav.loops .loop-btn {
+      border-left: none !important;
+      border-right: 1px solid var(--color-line) !important;
+      border-top: none !important;
+      border-bottom: none !important;
+      transform: none !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+    }
+    .console-select nav.loops li:last-child .loop-btn {
+      border-right: none !important;
+    }
+  }
+
+  /* PATCH INSTALLED — micro-event flash on loop switch */
+  .patch-flash { opacity: 0; }
+  .console:has(#loop-bzzt:checked) [data-loop="bzzt"] .patch-flash,
+  .console:has(#loop-cmok:checked) [data-loop="cmok"] .patch-flash,
+  .console:has(#loop-nwd:checked)  [data-loop="nwd"]  .patch-flash {
+    animation: patch-flash 1.6s ease-out 0.15s forwards;
   }
 
   /* radio inputs that drive console state — visually hidden, focusable */
@@ -425,6 +460,13 @@
 @keyframes overlay-in {
   0%   { opacity: 0; }
   100% { opacity: 1; }
+}
+
+@keyframes patch-flash {
+  0%   { opacity: 0; transform: translateY(-6px) scale(0.96); }
+  18%  { opacity: 1; transform: translateY(0) scale(1); }
+  72%  { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(0) scale(1); }
 }
 
 @keyframes blink-cursor {
