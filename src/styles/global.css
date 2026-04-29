@@ -303,6 +303,81 @@
     animation: patch-flash 1.6s ease-out 0.15s forwards;
   }
 
+  /* ─── Strange Loop Engine ────────────────────────────── */
+
+  /* mode slots */
+  .engine [data-mode] { display: none !important; }
+  .engine:has(#mode-dating:checked) [data-mode="dating"],
+  .engine:has(#mode-safety:checked) [data-mode="safety"],
+  .engine:has(#mode-racing:checked) [data-mode="racing"] {
+    display: var(--slot-d, block) !important;
+  }
+
+  /* mode tab — pressed state */
+  .mode-btn {
+    transition: background-color 0.18s, color 0.18s, box-shadow 0.18s;
+  }
+  .mode-btn:hover { background-color: rgba(255,255,255,0.025); }
+  .engine:has(#mode-dating:checked) [data-mode-btn="dating"] {
+    background-color: rgba(0,229,255,0.08);
+    box-shadow: inset 0 -3px 0 var(--color-bzzt);
+  }
+  .engine:has(#mode-safety:checked) [data-mode-btn="safety"] {
+    background-color: rgba(232,93,58,0.08);
+    box-shadow: inset 0 -3px 0 var(--color-cmok);
+  }
+  .engine:has(#mode-racing:checked) [data-mode-btn="racing"] {
+    background-color: rgba(0,255,135,0.08);
+    box-shadow: inset 0 -3px 0 var(--color-nwd);
+  }
+
+  /* mode active marker */
+  .mode-btn .active-marker { display: none !important; }
+  .engine:has(#mode-dating:checked) [data-mode-btn="dating"] .active-marker,
+  .engine:has(#mode-safety:checked) [data-mode-btn="safety"] .active-marker,
+  .engine:has(#mode-racing:checked) [data-mode-btn="racing"] .active-marker {
+    display: inline-flex !important;
+  }
+
+  /* keyboard focus reflects on visible label */
+  #mode-dating:focus-visible ~ * [data-mode-btn="dating"],
+  #mode-safety:focus-visible ~ * [data-mode-btn="safety"],
+  #mode-racing:focus-visible ~ * [data-mode-btn="racing"] {
+    outline: 2px solid var(--color-bzzt);
+    outline-offset: -2px;
+  }
+
+  /* engine stage — subtle accent tint per mode */
+  .engine-stage { transition: background-color 0.4s; }
+  .engine:has(#mode-dating:checked) .engine-stage { background-color: rgba(0,229,255,0.022); }
+  .engine:has(#mode-safety:checked) .engine-stage { background-color: rgba(232,93,58,0.022); }
+  .engine:has(#mode-racing:checked) .engine-stage { background-color: rgba(0,255,135,0.022); }
+
+  /* patch banner */
+  .engine-patch { opacity: 0; }
+  .engine:has(#mode-dating:checked) [data-mode="dating"] .engine-patch,
+  .engine:has(#mode-safety:checked) [data-mode="safety"] .engine-patch,
+  .engine:has(#mode-racing:checked) [data-mode="racing"] .engine-patch {
+    animation: patch-flash 1.8s ease-out 0.2s forwards;
+  }
+
+  /* new loop steps cascade in */
+  .new-loop-step {
+    opacity: 0;
+    animation: cascade-in 0.55s ease-out forwards;
+  }
+
+  /* broken loop subtle shake on switch */
+  .broken-loop {
+    animation: broken-shake 0.42s ease-out;
+  }
+
+  /* app reveal */
+  .app-reveal {
+    opacity: 0;
+    animation: app-rise 0.7s ease-out 0.55s forwards;
+  }
+
   /* radio inputs that drive console state — visually hidden, focusable */
   .console-state {
     position: absolute;
@@ -467,6 +542,24 @@
   18%  { opacity: 1; transform: translateY(0) scale(1); }
   72%  { opacity: 1; transform: translateY(0) scale(1); }
   100% { opacity: 0; transform: translateY(0) scale(1); }
+}
+
+@keyframes cascade-in {
+  0%   { opacity: 0; transform: translateX(-10px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes broken-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(2px); }
+  60% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+}
+
+@keyframes app-rise {
+  0%   { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes blink-cursor {
