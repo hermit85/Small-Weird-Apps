@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import MotionPolish from "../components/MotionPolish.astro";
 import { site } from "../data/site.ts";
 
 type Props = {
@@ -53,5 +54,6 @@ const canonical = new URL(pathname, site.url).toString();
   </head>
   <body class="text-ink antialiased">
     <slot />
+    <MotionPolish />
   </body>
 </html>

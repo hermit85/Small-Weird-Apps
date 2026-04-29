@@ -55,7 +55,7 @@ const badge = {
 };
 ---
 
-<div class="relative w-full max-w-md mx-auto">
+<div class="relative w-full max-w-md mx-auto" data-motion-visual>
   <svg
     viewBox="0 0 480 480"
     class="w-full h-auto text-cmok"
@@ -99,8 +99,10 @@ const badge = {
       </Fragment>
     ))}
 
-    <!-- Reply person (Córka) — halo + dot + label, halo reveals once -->
-    <g style={`transform-origin: ${reply.x}px ${reply.y}px; animation: motion-soft-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;`}>
+    <!-- Reply person (Sarah) — halo + dot + label.
+         Reveal is now driven by the IntersectionObserver in MotionPolish:
+         the parent SVG fades in via [data-motion-visual] > * .is-visible. -->
+    <g>
       <circle cx={reply.x} cy={reply.y} r={haloR} fill="none" stroke="currentColor" stroke-opacity="0.7" stroke-width="1.4" />
     </g>
     <circle cx={reply.x} cy={reply.y} r={dotR} fill="currentColor" />
@@ -115,8 +117,8 @@ const badge = {
       style="text-transform: uppercase;"
     >{reply.label}</text>
 
-    <!-- 'ok ✓' badge floating outside Córka's halo -->
-    <g style={`transform-origin: ${badge.x}px ${badge.y}px; animation: motion-soft-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;`}>
+    <!-- 'ok ✓' badge floating outside Sarah's halo — reveals with the parent SVG -->
+    <g>
       <text
         x={badge.x} y={badge.y + 4}
         text-anchor="middle"
@@ -134,7 +136,7 @@ const badge = {
       cx={cx} cy={cy} r={motherR + 14}
       fill="none"
       stroke="currentColor" stroke-opacity="0.42"
-      style="transform-origin: 240px 240px; animation: motion-soft-pulse 5s cubic-bezier(0.45, 0, 0.55, 1) infinite;"
+      style="transform-origin: 240px 240px; animation: motion-soft-pulse 6.5s var(--motion-ease-ambient) infinite;"
     />
     <circle cx={cx} cy={cy} r={motherR} fill="currentColor" />
     <text

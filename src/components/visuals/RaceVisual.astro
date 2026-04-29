@@ -12,7 +12,7 @@ const leaderboard = [
 ];
 ---
 
-<div class="relative w-full max-w-md mx-auto">
+<div class="relative w-full max-w-md mx-auto" data-motion-visual>
 
   <!-- live HUD — STATIC. NWD is downhill MTB, not a gated event;
        the chip describes the state of the descent, not a 'gate'. -->
@@ -39,10 +39,9 @@ const leaderboard = [
     <!-- trail line — draws once on enter via stroke-dashoffset.
          The HTML 'descent · live' chip in the corner labels the run. -->
     <path
+      class="trail-draw"
       d="M 60 60 L 200 200 L 280 240 L 380 170 L 480 60"
       stroke="currentColor" stroke-width="2.4" stroke-opacity="0.78" fill="none"
-      stroke-dasharray="600" stroke-dashoffset="600"
-      style="animation: motion-route-draw 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;"
     />
 
     <!-- start node at the top of the trail (small dot, no label) -->
@@ -59,7 +58,7 @@ const leaderboard = [
   <!-- live time + leaderboard — one-shot reveal -->
   <div
     class="mt-3 flex items-end justify-between gap-4"
-    style="animation: motion-soft-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.75s both;"
+    style="animation: motion-soft-reveal 0.9s var(--motion-ease-apple) 0.75s both;"
   >
     <div>
       <p class="font-mono text-[10px] tracking-[0.28em] uppercase text-nwd mb-0.5">▍ live time</p>

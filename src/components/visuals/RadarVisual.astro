@@ -1,12 +1,12 @@
 ---
 // BZZT — proximity radar.
 // Motion contract:
-//   AMBIENT: one slow radar sweep (motion-radar-sweep, 9s linear, infinite).
+//   AMBIENT: one slow radar sweep plus small signal pulses.
 //   ENTER:   mutual spark + 30:00 timer fade in once on first paint.
-//   STATIC:  YOU dot, two nearby pings, HUD chip, baseline rings.
+//   STATIC:  HUD chip and baseline rings.
 ---
 
-<div class="relative w-full max-w-md mx-auto">
+<div class="relative w-full max-w-md mx-auto" data-motion-visual>
   <svg
     viewBox="0 0 480 480"
     class="w-full h-auto text-bzzt"
@@ -39,19 +39,24 @@
       <line x1="20"  y1="240" x2="460" y2="240" />
     </g>
 
-    <!-- ambient: one slow radar sweep -->
-    <g style="transform-origin: 240px 240px; animation: motion-radar-sweep 9s linear infinite;">
-      <path d="M 240 240 L 460 240 A 220 220 0 0 0 350 30 Z" fill="url(#bzzt-sweep)" opacity="0.62" />
+    <!-- ambient: one slow radar sweep — 60° wedge that sits cleanly INSIDE
+         the outer ring (r=220). Earlier path used (460,240) → (350,30)
+         which is OFF the r=220 circle, so SVG auto-scaled the arc and the
+         wedge bled past the outermost ring. Geometry now:
+         start at angle 0° on r=215 → (455, 240); end at angle -60° on
+         r=215 → (cx + 215·cos(-60°), cy + 215·sin(-60°)) = (348, 54). -->
+    <g style="transform-origin: 240px 240px; animation: motion-radar-sweep 12s linear infinite;">
+      <path d="M 240 240 L 455 240 A 215 215 0 0 0 348 54 Z" fill="url(#bzzt-sweep)" opacity="0.62" />
     </g>
 
-    <!-- two anonymous nearby pings — STATIC, brighter (0.72 → 0.85) -->
+    <!-- two anonymous nearby pings -->
     <g fill="currentColor">
-      <circle cx="160" cy="170" r="6" fill-opacity="0.85" />
-      <circle cx="370" cy="180" r="6" fill-opacity="0.85" />
+      <circle cx="160" cy="170" r="6" fill-opacity="0.85" style="transform-origin: 160px 170px; animation: motion-radar-ping 3.8s var(--motion-ease-ambient) infinite;" />
+      <circle cx="370" cy="180" r="6" fill-opacity="0.85" style="transform-origin: 370px 180px; animation: motion-radar-ping 4.4s var(--motion-ease-ambient) 0.7s infinite;" />
     </g>
 
-    <!-- mutual spark — STATIC -->
-    <g>
+    <!-- mutual spark -->
+    <g style="transform-origin: 320px 330px; animation: motion-radar-breathe 4.8s var(--motion-ease-ambient) infinite;">
       <circle cx="320" cy="330" r="32" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="1" />
       <circle cx="320" cy="330" r="14" fill="currentColor" />
       <circle cx="320" cy="330" r="22" fill="none" stroke="currentColor" stroke-width="1.4" />
