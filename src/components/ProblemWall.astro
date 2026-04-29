@@ -1,32 +1,110 @@
 ---
 const problems = [
-  { kicker: "Loop 01", text: "Dating became profile shopping.", accent: "bzzt" },
-  { kicker: "Loop 02", text: "Safety became panic theatre.", accent: "cmok" },
-  { kicker: "Loop 03", text: "Racing became either a calendar event or a boring training log.", accent: "nwd" },
+  {
+    n: "01",
+    quote: "Dating became profile shopping.",
+    accent: "bzzt",
+    field: "DATING / D.OBS-01",
+    diagnosis: "loop got stuck in browse mode",
+    stamp: "stale",
+  },
+  {
+    n: "02",
+    quote: "Safety became panic theatre.",
+    accent: "cmok",
+    field: "SAFETY / S.OBS-02",
+    diagnosis: "only fires after the fact",
+    stamp: "noisy",
+  },
+  {
+    n: "03",
+    quote: "Racing became either a calendar event or a boring training log.",
+    accent: "nwd",
+    field: "RACING / R.OBS-03",
+    diagnosis: "no gravity, no game",
+    stamp: "thin",
+  },
 ] as const;
 ---
 
-<section class="relative py-20 sm:py-32 border-t border-line-soft">
-  <div class="mx-auto max-w-6xl px-5 sm:px-8">
-    <p class="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint mb-12 sm:mb-16">
-      ▍ The problem wall
-    </p>
+<section class="relative py-24 sm:py-36 border-t border-line">
 
-    <ul class="space-y-8 sm:space-y-12">
-      {problems.map((p) => (
-        <li class="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-8 items-baseline border-b border-line-soft pb-8 sm:pb-12">
-          <div class="sm:col-span-2 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">
-            {p.kicker}
+  <!-- diagonal slashes pattern (very subtle) decorating the section -->
+  <div class="pointer-events-none absolute inset-0 opacity-[0.04]" aria-hidden="true"
+    style="background-image: repeating-linear-gradient(135deg, transparent 0 28px, var(--color-flag) 28px 29px);"></div>
+
+  <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8">
+
+    <!-- header strip -->
+    <div class="grid grid-cols-12 gap-4 sm:gap-8 items-end mb-16 sm:mb-24">
+      <div class="col-span-12 md:col-span-3 label text-ink-faint">
+        ▍ Section B.02
+      </div>
+      <div class="col-span-12 md:col-span-6">
+        <p class="callout text-flag">▍ Evidence wall</p>
+        <h2 class="font-display text-[clamp(2.4rem,7vw,5.5rem)] leading-[0.95] text-ink mt-2">
+          Three loops <span class="italic text-ink-dim">that quietly broke.</span>
+        </h2>
+      </div>
+      <div class="col-span-12 md:col-span-3 md:text-right">
+        <span class="stamp text-flag">filed · 2026</span>
+      </div>
+    </div>
+
+    <!-- evidence items — asymmetric, typewriter-ish -->
+    <ol class="space-y-16 sm:space-y-24">
+      {problems.map((p, i) => (
+        <li class="relative grid grid-cols-12 gap-4 sm:gap-8 items-baseline">
+
+          <!-- left: large numeral + field code -->
+          <div class={`col-span-12 md:col-span-2 ${i % 2 === 0 ? "md:order-1" : "md:order-2 md:text-right"}`}>
+            <span class={`block font-display text-[clamp(5rem,12vw,9rem)] leading-[0.85] text-${p.accent}`}>
+              {p.n}
+            </span>
+            <span class="block label text-ink-faint mt-2">{p.field}</span>
           </div>
-          <p class={`sm:col-span-10 font-display text-[clamp(1.8rem,5vw,3.5rem)] leading-[1.05] text-ink`}>
-            <span class={`text-${p.accent}`}>“</span>{p.text}<span class={`text-${p.accent}`}>”</span>
-          </p>
+
+          <!-- center: quoted broken pattern -->
+          <div class={`col-span-12 md:col-span-7 ${i % 2 === 0 ? "md:order-2" : "md:order-1"}`}>
+            <p class="font-display text-[clamp(2rem,5.5vw,4.5rem)] leading-[1] text-ink">
+              <span aria-hidden="true" class={`text-${p.accent}`}>“</span>
+              <span class="relative">
+                {p.quote}
+                <!-- diagonal slash overlay using SVG -->
+                <svg
+                  aria-hidden="true"
+                  class="absolute inset-0 w-full h-full overflow-visible pointer-events-none"
+                  preserveAspectRatio="none"
+                  viewBox="0 0 100 100"
+                >
+                  <line x1="0" y1="100" x2="100" y2="0" stroke="var(--color-flag)" stroke-width="0.6" stroke-opacity="0.7" vector-effect="non-scaling-stroke"/>
+                </svg>
+              </span>
+              <span aria-hidden="true" class={`text-${p.accent}`}>”</span>
+            </p>
+          </div>
+
+          <!-- right: diagnosis sticker -->
+          <div class={`col-span-12 md:col-span-3 ${i % 2 === 0 ? "md:order-3" : "md:order-3 md:text-right"}`}>
+            <div class="inline-flex flex-col gap-3">
+              <span class={`stamp text-flag self-start ${i % 2 === 1 ? "md:self-end" : ""}`}>{p.stamp}</span>
+              <span class="callout text-ink-faint italic font-mono">
+                {p.diagnosis}
+              </span>
+            </div>
+          </div>
         </li>
       ))}
-    </ul>
+    </ol>
 
-    <p class="mt-14 sm:mt-20 font-display italic text-[clamp(1.4rem,3vw,2rem)] leading-snug text-ink-dim max-w-3xl">
-      So we built three small apps with different loops.
-    </p>
+    <!-- bridge / counter-statement -->
+    <div class="mt-24 sm:mt-32 grid grid-cols-12 gap-4 sm:gap-8 items-baseline border-t border-line pt-10">
+      <div class="col-span-12 md:col-span-3 label text-ink-faint">▍ Counter-statement</div>
+      <p class="col-span-12 md:col-span-9 font-display text-[clamp(1.8rem,4vw,3rem)] leading-[1.1] text-ink">
+        So we built three small apps
+        <span class="italic text-ink-dim">with different loops.</span>
+        <span aria-hidden="true" class="inline-block align-middle ml-3">↓</span>
+      </p>
+    </div>
   </div>
 </section>

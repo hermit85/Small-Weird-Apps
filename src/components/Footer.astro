@@ -3,41 +3,54 @@ import { site } from "../data/site.ts";
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-line mt-32">
-  <div class="mx-auto max-w-6xl px-5 sm:px-8 py-14">
-    <div class="grid grid-cols-1 sm:grid-cols-12 gap-10">
-      <div class="sm:col-span-7">
-        <p class="font-display text-2xl sm:text-3xl leading-tight text-ink max-w-xl">
-          Small Weird Apps is a product label owned by{" "}
-          <span class="italic">{site.legalOwner}</span>.<br />
-          {site.city}.
-        </p>
-      </div>
-      <div class="sm:col-span-5 flex sm:justify-end">
-        <ul class="grid grid-cols-2 gap-x-10 gap-y-3 font-mono text-[11px] tracking-[0.2em] uppercase text-ink-dim">
-          <li><a href="/#apps" class="hover:text-ink transition-colors">Apps</a></li>
-          <li><a href="/#company" class="hover:text-ink transition-colors">Contact</a></li>
-          <li><a href="/legal" class="hover:text-ink transition-colors">Legal</a></li>
-          <li>
-            <a
-              href={site.linkedin}
-              target="_blank"
-              rel="noopener"
-              class="hover:text-ink transition-colors"
-            >
-              LinkedIn ↗
-            </a>
-          </li>
-        </ul>
+<footer class="relative border-t-2 border-ink/30 mt-32 overflow-hidden">
+
+  <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8 py-16 sm:py-20">
+
+    <!-- top row: archive numbers -->
+    <div class="flex items-center justify-between mb-12 callout text-ink-faint">
+      <span>▍ End of file</span>
+      <span class="hidden md:inline">A.01 ◇ B.02 ◇ B.03–05 ◇ B.06 ◇ End</span>
+      <span>EOF ▌</span>
+    </div>
+
+    <!-- COLOPHON STAMP — centered -->
+    <div class="text-center max-w-3xl mx-auto">
+      <p class="callout text-ink-faint mb-4">▍ Colophon</p>
+      <p class="font-display text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.25] text-ink">
+        {site.name} is a product label
+        <span class="block">owned by <span class="italic">Cybird Consulting Dariusz Ptaszek</span></span>
+        <span class="block text-ink-dim">— published from {site.city}.</span>
+      </p>
+
+      <div class="mt-10 flex items-center justify-center gap-3 sm:gap-4 callout text-ink-faint flex-wrap">
+        <span aria-hidden="true">━━━━━</span>
+        <a href="/#apps" class="hover:text-ink transition-colors">Apps</a>
+        <span aria-hidden="true">·</span>
+        <a href="/#company" class="hover:text-ink transition-colors">Contact</a>
+        <span aria-hidden="true">·</span>
+        <a href="/legal" class="hover:text-ink transition-colors">Legal</a>
+        <span aria-hidden="true">·</span>
+        <a href={site.linkedin} target="_blank" rel="noopener" class="hover:text-ink transition-colors">LinkedIn ↗</a>
+        <span aria-hidden="true">━━━━━</span>
       </div>
     </div>
-    <div class="mt-14 pt-6 border-t border-line-soft flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-      <p class="font-mono text-[11px] tracking-[0.2em] uppercase text-ink-faint">
+
+    <!-- bottom strip: stamps + microcopy -->
+    <div class="mt-16 sm:mt-20 grid grid-cols-12 gap-4 sm:gap-8 items-end border-t border-line pt-8">
+      <p class="col-span-6 md:col-span-3 callout text-ink-faint">
         © {year} {site.legalOwner}
       </p>
-      <p class="font-display italic text-lg text-ink-dim">
+      <p class="col-span-12 md:col-span-6 md:order-2 text-center font-display italic text-base sm:text-xl text-ink-dim">
         The apps are weird. The company details are normal.
+      </p>
+      <p class="col-span-6 md:col-span-3 md:order-3 text-right callout text-ink-faint">
+        v.2026.04 ▌
       </p>
     </div>
   </div>
+
+  <!-- corner registration marks -->
+  <span class="absolute bottom-3 left-3 reg-cross" aria-hidden="true"></span>
+  <span class="absolute bottom-3 right-3 reg-cross" aria-hidden="true"></span>
 </footer>

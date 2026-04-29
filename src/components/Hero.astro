@@ -2,54 +2,140 @@
 import { site } from "../data/site.ts";
 ---
 
-<section class="relative pt-20 sm:pt-32 pb-20 sm:pb-28">
-  <div class="mx-auto max-w-6xl px-5 sm:px-8">
-    <div class="flex items-baseline gap-3 mb-12 sm:mb-20 font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint">
-      <span aria-hidden="true">▍</span>
-      <span>A tiny indie app label</span>
-      <span class="hidden sm:inline">— Warsaw, 2026</span>
+<section class="relative pt-10 sm:pt-14 pb-20 sm:pb-32 overflow-hidden">
+
+  <!-- top metadata strip — full bleed, like a museum panel -->
+  <div class="relative border-y border-line py-2.5">
+    <div class="mx-auto max-w-[1600px] px-5 sm:px-8 flex items-center justify-between font-mono text-[10px] tracking-[0.28em] uppercase text-ink-faint">
+      <span aria-hidden="true">▍ Archive №01–03</span>
+      <span class="hidden md:inline">A publisher of strange little loops</span>
+      <span aria-hidden="true">Warsaw · 2026 ▌</span>
+    </div>
+  </div>
+
+  <!-- corner registration marks -->
+  <span class="absolute top-16 left-3 reg-cross" aria-hidden="true"></span>
+  <span class="absolute top-16 right-3 reg-cross" aria-hidden="true"></span>
+
+  <!-- color test bars on the right margin (offset print marks) -->
+  <div class="hidden lg:block absolute top-24 right-4 color-bars" aria-hidden="true">
+    <i style="background: var(--color-bzzt)"></i>
+    <i style="background: var(--color-cmok)"></i>
+    <i style="background: var(--color-nwd)"></i>
+    <i style="background: var(--color-flag)"></i>
+  </div>
+
+  <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8 mt-10 sm:mt-16">
+
+    <!-- eyebrow row -->
+    <div class="flex items-end justify-between mb-6 sm:mb-10">
+      <div class="callout text-ink-faint flex items-center gap-3">
+        <span class="inline-block w-2 h-2 rounded-full bg-bzzt shadow-[0_0_10px_var(--color-bzzt)]" aria-hidden="true"></span>
+        <span>Now scanning · Loop 04 in workshop</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-3 callout text-ink-faint">
+        <span>Specimen sheet</span>
+        <span aria-hidden="true" class="block w-16 dim-line"></span>
+        <span>v.2026.04</span>
+      </div>
     </div>
 
-    <h1 class="font-display text-[clamp(3rem,11vw,9.5rem)] leading-[0.92] tracking-tight">
-      <span class="block text-ink">Real problems.</span>
-      <span class="block text-ink-dim italic">Strange little loops.</span>
+    <!-- WORDMARK — oversized, stacked, asymmetric -->
+    <h1 class="font-display leading-[0.78] tracking-[-0.04em] select-none">
+      <span class="block text-[clamp(4.5rem,18vw,18rem)] text-ink">
+        Small
+      </span>
+      <span class="relative block text-[clamp(4.5rem,18vw,18rem)] italic text-bzzt pl-[6vw] sm:pl-[14vw]">
+        weird
+        <!-- annotation arrow -->
+        <span aria-hidden="true" class="hidden lg:flex items-center gap-2 absolute -right-2 top-1/2 -translate-y-1/2 callout text-ink-faint not-italic">
+          <span class="block w-24 leader text-ink-faint"></span>
+          <span class="whitespace-nowrap">[fig. 01] publisher mark</span>
+        </span>
+      </span>
+      <span class="block text-[clamp(4.5rem,18vw,18rem)] text-ink -mt-[1vw]">
+        Apps<span class="text-bzzt">.</span>
+      </span>
     </h1>
 
-    <div class="mt-12 sm:mt-16 grid grid-cols-1 sm:grid-cols-12 gap-6 sm:gap-12">
-      <ul class="sm:col-span-7 font-display text-[clamp(1.4rem,2.6vw,2.1rem)] leading-snug text-ink space-y-1.5">
-        <li class="flex items-baseline gap-3">
-          <span class="font-mono text-[10px] tracking-[0.2em] text-bzzt opacity-80">01</span>
-          <span>Dating without endless swiping.</span>
+    <!-- divider with subtitle hung on it -->
+    <div class="mt-12 sm:mt-20 grid grid-cols-12 gap-4 sm:gap-8 items-end">
+      <div class="col-span-12 md:col-span-1 callout text-ink-faint hidden md:block">
+        ▍ A.01
+      </div>
+      <p class="col-span-12 md:col-span-7 font-display text-[clamp(2rem,5.5vw,4rem)] leading-[1.02] text-ink">
+        Real problems.<br />
+        <span class="italic text-ink-dim">Strange little loops.</span>
+      </p>
+      <p class="col-span-12 md:col-span-4 text-base sm:text-lg leading-relaxed text-ink-dim md:pl-8 md:border-l border-line">
+        {site.description}
+      </p>
+    </div>
+
+    <!-- exhibit list — three teasers as catalog entries -->
+    <div class="mt-16 sm:mt-24">
+      <div class="flex items-center gap-4 mb-6">
+        <span class="label text-ink-faint">▍ Exhibit list</span>
+        <span aria-hidden="true" class="flex-1 h-px bg-line"></span>
+        <span class="label text-ink-faint">three machines</span>
+      </div>
+
+      <ul class="grid grid-cols-1 md:grid-cols-3 gap-px bg-line border-y border-line">
+        <li class="group p-6 sm:p-8 bg-bg hover:bg-bg-soft transition-colors relative">
+          <div class="flex items-baseline justify-between mb-6">
+            <span class="callout text-bzzt">Loop 01</span>
+            <span class="callout text-ink-faint">Dating</span>
+          </div>
+          <p class="font-display text-[clamp(1.4rem,2.4vw,1.9rem)] leading-[1.1] text-ink">
+            Dating without<br />
+            <s class="decoration-flag/80 decoration-2 italic text-ink-dim">endless swiping</s>
+            <span class="block mt-1 italic text-bzzt">→ a live signal.</span>
+          </p>
+          <div class="absolute top-4 right-4 callout text-ink-faint">
+            BZZT
+          </div>
         </li>
-        <li class="flex items-baseline gap-3">
-          <span class="font-mono text-[10px] tracking-[0.2em] text-cmok opacity-80">02</span>
-          <span>Safety without panic theatre.</span>
+        <li class="group p-6 sm:p-8 bg-bg hover:bg-bg-soft transition-colors relative">
+          <div class="flex items-baseline justify-between mb-6">
+            <span class="callout text-cmok">Loop 02</span>
+            <span class="callout text-ink-faint">Safety</span>
+          </div>
+          <p class="font-display text-[clamp(1.4rem,2.4vw,1.9rem)] leading-[1.1] text-ink">
+            Safety without<br />
+            <s class="decoration-flag/80 decoration-2 italic text-ink-dim">panic theatre</s>
+            <span class="block mt-1 italic text-cmok">→ a daily sign.</span>
+          </p>
+          <div class="absolute top-4 right-4 callout text-ink-faint">
+            CMOK
+          </div>
         </li>
-        <li class="flex items-baseline gap-3">
-          <span class="font-mono text-[10px] tracking-[0.2em] text-nwd opacity-80">03</span>
-          <span>Racing without waiting for an event.</span>
+        <li class="group p-6 sm:p-8 bg-bg hover:bg-bg-soft transition-colors relative">
+          <div class="flex items-baseline justify-between mb-6">
+            <span class="callout text-nwd">Loop 03</span>
+            <span class="callout text-ink-faint">Racing</span>
+          </div>
+          <p class="font-display text-[clamp(1.4rem,2.4vw,1.9rem)] leading-[1.1] text-ink">
+            Racing without<br />
+            <s class="decoration-flag/80 decoration-2 italic text-ink-dim">waiting for an event</s>
+            <span class="block mt-1 italic text-nwd">→ a gravity league.</span>
+          </p>
+          <div class="absolute top-4 right-4 callout text-ink-faint">
+            NWD
+          </div>
         </li>
       </ul>
+    </div>
 
-      <div class="sm:col-span-5 flex flex-col justify-end gap-7">
-        <p class="text-base sm:text-lg leading-relaxed text-ink-dim max-w-sm">
-          {site.description}
-        </p>
-        <div class="flex flex-wrap items-center gap-3">
-          <a
-            href="#apps"
-            class="group inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-bg font-mono text-[11px] tracking-[0.2em] uppercase hover:bg-bzzt transition-colors"
-          >
-            Explore the apps
-            <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">↓</span>
-          </a>
-          <a
-            href="#company"
-            class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-line text-ink-dim hover:text-ink hover:border-ink-dim font-mono text-[11px] tracking-[0.2em] uppercase transition-colors"
-          >
-            Company info
-          </a>
-        </div>
+    <!-- bottom: scroll cue + meta -->
+    <div class="mt-16 sm:mt-20 flex items-end justify-between">
+      <a href="#bzzt" class="group inline-flex items-baseline gap-3 callout text-ink hover:text-bzzt transition-colors">
+        <span class="block w-12 dim-line text-ink-faint group-hover:text-bzzt transition-colors"></span>
+        <span>Open exhibit 01</span>
+        <span aria-hidden="true" class="transition-transform group-hover:translate-y-0.5">↓</span>
+      </a>
+      <div class="hidden sm:flex items-center gap-3 callout text-ink-faint">
+        <span>Continue</span>
+        <span aria-hidden="true">→</span>
       </div>
     </div>
   </div>

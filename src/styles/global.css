@@ -11,8 +11,13 @@
   --color-line-soft: #16161b;
 
   --color-bzzt: #7df9ff;
+  --color-bzzt-deep: #0d2a2e;
   --color-cmok: #ffb86b;
+  --color-cmok-deep: #2a1d10;
   --color-nwd: #c8ff4d;
+  --color-nwd-deep: #1c2a09;
+
+  --color-flag: #ff5b3a;
 
   --font-serif: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -32,13 +37,11 @@
   body {
     background-color: var(--color-bg);
     background-image:
-      radial-gradient(circle at 20% 0%, rgba(125, 249, 255, 0.04), transparent 50%),
-      radial-gradient(circle at 80% 100%, rgba(200, 255, 77, 0.03), transparent 50%),
-      linear-gradient(to right, rgba(243, 238, 226, 0.018) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(243, 238, 226, 0.018) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 96px 96px, 96px 96px;
-    background-attachment: fixed, fixed, fixed, fixed;
+      radial-gradient(circle at 8% 0%, rgba(125, 249, 255, 0.05), transparent 38%),
+      radial-gradient(circle at 92% 100%, rgba(200, 255, 77, 0.04), transparent 38%);
+    background-attachment: fixed;
     min-height: 100dvh;
+    overflow-x: hidden;
   }
 
   ::selection {
@@ -58,46 +61,207 @@
   }
 }
 
-@utility font-display {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
-}
-
-@utility label-mono {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-ink-faint);
-}
-
-@utility hairline {
-  border-top: 1px solid var(--color-line);
-}
-
 @layer components {
+
+  /* ─── decorative system ───────────────────────────────── */
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+  }
+
+  .label-tight {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* ruler dashes along left/right margins */
+  .ruler-y {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--color-line) 0,
+      var(--color-line) 1px,
+      transparent 1px,
+      transparent 14px
+    );
+    background-size: 1px 100%;
+    background-repeat: no-repeat;
+  }
+
+  /* corner registration cross */
+  .reg-cross {
+    position: relative;
+    width: 14px;
+    height: 14px;
+  }
+  .reg-cross::before,
+  .reg-cross::after {
+    content: "";
+    position: absolute;
+    background: var(--color-ink-faint);
+  }
+  .reg-cross::before {
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+  .reg-cross::after {
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    transform: translateX(-50%);
+  }
+
+  /* dotted leader connecting label to element */
+  .leader {
+    background-image: linear-gradient(to right, currentColor 35%, transparent 0);
+    background-size: 4px 1px;
+    background-repeat: repeat-x;
+    background-position: left center;
+    height: 1px;
+  }
+
+  /* dimension line (with ticks at ends) */
+  .dim-line {
+    position: relative;
+    height: 1px;
+    background: currentColor;
+  }
+  .dim-line::before,
+  .dim-line::after {
+    content: "";
+    position: absolute;
+    top: -3px;
+    width: 1px;
+    height: 7px;
+    background: currentColor;
+  }
+  .dim-line::before { left: 0; }
+  .dim-line::after { right: 0; }
+
+  /* color bar (offset print marks) */
+  .color-bars {
+    display: flex;
+    gap: 3px;
+  }
+  .color-bars > i {
+    display: block;
+    width: 10px;
+    height: 10px;
+  }
+
+  /* stamp — boxed mono label */
+  .stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.35em 0.7em;
+    border: 1px solid currentColor;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* hand-drawn-ish slash strikethrough */
+  .slash {
+    background-image: linear-gradient(
+      to top right,
+      transparent calc(50% - 1px),
+      var(--color-flag) calc(50% - 1px),
+      var(--color-flag) calc(50% + 1px),
+      transparent calc(50% + 1px)
+    );
+  }
+
+  /* ─── per-app color worlds ───────────────────────────── */
+
+  .world-bzzt {
+    background:
+      radial-gradient(80% 50% at 30% 20%, rgba(125, 249, 255, 0.10), transparent 60%),
+      linear-gradient(180deg, rgba(125, 249, 255, 0.04), transparent 80%);
+  }
+  .world-bzzt::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(125, 249, 255, 0.04) 0px, rgba(125, 249, 255, 0.04) 1px, transparent 1px, transparent 4px);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.5;
+  }
+
+  .world-cmok {
+    background:
+      radial-gradient(70% 50% at 70% 30%, rgba(255, 184, 107, 0.09), transparent 60%),
+      linear-gradient(180deg, rgba(255, 184, 107, 0.03), transparent 70%);
+  }
+
+  .world-nwd {
+    background:
+      radial-gradient(70% 60% at 50% 80%, rgba(200, 255, 77, 0.08), transparent 60%),
+      linear-gradient(180deg, rgba(200, 255, 77, 0.025), transparent 70%);
+  }
+  .world-nwd::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(90deg, transparent 0, transparent 80px, rgba(200, 255, 77, 0.05) 80px, rgba(200, 255, 77, 0.05) 81px);
+    pointer-events: none;
+  }
+
+  /* noise overlay */
   .noise {
     position: relative;
     isolation: isolate;
   }
-  .noise::before {
+  .noise::after {
     content: "";
     position: absolute;
     inset: 0;
-    z-index: -1;
+    z-index: 1;
     pointer-events: none;
-    opacity: 0.4;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     mix-blend-mode: overlay;
-    border-radius: inherit;
+  }
+
+  /* sticker — rotated mono label */
+  .sticker {
+    display: inline-flex;
+    padding: 0.4em 0.8em;
+    border: 1px solid currentColor;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    line-height: 1;
+    transform: rotate(-3deg);
+  }
+
+  /* arrow callout */
+  .callout {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
   }
 }
 
 @keyframes pulse-ring {
-  0% { transform: scale(0.2); opacity: 0.9; }
-  80% { opacity: 0; }
+  0% { transform: scale(0.18); opacity: 0.95; }
+  85% { opacity: 0; }
   100% { transform: scale(1); opacity: 0; }
 }
 
@@ -114,6 +278,16 @@
 @keyframes timer {
   0%, 100% { opacity: 0.85; }
   50% { opacity: 1; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes scan {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
 }
 
 @media (prefers-reduced-motion: reduce) {

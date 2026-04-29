@@ -1,0 +1,126 @@
+---
+import { apps } from "../../data/apps.ts";
+const app = apps.find((a) => a.id === "cmok")!;
+
+// build a horizontal timeline of "days"
+const days = 28;
+const todayIndex = 18;
+const cells = Array.from({ length: days }, (_, i) => ({
+  i,
+  isToday: i === todayIndex,
+  isPast: i < todayIndex,
+}));
+---
+
+<section
+  id="cmok"
+  class="relative isolate overflow-hidden border-t border-line scroll-mt-20 world-cmok noise"
+>
+  <!-- archive bar -->
+  <div class="relative border-b border-line py-2.5">
+    <div class="mx-auto max-w-[1600px] px-5 sm:px-8 flex items-center justify-between font-mono text-[10px] tracking-[0.28em] uppercase text-cmok/80">
+      <span>▍ Exhibit 02 · Machine 02 / Daily</span>
+      <span class="hidden md:inline">cadence · once a day / signal · soft / privacy · max</span>
+      <span>CMOK.002 ▌</span>
+    </div>
+  </div>
+
+  <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8 py-20 sm:py-32">
+
+    <!-- letterspaced wordmark, full width -->
+    <h2 class="font-display tracking-[0.06em] text-cmok leading-[0.85] select-none">
+      <span class="block text-[clamp(5rem,22vw,22rem)] text-center">
+        <span class="inline-block">C</span><span class="inline-block opacity-70">M</span><span class="inline-block opacity-90">O</span><span class="inline-block">K<span class="text-ink">.</span></span>
+      </span>
+    </h2>
+
+    <!-- top: tagline -->
+    <div class="mt-2 sm:mt-4 grid grid-cols-12 gap-4 sm:gap-8 items-baseline">
+      <span class="col-span-12 md:col-span-3 callout text-cmok/80 hidden md:block">▍ B.02 / specimen</span>
+      <p class="col-span-12 md:col-span-9 font-display italic text-[clamp(1.6rem,4vw,2.8rem)] leading-[1.05] text-ink">
+        {app.tagline}
+      </p>
+    </div>
+
+    <!-- horizontal day-strip — full width, 28 days -->
+    <div class="mt-20 sm:mt-28 relative">
+      <!-- top dimension labels -->
+      <div class="flex items-end justify-between mb-4 callout text-cmok/70">
+        <span>Mon · 4 weeks ago</span>
+        <span>← cadence ↦</span>
+        <span>Today · ✓</span>
+      </div>
+
+      <!-- the strip -->
+      <div class="relative flex items-center gap-2 sm:gap-3">
+        {cells.map((c) => (
+          c.isToday ? (
+            <div class="relative flex-1 flex items-center justify-center">
+              <span class="block w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-cmok shadow-[0_0_42px_var(--color-cmok)]" style="animation: drift 4s ease-in-out infinite;"></span>
+              <!-- ping -->
+              <span class="absolute inline-flex w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-cmok opacity-50" style="animation: pulse-ring 3.2s ease-out infinite;"></span>
+              <!-- label -->
+              <span aria-hidden="true" class="absolute top-full mt-3 callout text-cmok whitespace-nowrap">today · ok</span>
+            </div>
+          ) : c.isPast ? (
+            <span class="flex-1 block h-1.5 sm:h-2 rounded-full bg-cmok/35"></span>
+          ) : (
+            <span class="flex-1 block h-1 rounded-full bg-ink-faint/30"></span>
+          )
+        ))}
+      </div>
+
+      <!-- bottom dimension line -->
+      <div class="mt-12 callout text-cmok/40 flex items-center gap-3">
+        <span class="block flex-1 dim-line text-cmok/40"></span>
+        <span>28 daily checks</span>
+        <span class="block flex-1 dim-line text-cmok/40"></span>
+      </div>
+    </div>
+
+    <!-- copy block — three columns, marginalia style -->
+    <div class="mt-24 sm:mt-32 grid grid-cols-12 gap-4 sm:gap-8 items-start">
+      <div class="col-span-12 md:col-span-5">
+        <p class="callout text-cmok/80 mb-4">▍ Premise</p>
+        <div class="space-y-3 font-display text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.1] text-ink">
+          {app.intro.map((line) => <p>{line}</p>)}
+        </div>
+      </div>
+
+      <ul class="col-span-12 md:col-span-3 md:col-start-7 space-y-4 self-center">
+        {app.bullets.map((b, i) => (
+          <li class="flex items-baseline gap-3">
+            <span class="block w-6 dim-line text-cmok/40"></span>
+            <span class="font-display italic text-[clamp(1.4rem,2.4vw,1.9rem)] text-ink">{b}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="col-span-12 md:col-span-2 md:col-start-11 self-center md:text-right">
+        <span class="sticker text-cmok">private · v.01</span>
+      </div>
+    </div>
+
+    <!-- punchline + cta -->
+    <div class="mt-20 sm:mt-28 grid grid-cols-12 gap-4 sm:gap-8 items-end border-t border-cmok/20 pt-10">
+      <p class="col-span-12 md:col-span-7 font-display italic text-[clamp(1.8rem,4.5vw,3.2rem)] leading-[1.05] text-ink">
+        {app.punchline}
+      </p>
+      <div class="col-span-12 md:col-span-5 md:text-right">
+        <span class="inline-flex items-center gap-3 callout text-cmok/70">
+          <span aria-hidden="true" class="block w-12 dim-line text-cmok/40"></span>
+          <span>Open CMOK · soon</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- bottom strip -->
+  <div class="relative border-t border-cmok/20 py-2.5">
+    <div class="mx-auto max-w-[1600px] px-5 sm:px-8 flex items-center justify-between font-mono text-[10px] tracking-[0.28em] uppercase text-cmok/50">
+      <span>▍ End exhibit 02</span>
+      <span class="hidden md:inline">— continue exhibit 03 —</span>
+      <span>↓ ▌</span>
+    </div>
+  </div>
+</section>

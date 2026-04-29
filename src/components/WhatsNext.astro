@@ -1,39 +1,53 @@
 ---
 ---
 
-<section class="relative py-24 sm:py-32 border-t border-line-soft">
-  <div class="mx-auto max-w-6xl px-5 sm:px-8">
-    <p class="font-mono text-[11px] tracking-[0.22em] uppercase text-ink-faint mb-12 sm:mb-16">
-      ▍ What's next
-    </p>
+<section class="relative py-24 sm:py-36 border-t border-line overflow-hidden">
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-      <div class="lg:col-span-8">
-        <p class="font-display text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] text-ink">
-          More small weird apps.
+  <div class="relative mx-auto max-w-[1600px] px-5 sm:px-8">
+
+    <div class="grid grid-cols-12 gap-4 sm:gap-8 items-end">
+
+      <!-- left: huge announcement -->
+      <div class="col-span-12 md:col-span-8">
+        <p class="callout text-ink-faint mb-4">▍ Section B.06 / In the workshop</p>
+        <p class="font-display text-[clamp(3rem,9vw,7.5rem)] leading-[0.92] tracking-tight text-ink">
+          More
+          <span class="italic text-ink-dim">small weird apps.</span>
         </p>
-        <p class="mt-2 font-display italic text-[clamp(1.4rem,3.2vw,2.2rem)] leading-snug text-ink-dim">
+        <p class="mt-4 font-display text-[clamp(1.4rem,3vw,2rem)] leading-snug text-ink-dim">
           When the right problem shows up.
         </p>
       </div>
 
-      <aside class="lg:col-span-4 lg:pl-8 lg:border-l border-line-soft">
-        <p class="font-mono text-[10px] tracking-[0.22em] uppercase text-ink-faint mb-3">
-          ▍ Workshop · in progress
-        </p>
-        <p class="text-base sm:text-lg leading-relaxed text-ink-dim">
-          Currently in the workshop:
-          <span class="text-ink">something quiet, useful and probably overthought.</span>
-        </p>
-
-        <div class="mt-6 flex items-center gap-3">
+      <!-- right: workshop ticket -->
+      <aside class="col-span-12 md:col-span-4 md:pl-8 md:border-l border-line">
+        <div class="flex items-center gap-3 mb-4">
           <span class="relative flex h-2 w-2">
             <span class="absolute inline-flex h-full w-full rounded-full bg-bzzt opacity-60" style="animation: blink-soft 2.4s ease-in-out infinite;"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-bzzt"></span>
           </span>
-          <span class="font-mono text-[10px] tracking-[0.22em] uppercase text-ink-faint">
-            Loop 04 · drafting
-          </span>
+          <span class="callout text-bzzt">Loop 04 · drafting</span>
+        </div>
+        <p class="font-display italic text-[clamp(1.4rem,2.6vw,2rem)] leading-[1.15] text-ink">
+          something quiet,
+          <span class="block">useful</span>
+          <span class="block text-ink-dim">and probably overthought.</span>
+        </p>
+
+        <!-- "ticket details" -->
+        <div class="mt-8 pt-6 border-t border-dashed border-line space-y-2 callout text-ink-faint">
+          <div class="flex justify-between">
+            <span>Status</span>
+            <span class="text-ink">in workshop</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Eta</span>
+            <span class="text-ink">tba</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Loop</span>
+            <span class="text-ink">tbd</span>
+          </div>
         </div>
       </aside>
     </div>
