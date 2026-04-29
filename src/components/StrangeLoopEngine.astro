@@ -20,6 +20,8 @@ const modes = [
     newSteps: bzzt.loopSteps,
     brand: "BZZT",
     brandClass: "font-mono font-bold uppercase tracking-[-0.02em]",
+    appMeta: "live signal · 30-min window",
+    appCta: "Open in App Store",
     href: bzzt.href!,
   },
   {
@@ -32,6 +34,8 @@ const modes = [
     newSteps: cmok.loopSteps,
     brand: "cmok",
     brandClass: "font-display italic lowercase tracking-[-0.02em]",
+    appMeta: "daily sign · close circle",
+    appCta: "Open in App Store",
     href: cmok.href!,
   },
   {
@@ -44,6 +48,8 @@ const modes = [
     newSteps: nwd.loopSteps,
     brand: "NWD",
     brandClass: "font-display tracking-[-0.04em]",
+    appMeta: "verified gravity league · seasonal podiums",
+    appCta: "Open NWD",
     href: nwd.href!,
   },
 ];
@@ -142,18 +148,24 @@ const modes = [
           <span class="text-flag/80">× failed</span>
         </p>
         {modes.map((m) => (
-          <ol data-mode={m.id} class="broken-loop space-y-2.5">
-            {m.broken.map((step) => (
-              <li class="flex items-baseline gap-3 font-display text-[clamp(1.5rem,2.8vw,2.2rem)] leading-[1] text-ink-dim">
-                <span aria-hidden="true" class="text-flag font-mono text-base shrink-0 w-5">×</span>
-                <span class="line-through decoration-flag/70 decoration-2">{step}</span>
+          <div data-mode={m.id} class="relative">
+            <!-- fault diagonals across the broken column -->
+            <span aria-hidden="true" class="broken-fault"></span>
+
+            <ol class="broken-loop relative space-y-2.5">
+              {m.broken.map((step) => (
+                <li class="broken-step flex items-baseline gap-3 font-display text-[clamp(1.5rem,2.8vw,2.2rem)] leading-[1]">
+                  <span aria-hidden="true" class="text-flag font-mono text-base shrink-0 w-5">×</span>
+                  <span class="line-through decoration-flag/70 decoration-2 text-ink-dim">{step}</span>
+                  <span aria-hidden="true" class="font-mono text-[9px] tracking-[0.28em] uppercase text-flag/55 ml-auto">null</span>
+                </li>
+              ))}
+              <li aria-hidden="true" class="font-mono text-[10px] tracking-[0.28em] uppercase text-flag/70 pl-8 pt-3 flex items-center gap-1.5">
+                <span class="text-base">↺</span>
+                <span>repeats · no exit</span>
               </li>
-            ))}
-            <li aria-hidden="true" class="font-mono text-[10px] tracking-[0.28em] uppercase text-flag/70 pl-8 pt-2 flex items-center gap-1.5">
-              <span class="text-base">↺</span>
-              <span>repeats</span>
-            </li>
-          </ol>
+            </ol>
+          </div>
         ))}
       </div>
 
@@ -170,25 +182,28 @@ const modes = [
       <div class="md:col-span-5">
         {modes.map((m) => (
           <div data-mode={m.id}>
-            <div class={`relative bg-${m.accent}/[0.06] border border-${m.accent}/35 p-5 sm:p-6`}>
-              <!-- corner pulse -->
-              <span aria-hidden="true" class={`absolute top-3 right-3 block w-2 h-2 rounded-full bg-${m.accent} shadow-[0_0_10px_currentColor] text-${m.accent}`} style="animation: blink-soft 1.6s infinite;"></span>
+            <div class={`relative bg-${m.accent}/[0.06] border border-${m.accent}/35 p-5 sm:p-6 text-${m.accent}`}>
+              <!-- pulse line traveling down the left edge -->
+              <span aria-hidden="true" class="swa-trace"></span>
 
-              <p class={`font-mono text-[10px] tracking-[0.32em] uppercase text-${m.accent} mb-4 flex items-center justify-between`}>
+              <!-- corner pulse -->
+              <span aria-hidden="true" class={`absolute top-3 right-3 block w-2 h-2 rounded-full bg-${m.accent} shadow-[0_0_10px_currentColor]`} style="animation: blink-soft 1.6s infinite;"></span>
+
+              <p class="font-mono text-[10px] tracking-[0.32em] uppercase mb-4 flex items-center justify-between">
                 <span>▍ SWA loop</span>
-                <span class={`text-${m.accent}`}>✓ installed</span>
+                <span>✓ installed · running</span>
               </p>
 
               <ol class="space-y-2.5">
                 {m.newSteps.map((step, i) => (
                   <li class="new-loop-step flex items-baseline gap-3 font-display text-[clamp(1.5rem,2.8vw,2.2rem)] leading-[1] text-ink" style={`animation-delay: ${0.45 + i * 0.13}s;`}>
-                    <span aria-hidden="true" class={`block w-2 h-2 rounded-full bg-${m.accent} shadow-[0_0_8px_currentColor] text-${m.accent} shrink-0 mt-[0.4em]`}></span>
+                    <span aria-hidden="true" class={`swa-dot block w-2 h-2 rounded-full bg-${m.accent} text-${m.accent} shrink-0 mt-[0.4em]`}></span>
                     <span>{step}</span>
                   </li>
                 ))}
-                <li aria-hidden="true" class={`font-mono text-[10px] tracking-[0.28em] uppercase text-${m.accent}/70 pl-7 pt-2 flex items-center gap-1.5`}>
+                <li aria-hidden="true" class="font-mono text-[10px] tracking-[0.28em] uppercase opacity-70 pl-7 pt-2 flex items-center gap-1.5">
                   <span class="text-base">↺</span>
-                  <span>repeats</span>
+                  <span>repeats · live</span>
                 </li>
               </ol>
             </div>
@@ -197,36 +212,49 @@ const modes = [
       </div>
     </div>
 
-    <!-- APP REVEAL + CTA -->
-    <div class="mt-10 sm:mt-16 grid grid-cols-1 md:grid-cols-12 items-end gap-6 sm:gap-12">
-      <div class="md:col-span-7">
+    <!-- APP REVEAL + CTA — title-card moment -->
+    <div class="mt-10 sm:mt-16 grid grid-cols-1 md:grid-cols-12 items-stretch gap-6 sm:gap-10">
+
+      <div class="md:col-span-8">
         {modes.map((m) => (
           <div data-mode={m.id} class="app-reveal">
             <p class="font-mono text-[10px] tracking-[0.32em] uppercase text-ink-faint mb-3">▍ Patched into</p>
-            <a
-              href={m.href}
-              target="_blank"
-              rel="noopener"
-              class="group inline-flex items-baseline gap-4 hover:opacity-90 transition-opacity"
-            >
-              <span class={`${m.brandClass} text-[clamp(3rem,7.5vw,6rem)] leading-[0.85] text-${m.accent}`}>
+
+            <div class={`app-card relative px-5 sm:px-7 py-5 sm:py-7 text-${m.accent}`}>
+              <span class={`absolute top-3 left-3 block w-2 h-2 rounded-full bg-${m.accent} shadow-[0_0_10px_currentColor]`} aria-hidden="true" style="animation: blink-soft 1.6s infinite;"></span>
+
+              <span class={`block ${m.brandClass} text-[clamp(3.5rem,9vw,7rem)] leading-[0.82]`}>
                 {m.brand}<span class="text-ink">.</span>
               </span>
-              <span class="font-mono text-[11px] tracking-[0.28em] uppercase text-ink-dim group-hover:text-ink transition-colors">
-                Open ↗
+
+              <span class="block mt-3 font-mono text-[11px] tracking-[0.28em] uppercase text-ink-dim">
+                {m.appMeta}
               </span>
-            </a>
+
+              <a
+                href={m.href}
+                target="_blank"
+                rel="noopener"
+                class={`mt-5 group inline-flex items-center gap-3 px-4 py-3 border border-${m.accent}/50 hover:bg-${m.accent}/15 hover:border-${m.accent} transition-colors font-mono text-[11px] tracking-[0.22em] uppercase`}
+              >
+                <span aria-hidden="true" class={`block w-1.5 h-1.5 rounded-full bg-${m.accent} shadow-[0_0_6px_currentColor]`}></span>
+                <span class="text-ink">{m.appCta}</span>
+                <span aria-hidden="true" class="transition-transform group-hover:translate-x-1 text-ink">↗</span>
+              </a>
+            </div>
           </div>
         ))}
       </div>
 
-      <div class="md:col-span-5 md:text-right flex md:justify-end">
+      <div class="md:col-span-4 flex md:items-end md:justify-end">
         <a
           href="#console"
-          class="group inline-flex items-center gap-3 px-5 py-3.5 border border-line text-ink hover:border-bzzt hover:text-bzzt transition-colors font-mono text-[11px] tracking-[0.22em] uppercase"
+          class="group inline-flex items-center gap-3 px-5 py-4 border border-line text-ink hover:border-bzzt hover:text-bzzt transition-colors font-mono text-[11px] tracking-[0.22em] uppercase w-full md:w-auto justify-between"
         >
-          <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-bzzt shadow-[0_0_8px_var(--color-bzzt)]" style="animation: blink-soft 2s infinite;"></span>
-          <span>Open the console</span>
+          <span class="flex items-center gap-3">
+            <span aria-hidden="true" class="block w-1.5 h-1.5 rounded-full bg-bzzt shadow-[0_0_8px_var(--color-bzzt)]" style="animation: blink-soft 2s infinite;"></span>
+            <span>Open the loop console</span>
+          </span>
           <span aria-hidden="true" class="transition-transform group-hover:translate-y-0.5">↓</span>
         </a>
       </div>
