@@ -75,14 +75,14 @@ const brandClass =
               href={app.href}
               target="_blank"
               rel="noopener"
-              class={`motion-tappable group inline-flex items-center gap-3 px-6 py-4 border border-${accent}/60 hover:bg-${accent}/15 hover:border-${accent} font-mono text-[12px] tracking-[0.22em] uppercase`}
+              class={`motion-tappable group inline-flex items-center gap-3 px-7 min-h-[44px] border-2 border-${accent} bg-${accent}/[0.06] hover:bg-${accent}/[0.16] focus-visible:bg-${accent}/[0.16] font-mono font-semibold text-[13px] tracking-[0.18em] uppercase`}
             >
               <span aria-hidden="true" class={`block w-1.5 h-1.5 rounded-full bg-${accent} shadow-[0_0_8px_currentColor] text-${accent}`}></span>
               <span class="text-ink">{cta}</span>
               <span aria-hidden="true" class="text-ink transition-transform group-hover:translate-x-1">↗</span>
             </a>
           ) : (
-            <span class="inline-flex items-center gap-2 px-6 py-4 border border-line text-ink-faint font-mono text-[12px] tracking-[0.22em] uppercase">
+            <span class="inline-flex items-center gap-2 px-7 min-h-[44px] border-2 border-line text-ink-faint font-mono font-semibold text-[13px] tracking-[0.18em] uppercase">
               <span>Soon</span>
             </span>
           )}
